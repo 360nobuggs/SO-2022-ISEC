@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "backend.h": "c",
+        "unistd.h": "c",
+        "wait.h": "c"
+    }
+}

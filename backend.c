@@ -1,9 +1,10 @@
 //
 // Created by Vasco on 10/31/2022.
 //
+#include "backend.h"
 #include <wait.h>
 #include <unistd.h>
-#include "backend.h"
+
 // Variáveis globais
 int s_fifo, c_fifo, res;
 int connectedUsers = 0;
