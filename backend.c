@@ -2,8 +2,6 @@
 // Created by Vasco on 10/31/2022.
 //
 #include "backend.h"
-#include <wait.h>
-#include <unistd.h>
 
 // Variáveis globais
 int s_fifo, c_fifo, res;
@@ -36,5 +34,19 @@ void alarmHandler(int sig) {
             kill(userList[i].userPID, SIGUSR1);
             kill(userList[i].gamePID, SIGUSR1);
         }
+    }
+}
+void listAllLeiloes(char* leidir) {
+    DIR* d; // Usado para ler os ficheiros existentes
+    struct dirent* dir;
+
+    d = opendir(leidir);
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
+            //Verifica se o ficheiro começa por g e se acaba em c
+            if (dir->d_name[0] == 'g' && dir->d_name[strlen(dir->d_name) - 1] == 'c')
+                printf("-> %s\n", dir->d_name);
+        }
+        closedir(d);
     }
 }
