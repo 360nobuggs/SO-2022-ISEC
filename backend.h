@@ -4,7 +4,7 @@
 
 #ifndef SO_2022_ISEC_BACKEND_H
 #define SO_2022_ISEC_BACKEND_H
-
+#include "communication.h"
 #include <wait.h>
 #include <unistd.h>
 #include <stdio.h>

@@ -60,11 +60,35 @@ int verifInt(char* arg) {
     }
     return num;
 }
+void* clientServerComm(void* list) {
+    struct LigacaoServidor mensagemForClient;
+    struct LigacaoCliente mensagemForServer;
+    char nome_fifo_cliente[50];
+    char auxMsg[TAM_MAX];
+
+    do {
+        res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
+        if (res < 0) {
+            perror("\n Erro a ler do cliente.");
+        }
+        if (mensagemForServer.status == 0)
+            fprintf(stderr, "\n Cliente com o PID %d esta a tentar conectar.\n", mensagemForServer.userPID);
+        else
+            fprintf(stderr, "\n Mensagem recebida do cliente com o PID %d: [%s]\n", mensagemForServer.userPID, mensagemForServer.palavra);
+        sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
+
+        // Remover cliente da lista de clientes
+        if ((c_fifo = open(nome_fifo_cliente, O_WRONLY)) < 0) {
+            shutdown();
+            exit(EXIT_FAILURE);
+        }
+
+}
 int main(int argc, char* argv[], char* envp[]) {
     int opt;
     char cmd[250];
     char *token;
-    struct LigacaoS mensagemForCliente;
+    struct LigacaoServidor mensagemForCliente;
     char nome_fifo_cliente[50];
 
     signal(SIGINT, sigHandler);

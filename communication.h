@@ -11,10 +11,11 @@ struct LigacaoServidor{
 struct LigacaoCliente {//resposta do cliente
     char nome[TAM_MAX];
     char palavra[TAM_MAX];
+    char password[TAM_MAX];
     int userPID;
     char gameName[TAM_MAX];
-    int gamePID;
-    int gamescore;
+    int leilaoPID;
+    int bidding;
     int gpFD[2];
     int pgFD[2];
     int status; // status-> 0 para primeira mensagem (onde o user é registado), 1 para tudo o resto
