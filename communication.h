@@ -6,7 +6,7 @@
 #define SO_2022_ISEC_SUPPORT_H
 struct LigacaoServidor{
     int userPID;
-    char alavra[TAM_MAX];
+    char palavra[TAM_MAX];
 };
 struct LigacaoCliente {//resposta do cliente
     char nome[TAM_MAX];
