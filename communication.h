@@ -12,7 +12,6 @@ struct LigacaoCliente {//resposta do cliente
     char nome[TAM_MAX];
     char palavra[TAM_MAX];
     int userPID;
-    char gameName[TAM_MAX];
     int gamePID;
     int gamescore;
     int gpFD[2];

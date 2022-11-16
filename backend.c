@@ -1,6 +1,3 @@
-//
-// Created by Vasco on 10/31/2022.
-//
 #include "backend.h"
 
 // Variáveis globais
@@ -22,7 +19,7 @@ void sigHandler(int sig) {
         exit(0);
     }
 }
-
+/*
 void alarmHandler(int sig) {
     if (sig == SIGALRM) {
         //Tem de mandar um sigUSR1 a todos os clientes e todos os jogos para notificar que o jogo terminou.
@@ -36,6 +33,8 @@ void alarmHandler(int sig) {
         }
     }
 }
+*/
+
 void listAllLeiloes(char* leidir) {
     DIR* d; // Usado para ler os ficheiros existentes
     struct dirent* dir;
@@ -59,7 +58,10 @@ int verifInt(char* arg) {
         exit(4); // Erro Invalid Arguments
     }
     return num;
+    */
 }
+
+
 int main(int argc, char* argv[], char* envp[]) {
     int opt;
     char cmd[250];
@@ -67,53 +69,78 @@ int main(int argc, char* argv[], char* envp[]) {
     struct LigacaoS mensagemForCliente;
     char nome_fifo_cliente[50];
 
-    signal(SIGINT, sigHandler);
-    signal(SIGALRM, alarmHandler);
+    //signal(SIGINT, sigHandler);
+    //signal(SIGALRM, alarmHandler);
 
     /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
 
     if ((res = mkfifo(SERVER_FIFO, 0777)) < 0) {
+        if (errno != EEXIST){
         perror("\nErro ao criar o FIFO do Servidor.\n");
         shutdown();
         exit(EXIT_FAILURE);
+        }
     }
     fprintf(stderr, "\nFIFO servidor criado com sucesso!");
 
     if ((s_fifo = open(SERVER_FIFO, O_RDWR)) < 0) {
-        perror("\nErro ao abrir o FIFO do servidor(RDWR/BLOCKING).\n");
-        shutdown();
-        exit(EXIT_FAILURE);
+        if (errno != EEXIST){
+            perror("\nErro ao abrir o FIFO do servidor(RDWR/BLOCKING).\n");
+            shutdown();
+            exit(EXIT_FAILURE);
+        }
     }
     fprintf(stderr, "\nFIFO aberto para leitura.\n");
 
 
+
     do {
         //leitura de comandos para o servidor
+        printf("\nDigite o comando que quer usar, para saber os comando que pode usar escreva <help>: ");
         fgets(cmd, sizeof(cmd), stdin);
-        strtok(cmd, "\n");
-
+        for (int i = 0; i < strlen(comando); i++){
+            comando[i] = toupper(comando[i]);
+        }
+        //strtok(cmd, "\n");
         //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
         if  (strcmp(cmd, "players") == 0) {
 
-        }   else if (strcmp(cmd, "users") == 0) { //lista utilizadores cliente atuais
+        }   else if (strcmp(cmd, "LOGIN") == 0) {
+            char user[18], password[18];
+            int certo;
+            do{
+                printf("\nEscreva o seu username:");
+                gets(user);
+                printf("Escreva a sua palavra-passas do user %s:", user);
+                gets(password);
+                int fd = open("SERVER_FIFO", O_WRONLY);
+                if (write(fd, &user, strlen(user)) == -1){
+                    printf("erro no envio da msg");
+                }
+                if (write(fd, &password, strlen(password)) == -1){
+                    printf("erro no envio da msg");
+                }
+                close(fd);
+            } while (certo);
+//fim do login-----------------------------------------------------------------------------------------------
+        }   else if (strcmp(cmd, "LIST") == 0) { //lista items á venda
 
-        }   else if (strcmp(cmd, "list") == 0) { //lista items á venda
-
-        }   else if (strcmp(cmd, "kick") == 0) { //remove utilizador
+        }   else if (strcmp(cmd, "KICK") == 0) { //remove utilizador
             token = strtok(cmd, "k");
-        }   else if (strcmp(cmd, "prom") == 0) { //lista utilizadores promotores atuais
+        }   else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
-        }   else if (strcmp(cmd, "reprom") == 0) { //atualiza promotores
+        }   else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
 
-        }   else if (strcmp(cmd, "cancel") == 0) { //cancela promotor
+        }   else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
 
-        }   else if (strcmp(cmd, "close") == 0) { //termina execucao
+        }   else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
 
-        }
-        else {
+        }else if(strcmp(cmd, "HELP") == 0){
+            printf("\ncomandos:\n Login\n List\n Kick\n Prom\n Reprom")
+        }else{
             printf("\nComando nao detetado!\n");
         }
-    } while (strcmp(cmd, "exit"));
+    } while (strcmp(cmd, "EXIT"));
     return 0;
 
 }

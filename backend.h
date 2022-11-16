@@ -22,6 +22,7 @@
 #include <dirent.h>
 #include <pthread.h>
 #include <string.h>
+#include <errno.h>
 
 #define DEFAULT_MAXPLAYERS 10
 #define DEFAULT_LEILAODIR "."
