@@ -9,11 +9,10 @@ struct LigacaoServidor{
     char palavra[TAM_MAX];
 };
 struct LigacaoCliente {//resposta do cliente
-    char nome[TAM_MAX];
+    char user[TAM_MAX];
     char palavra[TAM_MAX];
     char password[TAM_MAX];
     int userPID;
-    char gameName[TAM_MAX];
     int leilaoPID;
     int bidding;
     int gpFD[2];

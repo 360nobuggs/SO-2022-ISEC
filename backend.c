@@ -84,19 +84,21 @@ void* clientServerComm(void* list) {
         }
 
 }
+
 int main(int argc, char* argv[], char* envp[]) {
     int opt;
     char cmd[250];
     char *token;
     struct LigacaoServidor mensagemForCliente;
     char nome_fifo_cliente[50];
-
+    struct LigacaoServidor mensagem_server;//pergunta
+    struct LigacaoCliente mensagem_client;//resposta
     signal(SIGINT, sigHandler);
     signal(SIGALRM, alarmHandler);
 
     /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
 
-    if ((res = mkfifo(SERVER_FIFO, 0777)) < 0) {
+   if ((res = mkfifo(SERVER_FIFO, 0777)) < 0) {
         perror("\nErro ao criar o FIFO do Servidor.\n");
         shutdown();
         exit(EXIT_FAILURE);
@@ -115,23 +117,40 @@ int main(int argc, char* argv[], char* envp[]) {
         //leitura de comandos para o servidor
         fgets(cmd, sizeof(cmd), stdin);
         strtok(cmd, "\n");
+        for (int i = 0; i < strlen(comando); i++){
+            comando[i] = toupper(comando[i]);
+        }
 
         //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
         if  (strcmp(cmd, "players") == 0) {
 
-        }   else if (strcmp(cmd, "users") == 0) { //lista utilizadores cliente atuais
+        }   else if (strcmp(cmd, "LOGIN") == 0) {
+            char user[18], password[18];
+            int certo;
+            do{
+                printf("\nEscreva o seu username:");
+                scanf("%s", mensagem_server.user);
+                printf("Escreva a sua palavra-passas do user %s:", user);
+                scanf("%s", mensagem_server.palavra;
+                int fd = open("SERVER_FIFO", O_RDWR);
+                if (write(server_fifo, &mensagem_client, sizeof(mensagem_client)) == -1){
+                    printf("erro no envio da msg");
+                    //escreve no fifo do servidor para ele ler usando a mensagem para servidor
+                }
+                close(fd);
+            } while (certo);
+//fim do login-----------------------------------------------------------------------------------------------
+        }   else if (strcmp(cmd, "LIST") == 0) { //lista items á venda
 
-        }   else if (strcmp(cmd, "list") == 0) { //lista items á venda
-
-        }   else if (strcmp(cmd, "kick") == 0) { //remove utilizador
+        }   else if (strcmp(cmd, "KICK") == 0) { //remove utilizador
             token = strtok(cmd, "k");
-        }   else if (strcmp(cmd, "prom") == 0) { //lista utilizadores promotores atuais
+        }   else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
-        }   else if (strcmp(cmd, "reprom") == 0) { //atualiza promotores
+        }   else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
 
-        }   else if (strcmp(cmd, "cancel") == 0) { //cancela promotor
+        }   else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
 
-        }   else if (strcmp(cmd, "close") == 0) { //termina execucao
+        }   else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
 
         }
         else {
