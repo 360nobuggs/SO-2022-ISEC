@@ -104,6 +104,8 @@ int main(int argc, char* argv[], char* envp[]) {
     }
     fprintf(stderr, "\n FIFO do Cliente aberto para leitura.\n");
 
+
+
 // agora o fifo deve estar aberto e por isso vai poder mandar mgs para o server;
 
     do {
@@ -117,60 +119,10 @@ int main(int argc, char* argv[], char* envp[]) {
         //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
 
         if (strcmp(cmd, "LOGIN") == 0) {
-            char user[18], password[18];
-            int certo;
-
-            do{
-                printf("\nEscreva o seu username:");
-                scanf("%s", mensagem_client.user);
-                printf("Escreva a sua palavra-passas do user %s:", user);
-                scanf("%s", mensagem_client.palavra);
-                if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
-                    printf("erro no envio da msg");
-                }
-            } while (certo);
-//fim do login-----------------------------------------------------------------------------------------------
-        }   else if (strcmp(cmd, "REGISTAR") == 0) {
-            char user[18], pass[18], pass2[18];
-            int voltar;
-            do{
-                voltar = 0;
-                printf("\nEscreva o username que quer:");
-                scanf("%s", mensagem_client.user);
-                printf("Escreva a palavra-pass do usar: %s:", user);
-                scanf("%s", mensagem_client.palavran) ;
-                printf("confirme a palavra-pass:");
-                gets(pass2);
-                if (strcmp(mensagem_client.palavran, pass2) == 0){
-                    for (int i = 0; i < strlen(user); i++){
-                        if (user[i] == ' '){
-                            voltar = 1;
-                            printf("o user tem que ser uma palavra apenas");
-                        }
-                    }
-// em cima verifica se a mesmo palavra-passe que ele que se não for repete o processo de pedir as info se for;
-// verifica se e a apenas uma palavra no user;
-
-                    for (int i = 0; i < strlen(pass); i++){
-                        if (pass[i] == ' '){
-                            voltar = 1;
-                            printf("o user tem que ser uma palavra apenas");
-                        }
-                    }
-// verifica se e apenas uma palavra na palavra-pass
-                }else{
-                    voltar = 1;
-                    printf("enganouse");
-                }
-            }while(voltar);
-            mensagem_client.palavra = registar;
-            if (write(server_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
-                printf("erro no envio da msg");
-            }
-
+            
+      
         }   else if (strcmp(cmd, "KICK") == 0) {
-            mensagem_client.palavra = kick;
-
+        
 
         }   else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
