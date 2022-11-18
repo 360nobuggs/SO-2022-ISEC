@@ -17,7 +17,7 @@ void shutdown() {
     unlink(SERVER_FIFO);
 }
 
-void* clientServerComm(void* list) {
+void* clientServerComm() {
     struct LigacaoServidor mensagemForClient;
     struct LigacaoCliente mensagemForServer;
     char nome_fifo_cliente[50];
@@ -78,8 +78,8 @@ int main(int argc, char* argv[], char* envp[]) {
     char nome_fifo[50];
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
-   
 
+    clientServerComm();
     /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
 
     if (mkfifo(nome_fifo, 0777) < 0) {
