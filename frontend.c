@@ -57,14 +57,14 @@ int main(int argc, char* argv[], char* envp[]) {
                 scanf("%s", mensagem_client.user);
                 printf("Escreva a sua palavra-passas do user %s:", mensagem_client.user);
                 scanf("%s", mensagem_client.palavra);
-              /* if ((open("s_fifo", O_RDWR)) < 0){
+              if ((open("s_fifo", O_RDWR)) < 0){
                     return 1;
                 }
                 if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                     printf("erro no envio da msg");
                 }else{
                     printf("envido");
-               */ }
+               }
             } while (certo);
 //fim do login-----------------------------------------------------------------------------------------------
         }   else if (strcmp(cmd, "REGISTAR") == 0) {
