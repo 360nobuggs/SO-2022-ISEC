@@ -135,6 +135,7 @@ int main(int argc, char* argv[], char* envp[]) {
         if (strcmp(cmd, "LOGIN") == 0) {
             char user[18], password[18];
             int certo;
+
             do{
                 printf("\nEscreva o seu username:");
                 scanf("%s", mensagem_server.user);
@@ -153,16 +154,16 @@ int main(int argc, char* argv[], char* envp[]) {
                 printf("\nEscreva o username que quer:");
                 scanf("%s", mensagem_client.user);
                 printf("Escreva a palavra-pass do usar: %s:", user);
-                scanf("%s", mensagem_client.palavran ;
+                scanf("%s", mensagem_client.palavran) ;
                 printf("confirme a palavra-pass:");
                 gets(pass2);
-                if (strcmp(pass, pass2) == 0){
+                if (strcmp(mensagem_client.palavran, pass2) == 0){
                     for (int i = 0; i < strlen(user); i++){
                         if (user[i] == ' '){
                             voltar = 1;
                             printf("o user tem que ser uma palavra apenas");
                         }
-                    }else{voltar = 1;}
+                    }
 // em cima verifica se a mesmo palavra-passe que ele que se não for repete o processo de pedir as info se for;
 // verifica se e a apenas uma palavra no user;
 
@@ -177,13 +178,15 @@ int main(int argc, char* argv[], char* envp[]) {
                     voltar = 1;
                     printf("enganouse");
                 }
-                printf("-----------------gg----------------------------------------");
             }while(voltar);
+            mensagem_client.palavra = registar;
             if (write(server_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                 printf("erro no envio da msg");
             }
 
-        }   else if (strcmp(cmd, "KICK") == 0) { //remove utilizador
+        }   else if (strcmp(cmd, "KICK") == 0) {
+            mensagem_client.palavra = kick;
+
 
         }   else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
