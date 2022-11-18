@@ -17,7 +17,7 @@ void shutdown() {
 }
 
 int main(int argc, char* argv[], char* envp[]) {
-    char cmd[250];
+    char cmd[50];
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
 
@@ -45,8 +45,7 @@ int main(int argc, char* argv[], char* envp[]) {
 // obriga a que utilizador tenha fazer login ou registar;
     do {
         printf("faca login com o comando <login> ou registo com o comando <registar>");
-        fgets(cmd, sizeof(cmd), stdin);
-        strtok(cmd, "\n");
+        gets(cmd);
         for (int i = 0; i < strlen(cmd); i++){
             cmd[i] = toupper(cmd[i]);
         }
@@ -55,17 +54,17 @@ int main(int argc, char* argv[], char* envp[]) {
             int certo;
             do{
                 printf("\nEscreva o seu username:");
-                scanf("%s", mensagem_server.user);
-                printf("Escreva a sua palavra-passas do user %s:", user);
-                scanf("%s", mensagem_server.palavra;
-                if ((open("s_fifo", O_RDWR)) < 0){
+                scanf("%s", mensagem_client.user);
+                printf("Escreva a sua palavra-passas do user %s:", mensagem_client.user);
+                scanf("%s", mensagem_client.palavra);
+              /* if ((open("s_fifo", O_RDWR)) < 0){
                     return 1;
                 }
                 if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                     printf("erro no envio da msg");
                 }else{
                     printf("envido");
-                }
+               */ }
             } while (certo);
 //fim do login-----------------------------------------------------------------------------------------------
         }   else if (strcmp(cmd, "REGISTAR") == 0) {
@@ -76,14 +75,14 @@ int main(int argc, char* argv[], char* envp[]) {
                 voltar = 0;
                 printf("\nEscreva o username que quer:");
                 scanf("%s", mensagem_client.user);
-                printf("Escreva a palavra-pass do usar: %s:", user);
-                scanf("%s", mensagem_client.palavran) ;
+                printf("Escreva a palavra-pass do usar: %s:", mensagem_client.user);
+                scanf("%s", mensagem_client.password) ;
                 printf("confirme a palavra-pass:");
-                gets(pass2)
+                gets(pass2);
 
-                if (strcmp(mensagem_client.palavran, pass2) == 0){
-                    for (int i = 0; i < strlen(user); i++){
-                        if (user[i] == ' '){
+                if (strcmp(mensagem_client.palavra, pass2) == 0){
+                    for (int i = 0; i < strlen(mensagem_client.user); i++){
+                        if (mensagem_client.user[i] == ' '){
                             voltar = 1;
                             printf("o user tem que ser uma palavra apenas");
                         }
@@ -91,8 +90,8 @@ int main(int argc, char* argv[], char* envp[]) {
 // em cima verifica se a mesmo palavra-passe que ele que se não for repete o processo de pedir as info se for;
 // verifica se e a apenas uma palavra no user;
 
-                    for (int i = 0; i < strlen(pass); i++){
-                        if (pass[i] == ' '){
+                    for (int i = 0; i < strlen(pass2); i++){
+                        if (pass2[i] == ' '){
                             voltar = 1;
                             printf("o user tem que ser uma palavra apenas");
                         }
@@ -103,12 +102,11 @@ int main(int argc, char* argv[], char* envp[]) {
                     printf("Enganou se na palavra-pass");
                 }
             }while(voltar);
-            mensagem_client.palavra = registar;
-            if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+            if ((write(s_fifo, &mensagem_client, sizeof(mensagem_client))) == -1) {
                 printf("erro no envio da msg");
             }
 //manda msg para i servidor com os nome do novo user e palavra-pass;
-        }else{ printf("esse comado nao existe")}
+        }else{ printf("esse comado nao existe");}
     } while (1);
 
 /*
