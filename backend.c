@@ -9,7 +9,7 @@ int connectedUsers = 0;
 int LeilaoStarted = 0;
 int LeilaoFinished = 0;
 int alarmPID;
-struct LigacaoC userList[30];
+
 
 void shutdown() {
     printf("Exiting program...\n");
@@ -75,11 +75,10 @@ int main(int argc, char* argv[], char* envp[]) {
     char cmd[250];
     char *token;
     struct LigacaoServidor mensagemForCliente;
-    char nome_fifo_cliente[50];
+    char nome_fifo[50];
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
-    signal(SIGINT, sigHandler);
-    signal(SIGALRM, alarmHandler);
+   
 
     /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
 
@@ -90,7 +89,7 @@ int main(int argc, char* argv[], char* envp[]) {
     fprintf(stderr, "\n FIFO do cliente criado.\n");
 
     s_fifo = open(SERVER_FIFO, O_WRONLY);//abre o FIFO do servidor para escrita
-    if (server_fifo < 0) {
+    if (s_fifo < 0) {
         fprintf(stderr, "\n O cliente não consegue ligar-se ao servidor.\n");
         unlink(nome_fifo);
         exit(EXIT_FAILURE);
@@ -99,7 +98,7 @@ int main(int argc, char* argv[], char* envp[]) {
 
     if ((c_fifo = open(nome_fifo, O_RDWR)) < 0) { //o fifo do cliente so le
         perror("\n Erro ao abrir o FIFO do cliente.\n");
-        close(server_fifo);
+        close(s_fifo);
         unlink(nome_fifo);
         exit(EXIT_FAILURE);
     }
@@ -111,8 +110,8 @@ int main(int argc, char* argv[], char* envp[]) {
         //leitura de comandos para o servidor
         fgets(cmd, sizeof(cmd), stdin);
         strtok(cmd, "\n");
-        for (int i = 0; i < strlen(comando); i++){
-            comando[i] = toupper(comando[i]);
+        for (int i = 0; i < strlen(cmd); i++){
+            cmd[i] = toupper(cmd[i]);
         }
 
         //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
@@ -123,10 +122,10 @@ int main(int argc, char* argv[], char* envp[]) {
 
             do{
                 printf("\nEscreva o seu username:");
-                scanf("%s", mensagem_server.user);
+                scanf("%s", mensagem_client.user);
                 printf("Escreva a sua palavra-passas do user %s:", user);
-                scanf("%s", mensagem_server.palavra;
-                if (write(server_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                scanf("%s", mensagem_client.palavra);
+                if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                     printf("erro no envio da msg");
                 }
             } while (certo);
