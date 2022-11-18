@@ -147,7 +147,7 @@ int main(int argc, char* argv[], char* envp[]) {
             } while (certo);
 //fim do login-----------------------------------------------------------------------------------------------
         }   else if (strcmp(cmd, "REGISTAR") == 0) {
-            char user[18], pass[18], pass2[18];
+            char pass2[50];
             int voltar;
             do{
                 voltar = 0;
@@ -183,18 +183,35 @@ int main(int argc, char* argv[], char* envp[]) {
             if (write(server_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                 printf("erro no envio da msg");
             }
-
+//manda msg para i servidor com os nome do novo user e palavra-pass;
         }   else if (strcmp(cmd, "KICK") == 0) {
-            mensagem_client.palavra = kick;
-
+// primero if verifica se esta logado como status se for = 1;
+            if (mensagem_client.status == 1){
+                char comkick;
+                mensagem_client.palavra = kick;
+                do{
+                    printf("quer mesmo apagar o user %s?\n"s"/"n" ", mensagem_client.user);
+                    scanf("%c", &comkick);
+                }while(comkick != 's' || comkick != 'n'|| comkick != 'S' || comkick != 'N');
+                if(comkick != 's' || comkick != 'S'){
+                    if (write(server_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                        printf("erro no envio da msg");
+                    }
+                }
+            }
+        }
 
         }   else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
+        printf("comado valido");
 
-        }   else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
+        }   else if (strcmp(cmd, "COMPAR") == 0){
+        printf("comado valido");
 
-        }   else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
+        }   else if (strcmp(cmd, "CANCEL") == 0) {
+        printf("comado valido");
 
-        }   else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
+        }   else if (strcmp(cmd, "CLOSE") == 0) {//termina execucao
+        printf("comado valido");
 
         }
         else {
