@@ -44,9 +44,10 @@ void* clientServerComm() {
             //adicionar utilizador se nao existe
             if(strcmp(mensagemForServer.palavra, "login"))
             {
-                if(isUserValid(mensagemForServer.palavra,mensagemForServer.password)!=-1)
+                //if(isUserValid(mensagemForServer.palavra,mensagemForServer.password)!=-1)
+                if(1)
                 {
-                    sprintf(auxMsg, "Bem vindo de volta %s.\n\n", mensagemForServer.user);
+                    //sprintf(auxMsg, "Bem vindo de volta %s.\n\n", mensagemForServer.user);
                     strcpy(mensagemForClient.palavra, auxMsg);
                     res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
                     if (res < 0) {
@@ -56,7 +57,7 @@ void* clientServerComm() {
                 else
                 {
                     //REGISTA NOVO UTILIZADOR
-                    sprintf(auxMsg, "Novo utilizador %s registado.\n\n", mensagemForServer.user);
+                    //sprintf(auxMsg, "Novo utilizador %s registado.\n\n", mensagemForServer.user);
                     strcpy(mensagemForClient.palavra, auxMsg);
                     res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
                     if (res < 0) {
@@ -82,7 +83,7 @@ int main(int argc, char* argv[], char* envp[]) {
     clientServerComm();
     /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
 
-    if (mkfifo(nome_fifo, 0777) < 0) {
+    if (mkfifo(SERVER_FIFO, 0777) < 0) {
         perror("\n Erro ao criar o FIFO do cliente.\n");
         exit(EXIT_FAILURE);
     }
@@ -96,7 +97,7 @@ int main(int argc, char* argv[], char* envp[]) {
     }
     fprintf(stderr, "\n FIFO do servidor aberto para escrita.\n");
 
-    if ((c_fifo = open(nome_fifo, O_RDWR)) < 0) { //o fifo do cliente so le
+    if ((c_fifo = open(CLIENT_FIFO, O_RDWR)) < 0) { //o fifo do cliente so le
         perror("\n Erro ao abrir o FIFO do cliente.\n");
         close(s_fifo);
         unlink(nome_fifo);
@@ -105,11 +106,7 @@ int main(int argc, char* argv[], char* envp[]) {
     fprintf(stderr, "\n FIFO do Cliente aberto para leitura.\n");
 
 
-
-// agora o fifo deve estar aberto e por isso vai poder mandar mgs para o server;
-
     do {
-        //leitura de comandos para o servidor
         fgets(cmd, sizeof(cmd), stdin);
         strtok(cmd, "\n");
         for (int i = 0; i < strlen(cmd); i++){

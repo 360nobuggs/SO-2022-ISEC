@@ -30,6 +30,6 @@
 
 #define SERVER_FIFO "tmp/dict_fifo"
 #define CLIENT_FIFO "tmp/resp%d_fifo"
-#define TAM_MAX 50
+#define TAM_MAX 100
 
 #endif //SO_2022_ISEC_BACKEND_H
