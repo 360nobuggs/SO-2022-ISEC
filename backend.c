@@ -16,50 +16,7 @@ void shutdown() {
     close(s_fifo);
     unlink(SERVER_FIFO);
 }
-void sigHandler(int sig) {
-    if (sig == SIGINT) {
-        shutdown();
-        exit(0);
-    }
-}
 
-void alarmHandler(int sig) {
-    if (sig == SIGALRM) {
-        //Tem de mandar um sigUSR1 a todos os clientes e todos os jogos para notificar que o jogo terminou.
-        for (int i = 0; i < connectedUsers; i++) {
-#ifdef DEBUG
-            printf("Sending USR1 to user %s (%d)\n", userList[i].nome, userList[i].userPID);
-      printf("Sending USR1 to game (%d)\n", userList[i].gamePID);
-#endif
-            kill(userList[i].userPID, SIGUSR1);
-            kill(userList[i].gamePID, SIGUSR1);
-        }
-    }
-}
-void listAllLeiloes(char* leidir) {
-    DIR* d; // Usado para ler os ficheiros existentes
-    struct dirent* dir;
-
-    d = opendir(leidir);
-    if (d) {
-        while ((dir = readdir(d)) != NULL) {
-            //Verifica se o ficheiro começa por g e se acaba em c
-            if (dir->d_name[0] == 'g' && dir->d_name[strlen(dir->d_name) - 1] == 'c')
-                printf("-> %s\n", dir->d_name);
-        }
-        closedir(d);
-    }
-}
-//exemplo de função de verificação
-int verifInt(char* arg) {
-    int num;
-    if ((num = atoi(arg)) == 0 && arg != "0") {
-        printf("[ERRO] Argumento invalido!\n");
-        printf("Utilize -h para mais informacoes.\n");
-        exit(4); // Erro Invalid Arguments
-    }
-    return num;
-}
 void* clientServerComm(void* list) {
     struct LigacaoServidor mensagemForClient;
     struct LigacaoCliente mensagemForServer;
@@ -74,15 +31,43 @@ void* clientServerComm(void* list) {
         if (mensagemForServer.status == 0)
             fprintf(stderr, "\n Cliente com o PID %d esta a tentar conectar.\n", mensagemForServer.userPID);
         else
-            fprintf(stderr, "\n Mensagem recebida do cliente com o PID %d: [%s]\n", mensagemForServer.userPID, mensagemForServer.palavra);
+            fprintf(stderr, "\n Mensagem recebida do cliente com o PID %d: [%s]\n", mensagemForServer.userPID,
+                    mensagemForServer.palavra);
         sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
 
-        // Remover cliente da lista de clientes
         if ((c_fifo = open(nome_fifo_cliente, O_WRONLY)) < 0) {
             shutdown();
-            exit(EXIT_FAILURE);
+            // exit(EXIT_FAILURE);
+        } else {
+            strcpy(mensagemForClient.palavra, "Bem-vindo! Pode agora inserir comandos.\n\n");
+            res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+            //adicionar utilizador se nao existe
+            if(strcmp(mensagemForServer.palavra, "login"))
+            {
+                if(isUserValid(mensagemForServer.palavra,mensagemForServer.password)!=-1)
+                {
+                    sprintf(auxMsg, "Bem vindo de volta %s.\n\n", mensagemForServer.user);
+                    strcpy(mensagemForClient.palavra, auxMsg);
+                    res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                    if (res < 0) {
+                        perror("\n Erro a escrever para o cliente.");
+                    }
+                }
+                else
+                {
+                    //REGISTA NOVO UTILIZADOR
+                    sprintf(auxMsg, "Novo utilizador %s registado.\n\n", mensagemForServer.user);
+                    strcpy(mensagemForClient.palavra, auxMsg);
+                    res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                    if (res < 0) {
+                        perror("\n Erro a escrever para o cliente.");
+                    }
+                }
+            }
+
         }
 
+    } while (1);
 }
 
 int main(int argc, char* argv[], char* envp[]) {
