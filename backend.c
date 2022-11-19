@@ -34,8 +34,8 @@ void* clientServerComm() {
                     mensagemForServer.palavra);
                
         sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
-        
-        
+        fprintf(stderr, "\nPID %s .\n", nome_fifo_cliente);
+       
         if ((c_fifo = open(nome_fifo_cliente, O_WRONLY)) < 0) {
             shutdown();
             exit(EXIT_FAILURE);
@@ -51,6 +51,7 @@ void* clientServerComm() {
                 {
                     //sprintf(auxMsg, "Bem vindo de volta %s.\n\n", mensagemForServer.user);
                     strcpy(mensagemForClient.palavra, auxMsg);
+                    sleep(20);
                     res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
                     if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");

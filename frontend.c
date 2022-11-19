@@ -48,7 +48,7 @@ int main(int argc, char* argv[], char* envp[]) {
     }
     fprintf(stderr, "\n FIFO do Cliente aberto para leitura.\n");
     mensagem_client.status=0;
-    
+    strcmp(mensagem_client.palavra,"login");
     //PRIMEIRA MENSAGEM SO PARA ESTABLECER LIGACAO COM SERVER
     //SO DEPOIS FAZER LOGIN OU REGISTO
     
@@ -67,7 +67,7 @@ int main(int argc, char* argv[], char* envp[]) {
                 printf("\nEscreva o seu username:");
                 scanf("%s", mensagem_client.user);
                 printf("Escreva a sua palavra-passas do user %s:", mensagem_client.user);
-                scanf("%s", mensagem_client.palavra);
+                scanf("%s", mensagem_client.password);
              /* if ((open("s_fifo", O_RDWR)) < 0){
                     return 1;
                 }*/
@@ -75,6 +75,10 @@ int main(int argc, char* argv[], char* envp[]) {
                     printf("erro no envio da msg");
                 }else{
                     fprintf(stderr, "\nMensagem enviada para servidor.\n");
+                    /*if ((open(c_fifo, O_RDONLY)) < 0){
+                    exit(EXIT_FAILURE);
+                    return 1;
+                    }*/
                     read_res=read(clientfifo,&mensagem_server,sizeof(mensagem_server));
                     if(read_res==sizeof(mensagem_server))
                     {
