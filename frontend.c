@@ -8,8 +8,9 @@ int connectedUsers = 0;
 int LeilaoStarted = 0;
 int LeilaoFinished = 0;
 int alarmPID;
-
-
+int clientfifo;
+int serverfifo;
+char nome_fifo[50];
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
@@ -20,10 +21,18 @@ int main(int argc, char* argv[], char* envp[]) {
     char cmd[50];
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
-
+    int read_res;
     /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
-/*
+    mensagem_client.userPID= getpid();
+    sprintf(nome_fifo,CLIENT_FIFO,mensagem_client.userPID);
     ;//abre o FIFO do servidor para escrita
+    if(mkfifo(nome_fifo, 0777)<0)
+    {
+        perror("\n Erro a criar FIFO cliente.\n");
+        exit(EXIT_FAILURE);
+    }
+    fprintf(stderr, "\n FIFO do cliente criado.\n");
+
     if ((s_fifo = open(SERVER_FIFO, O_WRONLY)) < 0) {
         fprintf(stderr, "\n O cliente não consegue ligar-se ao servidor.\n");
         unlink(nome_fifo);
@@ -38,9 +47,11 @@ int main(int argc, char* argv[], char* envp[]) {
         exit(EXIT_FAILURE);
     }
     fprintf(stderr, "\n FIFO do Cliente aberto para leitura.\n");
-
-
-    */
+    mensagem_client.status=0;
+    mensagem_client.palavra="hello";
+    //PRIMEIRA MENSAGEM SO PARA ESTABLECER LIGACAO COM SERVER
+    //SO DEPOIS FAZER LOGIN OU REGISTO
+    
 
 // obriga a que utilizador tenha fazer login ou registar;
     do {
@@ -57,13 +68,23 @@ int main(int argc, char* argv[], char* envp[]) {
                 scanf("%s", mensagem_client.user);
                 printf("Escreva a sua palavra-passas do user %s:", mensagem_client.user);
                 scanf("%s", mensagem_client.palavra);
-              if ((open("s_fifo", O_RDWR)) < 0){
+             /* if ((open("s_fifo", O_RDWR)) < 0){
                     return 1;
-                }
+                }*/
                 if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                     printf("erro no envio da msg");
                 }else{
-                    printf("envido");
+                    printf("enviado");
+                    read_res=read(clientfifo,&mensagem_server,sizeof(mensagem_server));
+                    if(read_res==sizeof(mensagem_server))
+                    {
+                        fprintf(stderr,"\n mensagem do servidor recebida\n ");
+                        fprintf(stderr, mensagem_server.palavra);
+                    }
+                    else
+                    {
+                        fprintf(stderr,"\n O servidor nao entregou mensagem.\n ");
+                    }
                }
             } while (certo);
 //fim do login-----------------------------------------------------------------------------------------------

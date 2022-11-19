@@ -8,8 +8,7 @@ int s_fifo, c_fifo, res;
 int connectedUsers = 0;
 int LeilaoStarted = 0;
 int LeilaoFinished = 0;
-int alarmPID;
-
+struct LigacaoCliente utilizadores[20];
 
 void shutdown() {
     printf("Exiting program...\n");
@@ -34,10 +33,11 @@ void* clientServerComm() {
             fprintf(stderr, "\n Mensagem recebida do cliente com o PID %d: [%s]\n", mensagemForServer.userPID,
                     mensagemForServer.palavra);
         sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
-
+        
+        
         if ((c_fifo = open(nome_fifo_cliente, O_WRONLY)) < 0) {
             shutdown();
-            // exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         } else {
             strcpy(mensagemForClient.palavra, "Bem-vindo! Pode agora inserir comandos.\n\n");
             res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
@@ -80,30 +80,28 @@ int main(int argc, char* argv[], char* envp[]) {
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
 
-    clientServerComm();
+    //clientServerComm();
     /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
 
-    if (mkfifo(SERVER_FIFO, 0777) < 0) {
+    if (res=mkfifo(SERVER_FIFO, 0777) < 0) {
         perror("\n Erro ao criar o FIFO do cliente.\n");
+        shutdown();
         exit(EXIT_FAILURE);
     }
-    fprintf(stderr, "\n FIFO do cliente criado.\n");
+    fprintf(stderr, "\n FIFO do servidor criado.\n");
 
-    s_fifo = open(SERVER_FIFO, O_WRONLY);//abre o FIFO do servidor para escrita
+    s_fifo = open(SERVER_FIFO, O_RDWR);//abre o FIFO do servidor para escrita
     if (s_fifo < 0) {
-        fprintf(stderr, "\n O cliente não consegue ligar-se ao servidor.\n");
+        fprintf(stderr, "\n Erro a abrir o FIFO do servidor.\n");
         unlink(nome_fifo);
         exit(EXIT_FAILURE);
     }
-    fprintf(stderr, "\n FIFO do servidor aberto para escrita.\n");
+    fprintf(stderr, "\n FIFO do servidor aberto para leitura.\n");
 
-    if ((c_fifo = open(CLIENT_FIFO, O_RDWR)) < 0) { //o fifo do cliente so le
-        perror("\n Erro ao abrir o FIFO do cliente.\n");
-        close(s_fifo);
-        unlink(nome_fifo);
-        exit(EXIT_FAILURE);
-    }
-    fprintf(stderr, "\n FIFO do Cliente aberto para leitura.\n");
+    clientServerComm();
+
+
+
 
 
     do {
@@ -112,14 +110,12 @@ int main(int argc, char* argv[], char* envp[]) {
         for (int i = 0; i < strlen(cmd); i++){
             cmd[i] = toupper(cmd[i]);
         }
-
         //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
 
         if (strcmp(cmd, "LOGIN") == 0) {
             
       
         }   else if (strcmp(cmd, "KICK") == 0) {
-        
 
         }   else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
@@ -133,7 +129,7 @@ int main(int argc, char* argv[], char* envp[]) {
         else {
             printf("\nComando nao detetado!\n");
         }
-    } while (strcmp(cmd, "exit"));
+    } while (!strcmp(cmd, "exit"));
     return 0;
 
 }
