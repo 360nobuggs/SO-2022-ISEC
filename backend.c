@@ -164,8 +164,8 @@ int main(int argc, char* argv[], char* envp[]) {
     int id = fork();
     if(id == 0){
         int file, file2;
-        //int pid = getpid;
-        //printf("%i", pid);
+        int pidfilho = getpid();
+        printf("%i", pidfilho);
         file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
         if(file == -1){
             printf("erro na cricao da pasta");
@@ -174,12 +174,12 @@ int main(int argc, char* argv[], char* envp[]) {
         printf("\nescrever as prome para o arquivo: prome.txt");
         file2 = dup2(file, 1);
         close(file);
-        int error231 = execl("teste231", "teste231", NULL);
+        int error231 = execl("promotor_oficial", "promotor_oficial", NULL);
         if(error231 == -1){
             printf("codigo nao enconntador para execl correr");
             return 3;
         }
-        // coisas a fazer mudar o nome do arquivo .txt ->169 e o comesa do programa ->177 de promotor oficial.
+       
     }else {
 
         //clientServerComm();
