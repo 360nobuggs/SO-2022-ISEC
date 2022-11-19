@@ -92,10 +92,6 @@ int main(int argc, char* argv[], char* envp[]) {
                     printf("erro no envio da msg");
                 }else{
                     fprintf(stderr, "\nMensagem enviada para servidor.\n");
-                    /*if ((open(c_fifo, O_RDONLY)) < 0){
-                    exit(EXIT_FAILURE);
-                    return 1;
-                    }*/
                     read_res=read(c_fifo,&mensagem_server,sizeof(mensagem_server));
                     if(read_res==sizeof(mensagem_server))
                     {

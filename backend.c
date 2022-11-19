@@ -159,56 +159,76 @@ int main(int argc, char* argv[], char* envp[]) {
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
 
-    //clientServerComm();
-    /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
+    //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro
 
-    if (res=mkfifo(SERVER_FIFO, 0777) < 0) {
-        perror("\n Erro ao criar o FIFO do cliente.\n");
-        shutdown();
-        exit(EXIT_FAILURE);
+    int id = fork();
+    if(id == 0){
+        int file, file2;
+        //int pid = getpid;
+        //printf("%i", pid);
+        file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
+        if(file == -1){
+            printf("erro na cricao da pasta");
+            return 2;
+        }
+        printf("\nescrever as prome para o arquivo: prome.txt");
+        file2 = dup2(file, 1);
+        close(file);
+        int error231 = execl("teste231", "teste231", NULL);
+        if(error231 == -1){
+            printf("codigo nao enconntador para execl correr");
+            return 3;
+        }
+        // coisas a fazer mudar o nome do arquivo .txt ->169 e o comesa do programa ->177 de promotor oficial.
+    }else {
+
+        //clientServerComm();
+        /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
+
+        if (res = mkfifo(SERVER_FIFO, 0777) < 0) {
+            perror("\n Erro ao criar o FIFO do cliente.\n");
+            shutdown();
+            exit(EXIT_FAILURE);
+        }
+        fprintf(stderr, "\n FIFO do servidor criado.\n");
+
+        s_fifo = open(SERVER_FIFO, O_RDWR);//abre o FIFO do servidor para escrita
+        if (s_fifo < 0) {
+            fprintf(stderr, "\n Erro a abrir o FIFO do servidor.\n");
+            unlink(nome_fifo);
+            exit(EXIT_FAILURE);
+        }
+        fprintf(stderr, "\n FIFO do servidor aberto para leitura.\n");
+
+        clientServerComm();
+
+
+        do {
+            fgets(cmd, sizeof(cmd), stdin);
+            strtok(cmd, "\n");
+            for (int i = 0; i < strlen(cmd); i++) {
+                cmd[i] = toupper(cmd[i]);
+            }
+            //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
+
+            if (strcmp(cmd, "LOGIN") == 0) {
+
+
+            } else if (strcmp(cmd, "KICK") == 0) {
+
+            } else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
+
+            } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
+
+            } else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
+
+            } else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
+
+            } else {
+                printf("\nComando nao detetado!\n");
+            }
+        } while (!strcmp(cmd, "exit"));
     }
-    fprintf(stderr, "\n FIFO do servidor criado.\n");
-
-    s_fifo = open(SERVER_FIFO, O_RDWR);//abre o FIFO do servidor para escrita
-    if (s_fifo < 0) {
-        fprintf(stderr, "\n Erro a abrir o FIFO do servidor.\n");
-        unlink(nome_fifo);
-        exit(EXIT_FAILURE);
-    }
-    fprintf(stderr, "\n FIFO do servidor aberto para leitura.\n");
-
-    clientServerComm();
-
-
-
-
-
-    do {
-        fgets(cmd, sizeof(cmd), stdin);
-        strtok(cmd, "\n");
-        for (int i = 0; i < strlen(cmd); i++){
-            cmd[i] = toupper(cmd[i]);
-        }
-        //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
-
-        if (strcmp(cmd, "LOGIN") == 0) {
-            
-      
-        }   else if (strcmp(cmd, "KICK") == 0) {
-
-        }   else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
-
-        }   else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
-
-        }   else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
-
-        }   else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
-
-        }
-        else {
-            printf("\nComando nao detetado!\n");
-        }
-    } while (!strcmp(cmd, "exit"));
     return 0;
 
 }
