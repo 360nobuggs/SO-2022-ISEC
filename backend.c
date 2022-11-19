@@ -1,6 +1,7 @@
 //
 // Created by Vasco on 10/31/2022.
 //
+
 #include "backend.h"
 
 // Variáveis globais
@@ -21,6 +22,81 @@ void* clientServerComm() {
     struct LigacaoCliente mensagemForServer;
     char nome_fifo_cliente[50];
     char auxMsg[TAM_MAX];
+    //Mensagem establece comunicação
+    res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
+    if (res < 0) {
+        perror("\n Erro a ler do cliente.");
+    }
+    if (mensagemForServer.status == 0)
+        fprintf(stderr, "\n Cliente com o PID %d esta a tentar conectar.\n", mensagemForServer.userPID);
+    else
+        fprintf(stderr, "\n Mensagem recebida do cliente com o PID %d: [%s]\n", mensagemForServer.userPID,
+                mensagemForServer.palavra);
+            
+    sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
+    fprintf(stderr, "\nPID %s .\n", nome_fifo_cliente);
+     if ((c_fifo = open(nome_fifo_cliente, O_WRONLY)) < 0) {
+            shutdown();
+            exit(EXIT_FAILURE);
+        } else {
+            fprintf(stderr, "\nA enviar mensagem para cliente %d .\n", mensagemForServer.userPID);
+            strcpy(mensagemForClient.palavra, "Bem-vindo! Pode agora inserir comandos.\n\n");
+            res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                if (res < 0) {
+                        perror("\n Erro a escrever para o cliente.");
+                    }
+           }
+
+    //Login ou Registo
+     do {
+        res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
+        if (res < 0) {
+            perror("\n Erro a ler do cliente.");
+        }
+        else
+        {
+            if(strcpy(mensagemForServer.palavra, "login"))
+            {
+
+            }else if(strcpy(mensagemForServer.palavra, "registar"))
+            {
+
+            }else if(strcpy(mensagemForServer.palavra, "comando1"))
+            {
+
+            }else if(strcpy(mensagemForServer.palavra, "comando2"))
+            {
+
+            }else if(strcpy(mensagemForServer.palavra, "comando3"))
+            {
+
+            }else if(strcpy(mensagemForServer.palavra, "comando4"))
+            {
+
+            }else{
+            fprintf(stderr, "\nComando nao reconhecido do cliente %d .\n", mensagemForServer.userPID);
+            strcpy(mensagemForClient.palavra, "Comando não reconhecido.\n\n");
+            res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                if (res < 0) {
+                        perror("\n Erro a escrever para o cliente.");
+                    }
+            }
+        }
+
+     }while(1);
+   
+
+
+
+
+
+
+
+
+    //Comandos do cliente para servidor
+
+
+
 
     do {
         res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));

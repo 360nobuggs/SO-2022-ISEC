@@ -50,10 +50,27 @@ int main(int argc, char* argv[], char* envp[]) {
     mensagem_client.status=0;
     strcmp(mensagem_client.palavra,"login");
     //PRIMEIRA MENSAGEM SO PARA ESTABLECER LIGACAO COM SERVER
-    //SO DEPOIS FAZER LOGIN OU REGISTO
+     if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                    printf("erro no envio da msg");
+                }else{
     
-
-// obriga a que utilizador tenha fazer login ou registar;
+    fprintf(stderr, "\nMensagem enviada para servidor.\n");
+  
+    read_res=read(c_fifo,&mensagem_server,sizeof(mensagem_server));
+    if(read_res==sizeof(mensagem_server))
+    {
+        fprintf(stderr,"\n mensagem do servidor recebida\n ");
+        fprintf(stderr, mensagem_server.palavra);
+    }
+    else
+    {
+        fprintf(stderr,"\n O servidor nao entregou mensagem.\n ");
+    }
+    
+    
+    
+    
+    
     do {
         printf("faca login com o comando <login> ou registo com o comando <registar>");
         gets(cmd);
@@ -79,7 +96,7 @@ int main(int argc, char* argv[], char* envp[]) {
                     exit(EXIT_FAILURE);
                     return 1;
                     }*/
-                    read_res=read(clientfifo,&mensagem_server,sizeof(mensagem_server));
+                    read_res=read(c_fifo,&mensagem_server,sizeof(mensagem_server));
                     if(read_res==sizeof(mensagem_server))
                     {
                         fprintf(stderr,"\n mensagem do servidor recebida\n ");
@@ -132,7 +149,7 @@ int main(int argc, char* argv[], char* envp[]) {
             }
 //manda msg para i servidor com os nome do novo user e palavra-pass;
         }else{ printf("esse comado nao existe");}
-    } while (1);
+    } while (1);}
 
 /*
 // agora o fifo deve estar aberto e por isso vai poder mandar mgs para o server;
