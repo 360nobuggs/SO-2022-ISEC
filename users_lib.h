@@ -25,7 +25,6 @@
 
 #ifndef _USERS_H_
 #define _USERS_H_
-
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>

@@ -160,7 +160,8 @@ int main(int argc, char* argv[], char* envp[]) {
     struct LigacaoCliente mensagem_client;//resposta
 
     //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro
-
+    FILE *p = fopen("utilizadores.txt","anymode");
+    saveUsersFile(p);
     int id = fork();
     if(id == 0){
         int file, file2;
