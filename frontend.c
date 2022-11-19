@@ -48,7 +48,7 @@ int main(int argc, char* argv[], char* envp[]) {
     }
     fprintf(stderr, "\n FIFO do Cliente aberto para leitura.\n");
     mensagem_client.status=0;
-    mensagem_client.palavra="hello";
+    
     //PRIMEIRA MENSAGEM SO PARA ESTABLECER LIGACAO COM SERVER
     //SO DEPOIS FAZER LOGIN OU REGISTO
     
@@ -74,7 +74,7 @@ int main(int argc, char* argv[], char* envp[]) {
                 if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                     printf("erro no envio da msg");
                 }else{
-                    printf("enviado");
+                    fprintf(stderr, "\nMensagem enviada para servidor.\n");
                     read_res=read(clientfifo,&mensagem_server,sizeof(mensagem_server));
                     if(read_res==sizeof(mensagem_server))
                     {

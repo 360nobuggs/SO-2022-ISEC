@@ -32,6 +32,7 @@ void* clientServerComm() {
         else
             fprintf(stderr, "\n Mensagem recebida do cliente com o PID %d: [%s]\n", mensagemForServer.userPID,
                     mensagemForServer.palavra);
+               
         sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
         
         
@@ -39,6 +40,7 @@ void* clientServerComm() {
             shutdown();
             exit(EXIT_FAILURE);
         } else {
+            fprintf(stderr, "\nA enviar mensagem para cliente %d .\n", mensagemForServer.userPID);
             strcpy(mensagemForClient.palavra, "Bem-vindo! Pode agora inserir comandos.\n\n");
             res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
             //adicionar utilizador se nao existe
