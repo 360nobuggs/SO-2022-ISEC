@@ -18,6 +18,7 @@ void shutdown() {
 }
 
 int main(int argc, char* argv[], char* envp[]) {
+    int logged_in=0;
     char cmd[50];
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
@@ -68,28 +69,24 @@ int main(int argc, char* argv[], char* envp[]) {
     }
     
     
-    
-    
-    
+    //LOGIN
     do {
         printf("faca login com o comando <login> ou registo com o comando <registar>");
         gets(cmd);
         for (int i = 0; i < strlen(cmd); i++){
             cmd[i] = toupper(cmd[i]);
         }
-// verifica sintaxe;
+    // verifica sintaxe;
         if (strcmp(cmd, "LOGIN") == 0) {
-            int certo;
             do{
+                strcpy(mensagem_client.palavra, "login");
                 printf("\nEscreva o seu username:");
                 scanf("%s", mensagem_client.user);
-                printf("Escreva a sua palavra-passas do user %s:", mensagem_client.user);
+                printf("Escreva a sua palavra-passas do user %s :", mensagem_client.user);
                 scanf("%s", mensagem_client.password);
-             /* if ((open("s_fifo", O_RDWR)) < 0){
-                    return 1;
-                }*/
+                //envia login
                 if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
-                    printf("erro no envio da msg");
+                    printf("erro no envio da msg\n");
                 }else{
                     fprintf(stderr, "\nMensagem enviada para servidor.\n");
                     read_res=read(c_fifo,&mensagem_server,sizeof(mensagem_server));
@@ -97,15 +94,22 @@ int main(int argc, char* argv[], char* envp[]) {
                     {
                         fprintf(stderr,"\n mensagem do servidor recebida\n ");
                         fprintf(stderr, mensagem_server.palavra);
+                        if(mensagem_server.valor==1)
+                        {
+                            logged_in=1;
+                            
+                        }
                     }
                     else
                     {
                         fprintf(stderr,"\n O servidor nao entregou mensagem.\n ");
                     }
                }
-            } while (certo);
-//fim do login-----------------------------------------------------------------------------------------------
+            } while (logged_in==0);
+
+        //fim do login-----------------------------------------------------------------------------------------------
         }   else if (strcmp(cmd, "REGISTAR") == 0) {
+            strcpy(mensagem_client.palavra, "registar");
             char pass2[50];
             int voltar;
 
@@ -144,8 +148,121 @@ int main(int argc, char* argv[], char* envp[]) {
                 printf("erro no envio da msg");
             }
 //manda msg para i servidor com os nome do novo user e palavra-pass;
-        }else{ printf("esse comado nao existe");}
-    } while (1);}
+        }else{ printf("esse comado nao existe\n");}
+    } while (logged_in==0);}
+
+//logged in comandos para o servidor
+//recebe lista de comandos
+
+do{
+    sleep(30);
+    fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista utilizadores.\n ->promotor :Lança promotor oficial.\n ->exit :Termina programa\n");
+    fprintf(stderr,"\n Indroduza o comando pretendido:");
+    //fprintf(stderr,"\n EEEEEEEEEEE %s \n",cmd);
+    gets(cmd);
+    for (int i = 0; i < strlen(cmd); i++){
+        cmd[i] = toupper(cmd[i]);
+    }
+    //fprintf(stderr,"\n EEEEEEEEEEE %s \n",cmd); 
+    if(strcmp(cmd,"saldo"))
+    {
+        strcpy(mensagem_client.palavra, "saldo");
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+        
+    }
+    else if(strcmp(cmd,"exit")) //trigger saida
+    {
+        strcpy(mensagem_client.palavra, "exit");
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+        shutdown();
+        exit(EXIT_SUCCESS);
+    }
+    read_res=read(c_fifo,&mensagem_server,sizeof(mensagem_server));
+    if(read_res==sizeof(mensagem_server))
+        {
+            fprintf(stderr,"\n mensagem do servidor recebida\n ");
+            fprintf(stderr, mensagem_server.palavra);
+            if(strcmp(mensagem_client.palavra,"saldo"))
+            {
+                fprintf(stderr, "%d \n",mensagem_server.valor);
+            }
+        }
+        else
+        {
+            fprintf(stderr,"\n O servidor nao entregou mensagem.\n ");
+        }
+    
+}while(1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 // agora o fifo deve estar aberto e por isso vai poder mandar mgs para o server;

@@ -68,11 +68,14 @@ void* clientServerComm() {
                 if(code==1)
                 {
                     //user correcto
-                    strcpy(mensagemForClient.palavra, ("Login efetuado, bem vindo %s.\n\n", mensagemForServer.user));
+                    mensagemForClient.valor=1;
+                    strcpy(mensagemForClient.palavra, "Login efetuado, bem vindo .\n\n"); 
+                    fprintf(stderr, "\nUtilizador %s conectado.\n", mensagemForServer.user);                       
                     logged_in=1;
                 }
                 else if(code==0){
                     //login errado
+                    mensagemForClient.valor=0;
                     strcpy(mensagemForClient.palavra, "Login incorreto.\n");
                 }else{
                     //outro erro
@@ -88,30 +91,35 @@ void* clientServerComm() {
             strcpy(mensagemForClient.palavra, "Comando não reconhecido.\n\n");
             res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
                 if (res < 0) {
-                        perror("\n Erro a escrever para o cliente.");
+                        perror("\n Erro a escrever para o cliente.\n");
                     }
             }
         }
 
      }while(logged_in==0);
-            
+
+ 
     do{
-        strcpy(mensagemForClient.palavra, "Lista de comandos:\n ->saldo num\n ->listar\n ->exit\n");
+        //aguarda comandos
         res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
         if (res < 0) {
             perror("\n Erro a ler do cliente.");
         }
         else
         {
+            fprintf(stderr, "\nComando %s recebido.\n", mensagemForServer.palavra);
             if(strcpy(mensagemForServer.palavra, "saldo"))
             {
                 char *ptr= mensagemForServer.user;
-                if(saldo=getUserBalance(ptr)!=-1)
+                if((saldo=getUserBalance(ptr))!=-1)
                 {
                     //mensagem com o saldo
-                    char *mensagem="\n O seu saldo é:  \n";
+                    strcpy(mensagemForClient.palavra, "O saldo é ");
+
                     mensagemForClient.valor=saldo;
-                    strcpy(mensagemForClient.palavra, mensagem);
+                    
+                    //strcpy(mensagemForClient.palavra,"\n O seu saldo é:  \n");
+                    fprintf(stderr, "\nValor do saldo %d ",saldo);
                     //atualiza saldo
                     op= updateUserBalance(mensagemForServer.user, saldo-1);
                     if(op==-1)
@@ -123,11 +131,11 @@ void* clientServerComm() {
                     {
                         fprintf(stderr, "\n Erro a guardar %d , %s.\n", op,getLastErrorText());
                     }
-
                 }
                 else{
-                    strcpy(mensagemForClient.palavra, ("\n Erro inesperado:  %s.\n",getLastErrorText()));
+                   
                 }
+                fprintf(stderr, "\n palavra: %s , saldo :%d .\n", mensagemForClient.palavra,mensagemForClient.valor);
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
                 if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
@@ -138,6 +146,12 @@ void* clientServerComm() {
 
                 //listar utilizadores
 
+            }
+            else if(strcmp(mensagemForServer.palavra,"exit"))
+            {
+                fprintf(stderr,"\nPrograma terminado por comando do cliente.\n");
+                shutdown();
+                exit(EXIT_SUCCESS);
             }else{
             fprintf(stderr, "\nComando nao reconhecido do cliente %d .\n", mensagemForServer.userPID);
             strcpy(mensagemForClient.palavra, "Comando não reconhecido.\n\n");
@@ -146,8 +160,7 @@ void* clientServerComm() {
                         perror("\n Erro a escrever para o cliente.");
                     }
         }}
-
-    }while(!strcmp(mensagemForServer.palavra,"exit"));
+    }while(1);
     shutdown();
 }
 

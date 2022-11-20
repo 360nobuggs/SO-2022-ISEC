@@ -1,3 +1,6 @@
-ana ana 100
+ana ana 2987
 joao joao 230
-filipe fifi 36
+filipe fifi 769
+8 0 0
+0 0 0
+0 0 0
