@@ -111,7 +111,7 @@ void* clientServerComm() {
                
         sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
         fprintf(stderr, "\nPID %s .\n", nome_fifo_cliente);
-       
+        
         if ((c_fifo = open(nome_fifo_cliente, O_WRONLY)) < 0) {
             shutdown();
             exit(EXIT_FAILURE);
@@ -160,8 +160,42 @@ int main(int argc, char* argv[], char* envp[]) {
     struct LigacaoCliente mensagem_client;//resposta
 
     //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro
-    FILE *p = fopen("utilizadores.txt","anymode");
-    saveUsersFile(p);
+    //FILE *p = fopen("utilizadores.txt","anymode");
+    int op=0;
+    char*nome= "nome";
+    char*pass= "pass";
+    char*path= "utilizadores.txt";
+    op = loadUsersFile(path);
+    fprintf(stderr, "\n Resultado de loadUsersGile %d , %s.\n", op,getLastErrorText());
+
+
+
+
+
+
+
+
+
+
+
+
+    char* o= "utilizadores";
+    op= saveUsersFile(o);
+    fprintf(stderr, "\n Resultado de saveUsers %d.\n", op);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     int id = fork();
     if(id == 0){
         int file, file2;

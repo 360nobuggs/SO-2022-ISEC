@@ -1,0 +1,3 @@
+ana ana 100
+joao joao 230
+filipe fifi 40
