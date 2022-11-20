@@ -7,6 +7,7 @@
 struct LigacaoServidor{
     int userPID;
     char palavra[TAM_MAX];
+    int  valor;
 };
 struct LigacaoCliente {//resposta do cliente
     char user[TAM_MAX];

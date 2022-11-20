@@ -22,6 +22,13 @@ void* clientServerComm() {
     struct LigacaoCliente mensagemForServer;
     char nome_fifo_cliente[50];
     char auxMsg[TAM_MAX];
+    int logged_in=0;
+
+    //Leitura de users
+    char*path= "utilizadores.txt";
+    int op = loadUsersFile(path);
+    fprintf(stderr, "\n Resultado de loadUsersGile %d , %s.\n", op,getLastErrorText());
+    int saldo=0;
     //Mensagem establece comunicação
     res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
     if (res < 0) {
@@ -57,23 +64,26 @@ void* clientServerComm() {
         {
             if(strcpy(mensagemForServer.palavra, "login"))
             {
-
+                int code=isUserValid(mensagemForServer.user, mensagemForServer.password);
+                if(code==1)
+                {
+                    //user correcto
+                    strcpy(mensagemForClient.palavra, ("Login efetuado, bem vindo %s.\n\n", mensagemForServer.user));
+                    logged_in=1;
+                }
+                else if(code==0){
+                    //login errado
+                    strcpy(mensagemForClient.palavra, "Login incorreto.\n");
+                }else{
+                    //outro erro
+                    strcpy(mensagemForClient.palavra, ("Erro encontrado:  %s.\n\n",getLastErrorText()));
+                }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
             }else if(strcpy(mensagemForServer.palavra, "registar"))
             {
 
-            }else if(strcpy(mensagemForServer.palavra, "comando1"))
-            {
-
-            }else if(strcpy(mensagemForServer.palavra, "comando2"))
-            {
-
-            }else if(strcpy(mensagemForServer.palavra, "comando3"))
-            {
-
-            }else if(strcpy(mensagemForServer.palavra, "comando4"))
-            {
-
-            }else{
+            }
+            else{
             fprintf(stderr, "\nComando nao reconhecido do cliente %d .\n", mensagemForServer.userPID);
             strcpy(mensagemForClient.palavra, "Comando não reconhecido.\n\n");
             res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
@@ -83,71 +93,62 @@ void* clientServerComm() {
             }
         }
 
-     }while(1);
-   
-
-
-
-
-
-
-
-
-    //Comandos do cliente para servidor
-
-
-
-
-    do {
+     }while(logged_in==0);
+            
+    do{
+        strcpy(mensagemForClient.palavra, "Lista de comandos:\n ->saldo num\n ->listar\n ->exit\n");
         res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
         if (res < 0) {
             perror("\n Erro a ler do cliente.");
         }
-        if (mensagemForServer.status == 0)
-            fprintf(stderr, "\n Cliente com o PID %d esta a tentar conectar.\n", mensagemForServer.userPID);
         else
-            fprintf(stderr, "\n Mensagem recebida do cliente com o PID %d: [%s]\n", mensagemForServer.userPID,
-                    mensagemForServer.palavra);
-               
-        sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
-        fprintf(stderr, "\nPID %s .\n", nome_fifo_cliente);
-        
-        if ((c_fifo = open(nome_fifo_cliente, O_WRONLY)) < 0) {
-            shutdown();
-            exit(EXIT_FAILURE);
-        } else {
-            fprintf(stderr, "\nA enviar mensagem para cliente %d .\n", mensagemForServer.userPID);
-            strcpy(mensagemForClient.palavra, "Bem-vindo! Pode agora inserir comandos.\n\n");
-            res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-            //adicionar utilizador se nao existe
-            if(strcmp(mensagemForServer.palavra, "login"))
+        {
+            if(strcpy(mensagemForServer.palavra, "saldo"))
             {
-                //if(isUserValid(mensagemForServer.palavra,mensagemForServer.password)!=-1)
-                if(1)
+                char *ptr= mensagemForServer.user;
+                if(saldo=getUserBalance(ptr)!=-1)
                 {
-                    //sprintf(auxMsg, "Bem vindo de volta %s.\n\n", mensagemForServer.user);
-                    strcpy(mensagemForClient.palavra, auxMsg);
-                    sleep(20);
-                    res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-                    if (res < 0) {
+                    //mensagem com o saldo
+                    char *mensagem="\n O seu saldo é:  \n";
+                    mensagemForClient.valor=saldo;
+                    strcpy(mensagemForClient.palavra, mensagem);
+                    //atualiza saldo
+                    op= updateUserBalance(mensagemForServer.user, saldo-1);
+                    if(op==-1)
+                    {
+                        fprintf(stderr, "\n Erro a atualizar saldo %d , %s.\n", op,getLastErrorText());
+                    }
+                    op= saveUsersFile(path);
+                    if(op==-1)
+                    {
+                        fprintf(stderr, "\n Erro a guardar %d , %s.\n", op,getLastErrorText());
+                    }
+
+                }
+                else{
+                    strcpy(mensagemForClient.palavra, ("\n Erro inesperado:  %s.\n",getLastErrorText()));
+                }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
                     }
-                }
-                else
-                {
-                    //REGISTA NOVO UTILIZADOR
-                    //sprintf(auxMsg, "Novo utilizador %s registado.\n\n", mensagemForServer.user);
-                    strcpy(mensagemForClient.palavra, auxMsg);
-                    res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-                    if (res < 0) {
+
+            }else if(strcpy(mensagemForServer.palavra, "listar"))
+            {
+
+                //listar utilizadores
+
+            }else{
+            fprintf(stderr, "\nComando nao reconhecido do cliente %d .\n", mensagemForServer.userPID);
+            strcpy(mensagemForClient.palavra, "Comando não reconhecido.\n\n");
+            res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
                     }
-                }
-            }
+        }}
 
-        }
-
-    } while (1);
+    }while(!strcmp(mensagemForServer.palavra,"exit"));
+    shutdown();
 }
 
 int main(int argc, char* argv[], char* envp[]) {
@@ -183,10 +184,11 @@ int main(int argc, char* argv[], char* envp[]) {
 
 
 
+    
+    char* o= "utilizadores.txt";
 
-    char* o= "utilizadores";
     op= saveUsersFile(o);
-    fprintf(stderr, "\n Resultado de saveUsers %d.\n", op);
+    fprintf(stderr, "\n Resultado de saveUsers %d, %s.\n", op,getLastErrorText());
 
 
 
