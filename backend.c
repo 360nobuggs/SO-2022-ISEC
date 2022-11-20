@@ -162,15 +162,20 @@ int main(int argc, char* argv[], char* envp[]) {
     //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro
     //FILE *p = fopen("utilizadores.txt","anymode");
     int op=0;
-    char*nome= "nome";
+    char*nome= "filipe";
     char*pass= "pass";
     char*path= "utilizadores.txt";
     op = loadUsersFile(path);
     fprintf(stderr, "\n Resultado de loadUsersGile %d , %s.\n", op,getLastErrorText());
 
+    op= getUserBalance(nome);
+    fprintf(stderr, "\n Resultado de saldo %d , %s.\n", op,getLastErrorText());
+
+    op = updateUserBalance(nome, op-1);
 
 
-
+    op= getUserBalance(nome);
+    fprintf(stderr, "\n Resultado de saldo %d , %s.\n", op,getLastErrorText());
 
 
 
