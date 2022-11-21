@@ -156,7 +156,7 @@ int main(int argc, char* argv[], char* envp[]) {
 
 do{
 
-    fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista numero utilizadores.\n ->promo :Lança promotor oficial.\n ->exit :Termina programa\n");
+    fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista numero utilizadores.\n ->items :Numero de items disponiveis.\n->promo :Lança promotor oficial.\n ->exit :Termina programa\n");
     fprintf(stderr,"\n Indroduza o comando pretendido:");
     char opcao[10];
     scanf("%s",opcao);
@@ -172,6 +172,14 @@ do{
     else if(strcmp(opcao,"listar")==0)
     {
         strcpy(mensagem_client.palavra,"listar");
+        printf("\n comando  %s \n",mensagem_client.palavra);
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
+    else if(strcmp(opcao,"items")==0)
+    {
+        strcpy(mensagem_client.palavra,"items");
         printf("\n comando  %s \n",mensagem_client.palavra);
         if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                 printf("erro no envio da msg\n");
@@ -210,36 +218,6 @@ do{
         }
     
 }while(1);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

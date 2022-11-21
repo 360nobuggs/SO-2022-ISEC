@@ -181,6 +181,10 @@ void* clientServerComm() {
                     fprintf(stderr, "\n Erro a ler saldo %d , %s.\n", op,getLastErrorText());
                 }
                 
+            }else if(strcmp(aux, "items")==0)
+            {
+                //retorna numero de items
+                
             }
             else if(strcmp(aux, "promo")==0)
             {
