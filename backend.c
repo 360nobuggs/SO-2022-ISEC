@@ -62,7 +62,7 @@ void* clientServerComm() {
         }
         else
         {
-            if(strcpy(mensagemForServer.palavra, "login"))
+            if(strcmp(mensagemForServer.palavra, "login")==0)
             {
                 int code=isUserValid(mensagemForServer.user, mensagemForServer.password);
                 if(code==1)
@@ -82,7 +82,7 @@ void* clientServerComm() {
                     strcpy(mensagemForClient.palavra, ("Erro encontrado:  %s.\n\n",getLastErrorText()));
                 }
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-            }else if(strcpy(mensagemForServer.palavra, "registar"))
+            }else if(strcmp(mensagemForServer.palavra, "registar")==0)
             {
 
             }
@@ -108,7 +108,10 @@ void* clientServerComm() {
         else
         {
             fprintf(stderr, "\nComando %s recebido.\n", mensagemForServer.palavra);
-            if(strcpy(mensagemForServer.palavra, "saldo"))
+            char *aux =mensagemForServer.palavra;
+            //fprintf(stderr, "\n ERRO STCPY %d .\n", (strcmp(aux, "promo")));
+            
+            if(strcmp(aux, "saldo")==0)
             {
                 char *ptr= mensagemForServer.user;
                 if((saldo=getUserBalance(ptr))!=-1)
@@ -141,13 +144,41 @@ void* clientServerComm() {
                         perror("\n Erro a escrever para o cliente.");
                     }
 
-            }else if(strcpy(mensagemForServer.palavra, "listar"))
-            {
-
+            }else if(strcmp(mensagemForServer.palavra, "listar")==0){
                 //listar utilizadores
-
+               
+                
             }
-            else if(strcmp(mensagemForServer.palavra,"exit"))
+            else if(strcmp(aux, "promo")==0)
+            {
+                //promotor
+                printf("teste promotor");
+                strcpy(mensagemForClient.palavra, "Promotor oficial iniciado.\n\n");
+                    res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                    if (res < 0) {
+                        perror("\n Erro a escrever para o cliente.");
+                    }
+                int id = fork();
+                if(id == 0){
+                    int file, file2;
+                    int pidfilho = getpid();
+                    printf("%i", pidfilho);
+                    file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
+                    if(file == -1){
+                        printf("erro na cricao da pasta");
+                       
+                    }
+                    printf("\nescrever as prome para o arquivo: prome.txt");
+                    file2 = dup2(file, 1);
+                    close(file);
+                    int error231 = execl("promotor_oficial", "promotor_oficial", NULL);
+                    if(error231 == -1){
+                        printf("codigo nao enconntador para execl correr");
+                       
+                    }
+                
+                    }
+            }else if(strcmp(mensagemForServer.palavra,"exit")==0)
             {
                 fprintf(stderr,"\nPrograma terminado por comando do cliente.\n");
                 shutdown();
@@ -216,26 +247,6 @@ int main(int argc, char* argv[], char* envp[]) {
 
 
 
-    int id = fork();
-    if(id == 0){
-        int file, file2;
-        int pidfilho = getpid();
-        printf("%i", pidfilho);
-        file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
-        if(file == -1){
-            printf("erro na cricao da pasta");
-            return 2;
-        }
-        printf("\nescrever as prome para o arquivo: prome.txt");
-        file2 = dup2(file, 1);
-        close(file);
-        int error231 = execl("promotor_oficial", "promotor_oficial", NULL);
-        if(error231 == -1){
-            printf("codigo nao enconntador para execl correr");
-            return 3;
-        }
-       
-    }else {
 
         //clientServerComm();
         /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
@@ -283,7 +294,7 @@ int main(int argc, char* argv[], char* envp[]) {
                 printf("\nComando nao detetado!\n");
             }
         } while (!strcmp(cmd, "exit"));
-    }
+    
     return 0;
 
 }
