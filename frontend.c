@@ -159,6 +159,7 @@ do{
     fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista numero utilizadores.\n ->items :Numero de items disponiveis.\n ->promo :Lança promotor oficial.\n ->exit :Termina programa\n");
     fprintf(stderr,"\n Indroduza o comando pretendido:");
     char opcao[10];
+    int flag=1;
     scanf("%s",opcao);
     printf("\n palavra reconhecida:%s\n",opcao);
     if(strcmp(opcao, "saldo") == 0) 
@@ -201,7 +202,12 @@ do{
             }
         shutdown();
         exit(EXIT_SUCCESS);
+    }else{
+         printf("comando não reconhecido.\n");
+         flag=0;
     }
+    if(flag==1)
+    {
     read_res=read(c_fifo,&mensagem_server,sizeof(mensagem_server));
     if(read_res==sizeof(mensagem_server))
         {
@@ -216,19 +222,21 @@ do{
         {
             fprintf(stderr,"\n O servidor nao entregou mensagem.\n ");
         }
+    }
+
     
 }while(1);
 
-
-    if (strcmp(opcao,"list"){
+    char opcao;
+    if (strcmp(opcao,"list")==0){
         prinf("comados :\nsaldo\nlistar\nitems\nlicitar\nlisel\nlitime");
-    }else if(strcmp(opcao,"licitar"){
+    }else if(strcmp(opcao,"licitar")==0){
         prinf("comando : licitar!!");
-    }else if(strcmp(opcao,"lisel"){
+    }else if(strcmp(opcao,"lisel")==0){
         prinf("comando : lisel");
-    }else if(strcmp(opcao,"lival"){
+    }else if(strcmp(opcao,"lival")==0){
         prinf("comando : lival");
-    }else if(strcmp(opcao,"litime"){
+    }else if(strcmp(opcao,"litime")==0){
         prinf("comando : litime");
     }else{printf("\n O servidor nao entregou mensagem.\n ");}
 
