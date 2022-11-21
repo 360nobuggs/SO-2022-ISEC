@@ -2,7 +2,7 @@ all:
 	gccgcc user_lib.h -o user_lib.o
 	gcc backend.c users_lib.o -o backend.o
 
-cliente: cliente.c cliente.h
+cliente: backend.c
 	gcc backend.c -o backend.o
 
 clean:
