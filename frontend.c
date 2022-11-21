@@ -155,24 +155,37 @@ int main(int argc, char* argv[], char* envp[]) {
 //recebe lista de comandos
 
 do{
-    sleep(30);
-    fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista utilizadores.\n ->promotor :Lança promotor oficial.\n ->exit :Termina programa\n");
+
+    fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista utilizadores.\n ->promo :Lança promotor oficial.\n ->exit :Termina programa\n");
     fprintf(stderr,"\n Indroduza o comando pretendido:");
-    //fprintf(stderr,"\n EEEEEEEEEEE %s \n",cmd);
-    gets(cmd);
-    for (int i = 0; i < strlen(cmd); i++){
-        cmd[i] = toupper(cmd[i]);
-    }
-    //fprintf(stderr,"\n EEEEEEEEEEE %s \n",cmd); 
-    if(strcmp(cmd,"saldo"))
+    char opcao[10];
+    scanf("%s",opcao);
+    printf("\n palavra reconhecida:%s\n",opcao);
+    if(strcmp(opcao, "saldo") == 0) 
     {
+         printf("\nsaldo\n");
         strcpy(mensagem_client.palavra, "saldo");
         if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                 printf("erro no envio da msg\n");
             }
-        
     }
-    else if(strcmp(cmd,"exit")) //trigger saida
+    else if(strcmp(opcao,"listar")==0)
+    {
+        strcpy(mensagem_client.palavra,"listar");
+        printf("\n comando  %s \n",mensagem_client.palavra);
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
+    else if(strcmp(opcao,"promo")==0)
+    {
+        strcpy(mensagem_client.palavra, "promo");
+        printf("\n comando  %s \n",mensagem_client.palavra);
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
+    else if(strcmp(opcao,"exit")==0) //trigger saida
     {
         strcpy(mensagem_client.palavra, "exit");
         if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
@@ -186,7 +199,7 @@ do{
         {
             fprintf(stderr,"\n mensagem do servidor recebida\n ");
             fprintf(stderr, mensagem_server.palavra);
-            if(strcmp(mensagem_client.palavra,"saldo"))
+            if(strcmp(opcao,"saldo")==0)
             {
                 fprintf(stderr, "%d \n",mensagem_server.valor);
             }
