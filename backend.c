@@ -24,7 +24,7 @@ int itemdiv(){
         printf("\nteste:: %s", linha);
         numeroitem++;
         for(int j = 0; j < 8; j++){
-            while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != ' \n')
+            while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != '\n')
             {
                 palavra[g3] = linha[g2];
                 g3++;
@@ -84,6 +84,7 @@ int itemdiv(){
     numeroitem -= 1;
     printf("\n numeroitem:%i \n ", numeroitem);
 }
+
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
@@ -256,8 +257,14 @@ void* clientServerComm() {
                 
             }else if(strcmp(aux, "items")==0)
             {
-                int tx = itemdiv()
-
+                int tx = itemdiv();
+                strcpy(mensagemForClient.palavra, "Numero de items:  ");
+                mensagemForClient.valor=tx;
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                if (res < 0) {
+                        perror("\n Erro a escrever para o cliente.");
+                    }
+                
             }
             else if(strcmp(aux, "promo")==0)
             {
@@ -387,12 +394,14 @@ int main(int argc, char* argv[], char* envp[]) {
             }
             //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
 
-            if (strcmp(cmd, "LOGIN") == 0) {
+            if (strcmp(cmd, "USERS") == 0) {
 
+
+            } else if (strcmp(cmd, "LIST") == 0) {
 
             } else if (strcmp(cmd, "KICK") == 0) {
 
-            } else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
+            }else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
             } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
 

@@ -156,7 +156,7 @@ int main(int argc, char* argv[], char* envp[]) {
 
 do{
 
-    fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista numero utilizadores.\n ->items :Numero de items disponiveis.\n->promo :Lança promotor oficial.\n ->exit :Termina programa\n");
+    fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista numero utilizadores.\n ->items :Numero de items disponiveis.\n ->promo :Lança promotor oficial.\n ->exit :Termina programa\n");
     fprintf(stderr,"\n Indroduza o comando pretendido:");
     char opcao[10];
     scanf("%s",opcao);
@@ -207,7 +207,7 @@ do{
         {
             fprintf(stderr,"\n mensagem do servidor recebida\n ");
             fprintf(stderr, mensagem_server.palavra);
-            if(strcmp(opcao,"saldo")==0||strcmp(opcao,"listar")==0)
+            if(strcmp(opcao,"saldo")==0||strcmp(opcao,"listar")==0||strcmp(opcao,"items")==0)
             {
                 fprintf(stderr, "%d \n",mensagem_server.valor);
             }
