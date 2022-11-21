@@ -11,6 +11,79 @@ int LeilaoStarted = 0;
 int LeilaoFinished = 0;
 struct LigacaoCliente utilizadores[20];
 
+int itemdiv(){
+    const int tam = 30;
+    FILE *iteml;
+    char linha[125], palavra[tam], id[tam], nomeitem[tam], categ[tam], valor_atual[tam], valor_compra[tam];
+    char tempo_leilao[tam], username_vendedoravra[tam], username_comprador[tam];
+    int g2 = 0, g3 = 0, numeroitem = 0;
+    iteml = fopen("itemteste.txt","r");
+    while (!feof(iteml)){
+        fgets(linha, 125, iteml);
+        g2 = 0;
+        printf("\nteste:: %s", linha);
+        numeroitem++;
+        for(int j = 0; j < 8; j++){
+            while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != ' \n')
+            {
+                palavra[g3] = linha[g2];
+                g3++;
+                g2++;
+            }
+            palavra[g3] = '\0';
+            if( j == 0){
+                strcpy(id, palavra);
+                printf("\n id = %s", id);
+                strcpy(palavra, " ");
+
+            }
+            if( j == 1){
+                strcpy(nomeitem, palavra);
+                printf("\n nome do item = %s", nomeitem);
+                strcpy(palavra, " ");
+
+            }
+            if( j == 2){
+                strcpy(categ, palavra);
+                printf("\n categoria = %s", categ);
+            }
+            if( j == 3){
+                strcpy(valor_atual, palavra);
+                printf("\n valor_atual = %s", valor_atual);
+                strcpy(palavra, " ");
+
+            }
+            if( j == 4){
+                strcpy(valor_compra, palavra);
+                printf("\n valor_compra = %s", valor_compra);
+                strcpy(palavra, " ");
+
+            }
+            if( j == 5){
+                strcpy(tempo_leilao, palavra);
+                printf("\n tempo_leilao = %s", tempo_leilao);
+                strcpy(palavra, " ");
+
+            }
+            if( j == 6){
+                strcpy(username_vendedoravra, palavra);
+                printf("\n username_vendedoravra = %s", username_vendedoravra);
+                strcpy(palavra, " ");
+
+            }
+            if( j == 7){
+                strcpy(username_comprador, palavra);
+                printf("\n username_comprador = %s", username_comprador);
+                strcpy(palavra, " ");
+
+            }
+            g2++;
+            g3 = 0;
+        }
+    }
+    numeroitem -= 1;
+    printf("\n numeroitem:%i \n ", numeroitem);
+}
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
@@ -183,79 +256,8 @@ void* clientServerComm() {
                 
             }else if(strcmp(aux, "items")==0)
             {
+                int tx = itemdiv()
 
-                const int tam = 30;
-                FILE *iteml;
-                char linha[125], palavra[tam], id[tam], nomeitem[tam], categ[tam], valor_atual[tam], valor_compra[tam];
-                char tempo_leilao[tam], username_vendedoravra[tam], username_comprador[tam];
-                int g2 = 0, g3 = 0, numeroitem = 0;
-                iteml = fopen("itemteste.txt","r");
-                while (!feof(iteml)){
-                    fgets(linha, 125, iteml);
-                    g2 = 0;
-                    printf("\nteste:: %s", linha);
-                    numeroitem++;
-                    for(int j = 0; j < 8; j++){
-                        while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != ' \n')
-                        {
-                            palavra[g3] = linha[g2];
-                            g3++;
-                            g2++;
-                        }
-                        palavra[g3] = '\0';
-                        if( j == 0){
-                            strcpy(id, palavra);
-                            printf("\n id = %s", id);
-                            strcpy(palavra, " ");
-
-                        }
-                        if( j == 1){
-                            strcpy(nomeitem, palavra);
-                            printf("\n nome do item = %s", nomeitem);
-                            strcpy(palavra, " ");
-
-                        }
-                        if( j == 2){
-                            strcpy(categ, palavra);
-                            printf("\n categoria = %s", categ);
-                        }
-                        if( j == 3){
-                            strcpy(valor_atual, palavra);
-                            printf("\n valor_atual = %s", valor_atual);
-                            strcpy(palavra, " ");
-
-                        }
-                        if( j == 4){
-                            strcpy(valor_compra, palavra);
-                            printf("\n valor_compra = %s", valor_compra);
-                            strcpy(palavra, " ");
-
-                        }
-                        if( j == 5){
-                            strcpy(tempo_leilao, palavra);
-                            printf("\n tempo_leilao = %s", tempo_leilao);
-                            strcpy(palavra, " ");
-
-                        }
-                        if( j == 6){
-                            strcpy(username_vendedoravra, palavra);
-                            printf("\n username_vendedoravra = %s", username_vendedoravra);
-                            strcpy(palavra, " ");
-
-                        }
-                        if( j == 7){
-                            strcpy(username_comprador, palavra);
-                            printf("\n username_comprador = %s", username_comprador);
-                            strcpy(palavra, " ");
-
-                        }
-                        g2++;
-                        g3 = 0;
-                    }
-                }
-                numeroitem -= 1;
-                printf("\n numeroitem:%i \n ", numeroitem);
-                
             }
             else if(strcmp(aux, "promo")==0)
             {
