@@ -26,8 +26,7 @@ void* clientServerComm() {
 
     //Leitura de users
     char*path= "utilizadores.txt";
-    int op = loadUsersFile(path);
-    fprintf(stderr, "\n Resultado de loadUsersGile %d , %s.\n", op,getLastErrorText());
+    int op=0;
     int saldo=0;
     //Mensagem establece comunicação
     res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
@@ -136,7 +135,7 @@ void* clientServerComm() {
                     }
                 }
                 else{
-                   
+                   fprintf(stderr, "\n Erro a ler saldo %d , %s.\n", op,getLastErrorText());
                 }
                 fprintf(stderr, "\n palavra: %s , saldo :%d .\n", mensagemForClient.palavra,mensagemForClient.valor);
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
@@ -146,7 +145,41 @@ void* clientServerComm() {
 
             }else if(strcmp(mensagemForServer.palavra, "listar")==0){
                 //listar utilizadores
-               
+                char *ptr= mensagemForServer.user;
+                if((saldo=getUserBalance(ptr))!=-1)
+                {
+                    op=loadUsersFile(path);
+                    if(op>-1)
+                    {
+                    strcpy(mensagemForClient.palavra, "O numero de utilizadores é: ");
+                    mensagemForClient.valor=op;
+                    fprintf(stderr, "\n Resultado de loadUsersFile %d , %s.\n", op,getLastErrorText());
+                    //strcpy(mensagemForClient.palavra,"\n O seu saldo é:  \n");
+                    
+                    fprintf(stderr, "\nValor do saldo %d ",saldo);
+                    //atualiza saldo
+                    op= updateUserBalance(mensagemForServer.user, saldo-1);
+                    if(op==-1)
+                    {
+                        fprintf(stderr, "\n Erro a atualizar saldo %d , %s.\n", op,getLastErrorText());
+                    }
+                    op= saveUsersFile(path);
+                    if(op==-1)
+                    {
+                        fprintf(stderr, "\n Erro a guardar %d , %s.\n", op,getLastErrorText());
+                    }
+                    }
+                    else{
+                        fprintf(stderr, "\n Erro a ler %d , %s.\n", op,getLastErrorText());
+                    }
+                    res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                    if (res < 0) {
+                            perror("\n Erro a escrever para o cliente.");
+                        }
+                    }
+                else{
+                    fprintf(stderr, "\n Erro a ler saldo %d , %s.\n", op,getLastErrorText());
+                }
                 
             }
             else if(strcmp(aux, "promo")==0)
