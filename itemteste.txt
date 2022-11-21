@@ -1,0 +1,4 @@
+1 item1 categoria1 21 31 101 user1 usercom1
+2 item2 categoria1 22 32 102 user2 usercom2
+3 item3 categoria1 23 33 103 user3 usercom3
+4 item4 categoria1 24 34 104 user4 usercom4
