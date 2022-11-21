@@ -220,7 +220,17 @@ do{
 }while(1);
 
 
-
+    if (strcmp(opcao,"list"){
+        prinf("comados :\nsaldo\nlistar\nitems\nlicitar\nlisel\nlitime");
+    }else if(strcmp(opcao,"licitar"){
+        prinf("comando : licitar!!");
+    }else if(strcmp(opcao,"lisel"){
+        prinf("comando : lisel");
+    }else if(strcmp(opcao,"lival"){
+        prinf("comando : lival");
+    }else if(strcmp(opcao,"litime"){
+        prinf("comando : litime");
+    }else{printf("\n O servidor nao entregou mensagem.\n ");}
 
 
 
