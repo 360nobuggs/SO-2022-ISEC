@@ -1,5 +1,5 @@
 all:
-	gccgcc user_lib.h -o user_lib.o
+	gcc user_lib.h -o user_lib.o
 	gcc backend.c users_lib.o -o backend.o
 
 cliente: backend.c
