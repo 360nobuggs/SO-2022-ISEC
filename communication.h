@@ -13,6 +13,7 @@ struct LigacaoCliente {//resposta do cliente
     char user[TAM_MAX];
     char palavra[TAM_MAX];
     char password[TAM_MAX];
+    char sell[200];
     int userPID;
     int leilaoPID;
     int bidding;

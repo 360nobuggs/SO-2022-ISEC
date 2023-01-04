@@ -186,6 +186,12 @@ do{
         if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                 printf("erro no envio da msg\n");
             }
+        if(read(c_fifo,&mensagem_server,sizeof(mensagem_server)) == -1){
+            fprintf(stderr, "\n O cliente não consegue ligar-se ao servidor.\n");
+            unlink(nome_fifo);
+            printf("linha 192");
+            exit(EXIT_FAILURE);
+        }
     }
     else if(strcmp(opcao,"promo")==0)
     {
@@ -203,6 +209,15 @@ do{
             }
         shutdown();
         exit(EXIT_SUCCESS);
+
+    }if(strcmp(opcao,"sell")){
+        strcpy(mensagem_client.palavra, "sell");
+        printf("\nQuer por um item a venda?");
+        printf("\nsell <nome-item> <categoria> <preco-base> <preco-compre-ja> <duracao>");
+        scanf("%s", mensagem_client.sell);
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+        }
     }else{
          printf("comando não reconhecido.\n");
          flag=0;
