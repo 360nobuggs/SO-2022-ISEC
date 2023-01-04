@@ -124,6 +124,7 @@ void* clientServerComm() {
     int logged_in=0;
 
     //Leitura de users
+    FILE *p = fopen("utilizadores.txt","anymode");
     char*path= "utilizadores.txt";
     int op=0;
     int saldo=0;
@@ -188,6 +189,7 @@ void* clientServerComm() {
 
             fprintf(stderr, "\nComando %s recebido do utilizador %d\n", mensagemForServer.palavra,mensagemForServer.userPID);
             char *aux =mensagemForServer.palavra;
+            fprintf(stderr, "\n user: %s \n", mensagemForServer.user);
             if(strcmp(mensagemForServer.palavra, "login")==0)
             {
                 int code=isUserValid(mensagemForServer.user, mensagemForServer.password);
