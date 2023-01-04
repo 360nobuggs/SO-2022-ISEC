@@ -176,7 +176,16 @@ void* clientServerComm() {
             userList[connectedUsers]=mensagemForServer;
             connectedUsers++;
             //fica a mensagem guardada como a primeira do utilizador
+             fprintf(stderr, "\n Novo utilizador com PID %d conectado. Numero de utilizadores online: %d.\n", mensagemForServer.userPID,connectedUsers);
+
         }
+        //pipe para responder ao cliente
+        sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
+        if ((c_fifo = open(nome_fifo_cliente, O_WRONLY)) < 0) {
+            shutdown();
+            exit(EXIT_FAILURE);
+        }
+
             fprintf(stderr, "\nComando %s recebido do utilizador %d\n", mensagemForServer.palavra,mensagemForServer.userPID);
             char *aux =mensagemForServer.palavra;
             if(strcmp(mensagemForServer.palavra, "login")==0)
