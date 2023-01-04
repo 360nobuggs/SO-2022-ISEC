@@ -19,6 +19,7 @@
     <list default="true" id="9c3aca4d-6ee7-4bd7-9538-42d182d0a91d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/backend" beforeDir="false" afterPath="$PROJECT_DIR$/backend" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend.c" beforeDir="false" afterPath="$PROJECT_DIR$/backend.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilizadores.txt" beforeDir="false" afterPath="$PROJECT_DIR$/utilizadores.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

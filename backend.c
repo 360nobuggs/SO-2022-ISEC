@@ -19,6 +19,7 @@ int tempoLeilao, tempoEspera;
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
+    close(c_fifo;)
     unlink(SERVER_FIFO);
 }
 
@@ -122,9 +123,9 @@ void* clientServerComm() {
     char nome_fifo_cliente[50];
     char auxMsg[TAM_MAX];
     int logged_in=0;
-
+    
     //Leitura de users
-    FILE *p = fopen("utilizadores.txt","anymode");
+    //FILE *p = fopen("utilizadores.txt","anymode");
     char*path= "utilizadores.txt";
     int op=0;
     int saldo=0;
@@ -384,8 +385,9 @@ int main(int argc, char* argv[], char* envp[]) {
 
     //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro
     //FILE *p = fopen("utilizadores.txt","anymode");
-
-
+    char*path= "utilizadores.txt";
+    int op=0;
+    op=loadUsersFile(path);
     signal(SIGINT, sigHandler);
     signal(SIGALRM, alarmHandler); //verificar implementação
 
