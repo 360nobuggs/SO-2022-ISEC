@@ -52,7 +52,7 @@ int main(int argc, char* argv[], char* envp[]) {
     mensagem_client.status=0;
     strcmp(mensagem_client.palavra,"login");
     //PRIMEIRA MENSAGEM SO PARA ESTABLECER LIGACAO COM SERVER
-     if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+    /*if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                     printf("erro no envio da msg");
                 }else{
     
@@ -69,7 +69,7 @@ int main(int argc, char* argv[], char* envp[]) {
         fprintf(stderr,"\n O servidor nao entregou mensagem.\n ");
     }
     
-    
+    */
     //LOGIN
     do {
         printf("faca login com o comando <login> ou registo com o comando <registar>");
@@ -150,7 +150,7 @@ int main(int argc, char* argv[], char* envp[]) {
             }
 //manda msg para i servidor com os nome do novo user e palavra-pass;
         }else{ printf("esse comado nao existe\n");}
-    } while (logged_in==0);}
+    } while (logged_in==0);
 
 //logged in comandos para o servidor
 //recebe lista de comandos
@@ -226,9 +226,9 @@ do{
     }
 
     
-}while(1);
+}while(1);}
 
-    char opcao;
+    /*char opcao;
     if (strcmp(opcao,"list")==0){
         prinf("comados :\nsaldo\nlistar\nitems\nlicitar\nlisel\nlitime");
     }else if(strcmp(opcao,"licitar")==0){
@@ -239,7 +239,7 @@ do{
         prinf("comando : lival");
     }else if(strcmp(opcao,"litime")==0){
         prinf("comando : litime");
-    }else{printf("\n O servidor nao entregou mensagem.\n ");}
+    }else{printf("\n O servidor nao entregou mensagem.\n ");}}*/
 
 
 
@@ -486,4 +486,4 @@ token = strtok(cmd, "k");
 }   else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
 }   else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores*/
-}
+

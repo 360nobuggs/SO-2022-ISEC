@@ -9,12 +9,18 @@ int s_fifo, c_fifo, res;
 int connectedUsers = 0;
 int LeilaoStarted = 0;
 int LeilaoFinished = 0;
-struct LigacaoCliente utilizadores[20];
+struct LigacaoCliente userList[20];
 //Variáveis de Ambiente
 int MAXUSERS = DEFAULT_MAXUSERS;
 char* GAMEDIR = DEFAULT_LEILAODIR;
 
 int tempoLeilao, tempoEspera;
+
+void shutdown() {
+    printf("Exiting program...\n");
+    close(s_fifo);
+    unlink(SERVER_FIFO);
+}
 
 void sigHandler(int sig) {
     if (sig == SIGINT) {
@@ -27,10 +33,7 @@ void alarmHandler(int sig) {
     if (sig == SIGALRM) {
         //Tem de mandar um sigUSR1 a todos os clientes e todos os leioloes para notificar que o sevidor vai fechar.
         for (int i = 0; i < connectedUsers; i++) {
-#ifdef DEBUG
-            printf("Sending USR1 to user %s (%d)\n", userList[i].nome, userList[i].userPID);
-      printf("Sending USR1 to game (%d)\n", userList[i].gamePID);
-#endif
+
             kill(userList[i].userPID, SIGUSR1);
             //kill(userList[i].PID, SIGUSR1); matar processo de leilão
         }
@@ -111,31 +114,7 @@ int itemdiv(){
     printf("\n numeroitem:%i \n ", numeroitem);
 }
 
-void shutdown() {
-    printf("Exiting program...\n");
-    close(s_fifo);
-    unlink(SERVER_FIFO);
-}
-void sigHandler(int sig) {
-    if (sig == SIGINT) {
-        shutdown();
-        exit(0);
-    }
-}
 
-void alarmHandler(int sig) {
-    if (sig == SIGALRM) {
-        //Tem de mandar um sigUSR1 a todos os clientes e todos os jogos para notificar que o jogo terminou.
-        for (int i = 0; i < connectedUsers; i++) {
-#ifdef DEBUG
-            printf("Sending USR1 to user %s (%d)\n", userList[i].nome, userList[i].userPID);
-      printf("Sending USR1 to game (%d)\n", userList[i].gamePID);
-#endif
-            kill(userList[i].userPID, SIGUSR1);
-            kill(userList[i].gamePID, SIGUSR1);
-        }
-    }
-}
 
 void* clientServerComm() {
     struct LigacaoServidor mensagemForClient;
@@ -149,10 +128,12 @@ void* clientServerComm() {
     int op=0;
     int saldo=0;
     //Mensagem establece comunicação
+    /*
     res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
     if (res < 0) {
         perror("\n Erro a ler do cliente.");
     }
+
     if (mensagemForServer.status == 0)
         fprintf(stderr, "\n Cliente com o PID %d esta a tentar conectar.\n", mensagemForServer.userPID);
     else
@@ -172,15 +153,32 @@ void* clientServerComm() {
                         perror("\n Erro a escrever para o cliente.");
                     }
            }
-
+    */
     //Login ou Registo
      do {
         res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
+        int flag=0;
         if (res < 0) {
             perror("\n Erro a ler do cliente.");
         }
         else
         {
+        //verifica se conhece o recipiente
+        for(int i=0;i<connectedUsers;i++)
+        {
+            if(userList[i].userPID==mensagemForServer.userPID)
+            {
+                flag=1;
+            }
+        }
+        if(flag==0)
+        {
+            userList[connectedUsers]=mensagemForServer;
+            connectedUsers++;
+            //fica a mensagem guardada como a primeira do utilizador
+        }
+            fprintf(stderr, "\nComando %s recebido do utilizador %d\n", mensagemForServer.palavra,mensagemForServer.userPID);
+            char *aux =mensagemForServer.palavra;
             if(strcmp(mensagemForServer.palavra, "login")==0)
             {
                 int code=isUserValid(mensagemForServer.user, mensagemForServer.password);
@@ -205,32 +203,7 @@ void* clientServerComm() {
             {
 
             }
-            else{
-            fprintf(stderr, "\nComando nao reconhecido do cliente %d .\n", mensagemForServer.userPID);
-            strcpy(mensagemForClient.palavra, "Comando não reconhecido.\n\n");
-            res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-                if (res < 0) {
-                        perror("\n Erro a escrever para o cliente.\n");
-                    }
-            }
-        }
-
-     }while(logged_in==0);
-
- 
-    do{
-        //aguarda comandos
-        res = read(s_fifo, &mensagemForServer, sizeof(mensagemForServer));
-        if (res < 0) {
-            perror("\n Erro a ler do cliente.");
-        }
-        else
-        {
-            fprintf(stderr, "\nComando %s recebido.\n", mensagemForServer.palavra);
-            char *aux =mensagemForServer.palavra;
-            //fprintf(stderr, "\n ERRO STCPY %d .\n", (strcmp(aux, "promo")));
-            
-            if(strcmp(aux, "saldo")==0)
+            else if(strcmp(mensagemForServer.palavra, "saldo")==0)
             {
                 char *ptr= mensagemForServer.user;
                 if((saldo=getUserBalance(ptr))!=-1)
@@ -357,8 +330,10 @@ void* clientServerComm() {
     }while(1);
     shutdown();
 }
+
 void Com_Servidor()
 {
+    char cmd[250];
     do {
         fgets(cmd, sizeof(cmd), stdin);
         strtok(cmd, "\n");
