@@ -25,7 +25,7 @@
 #include <string.h>
 #include <errno.h>
 
-#define DEFAULT_MAXPLAYERS 10
+#define DEFAULT_MAXUSERS 10
 #define DEFAULT_LEILAODIR "."
 
 #define SERVER_FIFO "tmp/dict_fifo"

@@ -11,6 +11,7 @@ int alarmPID;
 int clientfifo;
 int serverfifo;
 char nome_fifo[50];
+
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);

@@ -10,6 +10,32 @@ int connectedUsers = 0;
 int LeilaoStarted = 0;
 int LeilaoFinished = 0;
 struct LigacaoCliente utilizadores[20];
+//Variáveis de Ambiente
+int MAXUSERS = DEFAULT_MAXUSERS;
+char* GAMEDIR = DEFAULT_LEILAODIR;
+
+int tempoLeilao, tempoEspera;
+
+void sigHandler(int sig) {
+    if (sig == SIGINT) {
+        shutdown();
+        exit(0);
+    }
+}
+
+void alarmHandler(int sig) {
+    if (sig == SIGALRM) {
+        //Tem de mandar um sigUSR1 a todos os clientes e todos os leioloes para notificar que o sevidor vai fechar.
+        for (int i = 0; i < connectedUsers; i++) {
+#ifdef DEBUG
+            printf("Sending USR1 to user %s (%d)\n", userList[i].nome, userList[i].userPID);
+      printf("Sending USR1 to game (%d)\n", userList[i].gamePID);
+#endif
+            kill(userList[i].userPID, SIGUSR1);
+            //kill(userList[i].PID, SIGUSR1); matar processo de leilão
+        }
+    }
+}
 
 int itemdiv(){
     const int tam = 30;
@@ -89,6 +115,26 @@ void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
     unlink(SERVER_FIFO);
+}
+void sigHandler(int sig) {
+    if (sig == SIGINT) {
+        shutdown();
+        exit(0);
+    }
+}
+
+void alarmHandler(int sig) {
+    if (sig == SIGALRM) {
+        //Tem de mandar um sigUSR1 a todos os clientes e todos os jogos para notificar que o jogo terminou.
+        for (int i = 0; i < connectedUsers; i++) {
+#ifdef DEBUG
+            printf("Sending USR1 to user %s (%d)\n", userList[i].nome, userList[i].userPID);
+      printf("Sending USR1 to game (%d)\n", userList[i].gamePID);
+#endif
+            kill(userList[i].userPID, SIGUSR1);
+            kill(userList[i].gamePID, SIGUSR1);
+        }
+    }
 }
 
 void* clientServerComm() {
@@ -311,7 +357,36 @@ void* clientServerComm() {
     }while(1);
     shutdown();
 }
+void Com_Servidor()
+{
+    do {
+        fgets(cmd, sizeof(cmd), stdin);
+        strtok(cmd, "\n");
+        for (int i = 0; i < strlen(cmd); i++) {
+            cmd[i] = toupper(cmd[i]);
+        }
+        //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
 
+        if (strcmp(cmd, "USERS") == 0) {
+
+
+        } else if (strcmp(cmd, "LIST") == 0) {
+
+        } else if (strcmp(cmd, "KICK") == 0) {
+
+        }else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
+
+        } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
+
+        } else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
+
+        } else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
+
+        } else {
+            printf("\nComando nao detetado!\n");
+        }
+    } while (!strcmp(cmd, "exit"));
+}
 int main(int argc, char* argv[], char* envp[]) {
     int opt;
     char cmd[250];
@@ -323,97 +398,40 @@ int main(int argc, char* argv[], char* envp[]) {
 
     //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro
     //FILE *p = fopen("utilizadores.txt","anymode");
-    int op=0;
-    char*nome= "filipe";
-    char*pass= "pass";
-    char*path= "utilizadores.txt";
-    op = loadUsersFile(path);
-    fprintf(stderr, "\n Resultado de loadUsersGile %d , %s.\n", op,getLastErrorText());
-
-    op= getUserBalance(nome);
-    fprintf(stderr, "\n Resultado de saldo %d , %s.\n", op,getLastErrorText());
-
-    op = updateUserBalance(nome, op-1);
 
 
-    op= getUserBalance(nome);
-    fprintf(stderr, "\n Resultado de saldo %d , %s.\n", op,getLastErrorText());
+    signal(SIGINT, sigHandler);
+    signal(SIGALRM, alarmHandler); //verificar implementação
+
+    //VERIFICAR FUNCIONAMENTO DE VARIAVEIS DE AMBIENTE
 
 
 
 
 
+    if (res = mkfifo(SERVER_FIFO, 0777) < 0) {
+        perror("\n Erro ao criar o FIFO do cliente.\n");
+        shutdown();
+        exit(EXIT_FAILURE);
+    }
+    fprintf(stderr, "\n FIFO do servidor criado.\n");
+
+    s_fifo = open(SERVER_FIFO, O_RDWR);//abre o FIFO do servidor para escrita
+    if (s_fifo < 0) {
+        fprintf(stderr, "\n Erro a abrir o FIFO do servidor.\n");
+        unlink(nome_fifo);
+        exit(EXIT_FAILURE);
+    }
+    fprintf(stderr, "\n FIFO do servidor aberto para leitura.\n");
+
+    pthread_t commThread; //thread de comunicação
+    pthread_create(&commThread, NULL, clientServerComm, NULL);
+    Com_Servidor();
 
 
-    
-    char* o= "utilizadores.txt";
-
-    op= saveUsersFile(o);
-    fprintf(stderr, "\n Resultado de saveUsers %d, %s.\n", op,getLastErrorText());
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        //clientServerComm();
-        /* -- CRIAÇÃO DO FIFO SERVIDOR -- */
-
-        if (res = mkfifo(SERVER_FIFO, 0777) < 0) {
-            perror("\n Erro ao criar o FIFO do cliente.\n");
-            shutdown();
-            exit(EXIT_FAILURE);
-        }
-        fprintf(stderr, "\n FIFO do servidor criado.\n");
-
-        s_fifo = open(SERVER_FIFO, O_RDWR);//abre o FIFO do servidor para escrita
-        if (s_fifo < 0) {
-            fprintf(stderr, "\n Erro a abrir o FIFO do servidor.\n");
-            unlink(nome_fifo);
-            exit(EXIT_FAILURE);
-        }
-        fprintf(stderr, "\n FIFO do servidor aberto para leitura.\n");
-
-        clientServerComm();
-
-
-        do {
-            fgets(cmd, sizeof(cmd), stdin);
-            strtok(cmd, "\n");
-            for (int i = 0; i < strlen(cmd); i++) {
-                cmd[i] = toupper(cmd[i]);
-            }
-            //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
-
-            if (strcmp(cmd, "USERS") == 0) {
-
-
-            } else if (strcmp(cmd, "LIST") == 0) {
-
-            } else if (strcmp(cmd, "KICK") == 0) {
-
-            }else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
-
-            } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
-
-            } else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
-
-            } else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
-
-            } else {
-                printf("\nComando nao detetado!\n");
-            }
-        } while (!strcmp(cmd, "exit"));
-    
     return 0;
 
 }
