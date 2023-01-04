@@ -19,12 +19,15 @@ int tempoLeilao, tempoEspera;
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
-    close(c_fifo;)
     unlink(SERVER_FIFO);
 }
 
-void sigHandler(int sig) {
+void sigHandler(int sig) { //servidor vai fechar
     if (sig == SIGINT) {
+        for (int i = 0; i < connectedUsers; i++) {
+
+            kill(userList[i].userPID, SIGUSR1);
+        }
         shutdown();
         exit(0);
     }

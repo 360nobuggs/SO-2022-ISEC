@@ -12,6 +12,17 @@ int clientfifo;
 int serverfifo;
 char nome_fifo[50];
 
+void handler(int sig,siginfo_t* si, void*unctext)
+{
+    close(clientfifo);
+    close(serverfifo);
+    unlink(nome_fifo);
+    exit(1);
+}
+void Shutdown(int sig)
+{
+    fprintf(stderr,"\n O servidor desconectou.\n");
+}
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
@@ -19,6 +30,19 @@ void shutdown() {
 }
 
 int main(int argc, char* argv[], char* envp[]) {
+
+    struct sigaction sa;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_sigaction= handler;
+    sa.sa_flags= SA_SIGINFO;
+    sigaction(SIGINT,&sa,NULL);
+    signal(SIGUSR1,Shutdown);
+
+
+
+
+
+
     int logged_in=0;
     char cmd[50];
     struct LigacaoServidor mensagem_server;//pergunta
