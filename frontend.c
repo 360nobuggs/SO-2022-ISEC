@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 // Variáveis globais
-int s_fifo, c_fifo, res;
+int s_fifo, c_fifo, res, rs2;
 int connectedUsers = 0;
 int LeilaoStarted = 0;
 int LeilaoFinished = 0;
@@ -215,6 +215,16 @@ do{
             unlink(nome_fifo);
             printf("linha 192");
             exit(EXIT_FAILURE);
+        }
+
+        for(int rs = 0; rs < 30; rs++){
+            rs2 = 0;
+            printf("\nitem num %i\n", rs);
+           /* do{
+                rs2++;
+                fprintf(stderr, "%c", mensagem_server.Todoitem[rs][rs2]);
+            }while(mensagem_server.Todoitem[rs][rs2] != "/0");
+            */
         }
     }
     else if(strcmp(opcao,"promo")==0)

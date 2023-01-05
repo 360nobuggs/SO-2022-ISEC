@@ -2,18 +2,20 @@
 // Created by Vasco on 11/15/2022.
 //
 #define TAM_MAX 100
+#define TAM_ITEM 200
 #ifndef SO_2022_ISEC_SUPPORT_H
 #define SO_2022_ISEC_SUPPORT_H
 struct LigacaoServidor{
     int userPID;
     char palavra[TAM_MAX];
+    char Todoitem[30][200];
     int  valor;
 };
 struct LigacaoCliente {//resposta do cliente
     char user[TAM_MAX];
     char palavra[TAM_MAX];
     char password[TAM_MAX];
-    char sell[200];
+    char sell[TAM_ITEM];
     int userPID;
     int leilaoPID;
     int bidding;
