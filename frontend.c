@@ -251,7 +251,7 @@ do{
             {
                 fprintf(stderr, "%d \n",mensagem_server.valor);
             }else if (strcmp(opcao,"items")==0){
-                fprintf(stderr, "%d \n",mensagem_server.valor);
+                fprintf(stderr, "%d",mensagem_server.valor);
                 int numero = 1;
                 numero = mensagem_server.valor;
                 for (int gre = 0; gre < numero; gre++){

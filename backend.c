@@ -51,6 +51,7 @@ int itemdiv(){
     char linha[125], palavra[tam], id[tam], nomeitem[tam], categ[tam], valor_atual[tam], valor_compra[tam];
     char tempo_leilao[tam], username_vendedoravra[tam], username_comprador[tam];
     int g2 = 0, g3 = 0, numeroitem = 0;
+    int g5 = 0;
     iteml = fopen("itemteste.txt","r");
     while (!feof(iteml)){
         fgets(linha, 125, iteml);
@@ -66,52 +67,53 @@ int itemdiv(){
             }
             palavra[g3] = '\0';
             if( j == 0){
-                strcpy(id, palavra);
-                printf("\n id = %s", id);
+                strcpy(itemstruct[g5].id, palavra);
+                printf("\n id = %s", itemstruct[g5].id);
                 strcpy(palavra, " ");
 
             }
             if( j == 1){
-                strcpy(nomeitem, palavra);
-                printf("\n nome do item = %s", nomeitem);
+                strcpy(itemstruct[g5].nome, palavra);
+                printf("\n nome do item = %s", itemstruct[g5].nome);
                 strcpy(palavra, " ");
 
             }
             if( j == 2){
-                strcpy(categ, palavra);
-                printf("\n categoria = %s", categ);
+                strcpy(citemstruct[g5].categoria, palavra);
+                printf("\n categoria = %s", citemstruct[g5].categoria);
             }
             if( j == 3){
-                strcpy(valor_atual, palavra);
-                printf("\n valor_atual = %s", valor_atual);
+                strcpy(itemstruct[g5].valor_atual, palavra);
+                printf("\n valor_atual = %s", itemstruct[g5].valor_atual);
                 strcpy(palavra, " ");
 
             }
             if( j == 4){
-                strcpy(valor_compra, palavra);
-                printf("\n valor_compra = %s", valor_compra);
+                strcpy(itemstruct[g5].valor_compra, palavra);
+                printf("\n valor_compra = %s", itemstruct[g5].valor_compra);
                 strcpy(palavra, " ");
 
             }
             if( j == 5){
-                strcpy(tempo_leilao, palavra);
-                printf("\n tempo_leilao = %s", tempo_leilao);
+                strcpy(itemstruct[g5].tempo_leilao, palavra);
+                printf("\n tempo_leilao = %s", itemstruct[g5].tempo_leilao);
                 strcpy(palavra, " ");
 
             }
             if( j == 6){
-                strcpy(username_vendedoravra, palavra);
-                printf("\n username_vendedoravra = %s", username_vendedoravra);
+                strcpy(itemstruct[g5].username_vendedor, palavra);
+                printf("\n username_vendedoravra = %s", itemstruct[g5].username_vendedor);
                 strcpy(palavra, " ");
 
             }
             if( j == 7){
-                strcpy(username_comprador, palavra);
-                printf("\n username_comprador = %s", username_comprador);
+                strcpy(itemstruct[g5].username_comprador, palavra);
+                printf("\n username_comprador = %s", itemstruct[g5].username_comprador);
                 strcpy(palavra, " ");
 
             }
             g2++;
+            g5++;
             g3 = 0;
         }
     }
@@ -472,6 +474,7 @@ int main(int argc, char* argv[], char* envp[]) {
     char nome_fifo[50];
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
+    struct Item itemstruct[31];//items 
     pthread_mutex_init(&mutex,NULL);
     pthread_mutex_init(&mutex2,NULL);
     //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro
