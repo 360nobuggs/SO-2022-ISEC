@@ -210,21 +210,6 @@ do{
         if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                 printf("erro no envio da msg\n");
             }
-        if(read(c_fifo,&mensagem_server,sizeof(mensagem_server)) == -1){
-            fprintf(stderr, "\n O cliente não consegue ligar-se ao servidor.\n");
-            unlink(nome_fifo);
-            printf("linha 192");
-            exit(EXIT_FAILURE);
-        }
-        printf("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-        /*for(int rs = 0; rs < 30; rs++){
-            rs2 = 0;
-            do{
-                rs2++;
-                fprintf(stderr, "%c", mensagem_server.Todoitem[rs][rs2]);
-            }while(mensagem_server.Todoitem[rs][rs2] != "/0");*/
-            
-        }
     }
     else if(strcmp(opcao,"promo")==0)
     {
@@ -262,9 +247,16 @@ do{
         {
             fprintf(stderr,"\n mensagem do servidor recebida\n ");
             fprintf(stderr, mensagem_server.palavra);
-            if(strcmp(opcao,"saldo")==0||strcmp(opcao,"listar")==0||strcmp(opcao,"items")==0)
+            if(strcmp(opcao,"saldo")==0||strcmp(opcao,"listar")==0)
             {
                 fprintf(stderr, "%d \n",mensagem_server.valor);
+            }else if (strcmp(opcao,"items")==0){
+                fprintf(stderr, "%d \n",mensagem_server.valor);
+                int numero = 1;
+                numero = mensagem_server.valor;
+                for (int gre = 0; gre < numero; gre++){
+                    fprintf(stderr, "%s \n",mensagem_server.Todoitem[gre]);
+                }
             }
         }
         else
