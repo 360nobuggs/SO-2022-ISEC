@@ -216,15 +216,14 @@ do{
             printf("linha 192");
             exit(EXIT_FAILURE);
         }
-
-        for(int rs = 0; rs < 30; rs++){
+        printf("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+        /*for(int rs = 0; rs < 30; rs++){
             rs2 = 0;
-            printf("\nitem num %i\n", rs);
-           /* do{
+            do{
                 rs2++;
                 fprintf(stderr, "%c", mensagem_server.Todoitem[rs][rs2]);
-            }while(mensagem_server.Todoitem[rs][rs2] != "/0");
-            */
+            }while(mensagem_server.Todoitem[rs][rs2] != "/0");*/
+            
         }
     }
     else if(strcmp(opcao,"promo")==0)
@@ -244,7 +243,7 @@ do{
         shutdown();
         exit(EXIT_SUCCESS);
 
-    }if(strcmp(opcao,"sell")){
+    }else if(strcmp(opcao,"sell")){
         strcpy(mensagem_client.palavra, "sell");
         printf("\nQuer por um item a venda?");
         printf("\nsell <nome-item> <categoria> <preco-base> <preco-compre-ja> <duracao>");
