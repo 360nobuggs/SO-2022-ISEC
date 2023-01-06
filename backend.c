@@ -13,7 +13,8 @@ struct LigacaoCliente userList[20];
 //Variáveis de Ambiente
 int MAXUSERS = DEFAULT_MAXUSERS;
 char* GAMEDIR = DEFAULT_LEILAODIR;
-
+pthread_mutex_t mutex;
+pthread_mutex_t mutex2;
 int tempoLeilao, tempoEspera;
 
 void shutdown() {
@@ -118,7 +119,37 @@ int itemdiv(){
     printf("\n numeroitem:%i \n ", numeroitem);
 }
 
+void UserManager(int choice)//funções relacionadas com alteração de utilizadores
+{
+    pthread_mutex_lock(&mutex);
+     if(choice==0)
+    {
+        //adiciona utilizador
+    }
+    else if(choice==1)
+    {
+        //remove item
+    }
+    pthread_mutex_unlock(&mutex);
+}
 
+void ItemManager(int choice, int bid) //funções relacionadas com alteração de items
+{
+    pthread_mutex_lock(&mutex2);
+    if(choice==0)
+    {
+        //bidding de item
+    }
+    else if(choice==1)
+    {
+        //adiciona novo item
+    }
+    else if( choice==2)
+    {
+        //remove item
+    }
+    pthread_mutex_unlock(&mutex2);
+}
 
 void* clientServerComm() {
     struct LigacaoServidor mensagemForClient;
@@ -375,7 +406,45 @@ void Com_Servidor()
         } else {
             printf("\nComando nao detetado!\n");
         }
-    } while (!strcmp(cmd, "exit"));
+    } while (strcmp(cmd, "exit"));
+}
+void *timer() //incrementa tempo
+{
+    FILE *fp;
+    int var=0;
+    fp= fopen("time.txt","r+");
+    while(1)
+    {
+        sleep(1);
+        if(fp != NULL)
+        {
+            fscanf(fp,"%d",&var);
+            fclose(fp);
+            fp= fopen("time.txt","w");
+            fprintf(fp,"%d",var+1); //atualiza
+            fclose(fp);
+            fp= fopen("time.txt","r+");
+        }
+        else{fprintf(stderr, "\n time errror.\n");}
+    }
+    fclose(fp);
+    
+}
+int GetTime() //obter tempo atual
+{
+    FILE *fp;
+    int var=0;
+    fp= fopen("time.txt","r+");
+    if(fp!=NULL)
+    {
+        fscanf(fp,"%d",&var);
+    }
+    return var;
+}
+
+void *Gestao_leiloes()
+{
+  
 }
 int main(int argc, char* argv[], char* envp[]) {
     int opt;
@@ -385,7 +454,8 @@ int main(int argc, char* argv[], char* envp[]) {
     char nome_fifo[50];
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
-
+    pthread_mutex_init(&mutex,NULL);
+    pthread_mutex_init(&mutex2,NULL);
     //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro
     //FILE *p = fopen("utilizadores.txt","anymode");
     char*path= "utilizadores.txt";
@@ -417,8 +487,17 @@ int main(int argc, char* argv[], char* envp[]) {
 
     pthread_t commThread; //thread de comunicação
     pthread_create(&commThread, NULL, clientServerComm, NULL);
+    pthread_t leilao;
+    //pthread_create(&leilao, NULL, Gestao_leiloes, NULL);
+    pthread_t tempo;
+    pthread_create(&tempo, NULL, timer, NULL);
     Com_Servidor();
 
+    pthread_cancel(commThread);
+    pthread_cancel(leilao);
+    pthread_cancel(tempo);
+    pthread_mutex_destroy(&mutex);
+    pthread_mutex_destroy(&mutex2);
 
 
 
