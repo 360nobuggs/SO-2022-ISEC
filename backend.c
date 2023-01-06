@@ -127,23 +127,6 @@ int itemdiv(){
 }
 
 void Gera_Item()
-void Atualiza_Items()
-{
-    pthread_mutex_lock(&mutex2);
-
-
-
-
-
-
-
-
-
-
-
-
-    pthread_mutex_unlock(&mutex2);
-}
 {
     const int tam = 30;
     FILE *iteml;
@@ -198,6 +181,24 @@ void Atualiza_Items()
     }
     numeroitem -= 1;
     fclose(iteml);
+}
+
+void Atualiza_Items()
+{
+    pthread_mutex_lock(&mutex2);
+
+
+
+
+
+
+
+
+
+
+
+
+    pthread_mutex_unlock(&mutex2);
 }
 struct LigacaoServidor funcaoitems(struct LigacaoServidor itemsstr){
 
