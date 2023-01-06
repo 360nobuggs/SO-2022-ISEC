@@ -10,6 +10,8 @@ int connectedUsers = 0;
 int LeilaoStarted = 0;
 int LeilaoFinished = 0;
 struct LigacaoCliente userList[20];
+struct Item Items[31];
+int items_disponiveis=0;
 //Variáveis de Ambiente
 int MAXUSERS = DEFAULT_MAXUSERS;
 char* GAMEDIR = DEFAULT_LEILAODIR;
@@ -67,48 +69,48 @@ int itemdiv(){
             }
             palavra[g3] = '\0';
             if( j == 0){
-                strcpy(itemstruct[g5].id, palavra);
-                printf("\n id = %s", itemstruct[g5].id);
+                strcpy(id , palavra);
+                printf("\n id = %s", id);
                 strcpy(palavra, " ");
 
             }
             if( j == 1){
-                strcpy(itemstruct[g5].nome, palavra);
-                printf("\n nome do item = %s", itemstruct[g5].nome);
+                strcpy(nomeitem, palavra);
+                printf("\n nome do item = %s", nomeitem);
                 strcpy(palavra, " ");
 
             }
             if( j == 2){
-                strcpy(citemstruct[g5].categoria, palavra);
-                printf("\n categoria = %s", citemstruct[g5].categoria);
+                strcpy(categ, palavra);
+                printf("\n categoria = %s", categ);
             }
             if( j == 3){
-                strcpy(itemstruct[g5].valor_atual, palavra);
-                printf("\n valor_atual = %s", itemstruct[g5].valor_atual);
+                strcpy(valor_atual, palavra);
+                printf("\n valor_atual = %s", valor_atual);
                 strcpy(palavra, " ");
 
             }
             if( j == 4){
-                strcpy(itemstruct[g5].valor_compra, palavra);
-                printf("\n valor_compra = %s", itemstruct[g5].valor_compra);
+                strcpy(valor_compra, palavra);
+                printf("\n valor_compra = %s", valor_compra);
                 strcpy(palavra, " ");
 
             }
             if( j == 5){
-                strcpy(itemstruct[g5].tempo_leilao, palavra);
-                printf("\n tempo_leilao = %s", itemstruct[g5].tempo_leilao);
+                strcpy(tempo_leilao, palavra);
+                printf("\n tempo_leilao = %s", tempo_leilao);
                 strcpy(palavra, " ");
 
             }
             if( j == 6){
-                strcpy(itemstruct[g5].username_vendedor, palavra);
-                printf("\n username_vendedoravra = %s", itemstruct[g5].username_vendedor);
+                strcpy(username_vendedoravra, palavra);
+                printf("\n username_vendedoravra = %s", username_vendedoravra);
                 strcpy(palavra, " ");
 
             }
             if( j == 7){
-                strcpy(itemstruct[g5].username_comprador, palavra);
-                printf("\n username_comprador = %s", itemstruct[g5].username_comprador);
+                strcpy(username_comprador, palavra);
+                printf("\n username_comprador = %s", username_comprador);
                 strcpy(palavra, " ");
 
             }
@@ -118,11 +120,68 @@ int itemdiv(){
         }
     }
     numeroitem -= 1;
+    items_disponiveis=numeroitem;
     printf("\n numeroitem:%i \n ", numeroitem);
     fclose(iteml);
     return numeroitem;
 }
 
+void Gera_Item()
+{
+    const int tam = 30;
+    FILE *iteml;
+    char linha[125], palavra[tam], id[tam], nomeitem[tam], categ[tam], valor_atual[tam], valor_compra[tam];
+    char tempo_leilao[tam], username_vendedoravra[tam], username_comprador[tam];
+    int g2 = 0, g3 = 0, numeroitem = 0;
+    int g5 = 0;
+    iteml = fopen("itemteste.txt","r");
+    while (!feof(iteml)){
+        fgets(linha, 125, iteml);
+        g2 = 0;
+        printf("\nteste:: %s", linha);
+        numeroitem++;
+        for(int j = 0; j < 8; j++){
+            while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != '\n')
+            {
+                palavra[g3] = linha[g2];
+                g3++;
+                g2++;
+            }
+            palavra[g3] = '\0';
+            if( j == 0){
+               Items[numeroitem].id= atoi(palavra);  
+               fprintf(stderr, "\nID: %d .\n",Items[numeroitem].id);
+            }
+            if( j == 1){
+                strcpy(Items[numeroitem].nome, palavra);  
+                fprintf(stderr, "\nNome: %s .\n",Items[numeroitem].nome);
+
+            }
+            if( j == 2){
+               strcpy(Items[numeroitem].categoria, palavra); 
+            }
+            if( j == 3){
+                Items[numeroitem].valor_atual= atoi(palavra); 
+            }
+            if( j == 4){
+                Items[numeroitem].valor_compra= atoi(palavra); 
+            }
+            if( j == 5){
+                Items[numeroitem].tempo_leilao= atoi(palavra); 
+            }
+            if( j == 6){
+               strcpy(Items[numeroitem].username_vendedor, palavra); 
+            }
+            if( j == 7){
+                strcpy(Items[numeroitem].username_comprador, palavra); 
+            }
+            g2++;
+            g3 = 0;
+        }
+    }
+    numeroitem -= 1;
+    fclose(iteml);
+}
 struct LigacaoServidor funcaoitems(struct LigacaoServidor itemsstr){
 
     FILE *istr;
@@ -464,17 +523,29 @@ int GetTime() //obter tempo atual
 
 void *Gestao_leiloes()
 {
-  
+  while(1)
+  {
+    Gera_Item();
+    int tempo_atual= GetTime();
+    for(int i=0;i<items_disponiveis;i++)
+    {
+        if((Items[i].tempo_leilao<=tempo_atual)&&(Items[i].tempo_leilao!=0)) //time is over
+        {
+            //vai vender item ao comprador mais elevado //se vendido mudar o tempo para 0
+
+        }
+    }
+  }
 }
 int main(int argc, char* argv[], char* envp[]) {
     int opt;
     char cmd[250];
     char *token;
+    Gera_Item();
     struct LigacaoServidor mensagemForCliente;
     char nome_fifo[50];
     struct LigacaoServidor mensagem_server;//pergunta
     struct LigacaoCliente mensagem_client;//resposta
-    struct Item itemstruct[31];//items 
     pthread_mutex_init(&mutex,NULL);
     pthread_mutex_init(&mutex2,NULL);
     //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro

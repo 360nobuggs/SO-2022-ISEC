@@ -1,7 +1,7 @@
 //
 // Created by Vasco on 11/15/2022.
 //
-#define TAM_MAX 50
+
 #ifndef SO_2022_ISEC_SUPPORT_STRUCTURES_H
 #define SO_2022_ISEC_SUPPORT_STRUCTURES_H
 #define MAX_ITEMS 50
