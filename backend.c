@@ -117,6 +117,7 @@ int itemdiv(){
     }
     numeroitem -= 1;
     printf("\n numeroitem:%i \n ", numeroitem);
+    return numeroitem;
 }
 
 void UserManager(int choice)//funções relacionadas com alteração de utilizadores
@@ -324,6 +325,9 @@ void* clientServerComm() {
             {
                 int tx = itemdiv();
                 strcpy(mensagemForClient.palavra, "Numero de items:  ");
+                strcpy(mensagemForClient.Todoitem[0], "item hbsdhdshbhsdb bdsubuddu ");
+                strcpy(mensagemForClient.Todoitem[1], "Nweqewqeumero de iwqweqwewtems:  ");
+                strcpy(mensagemForClient.Todoitem[2], "Nuwqeweqwwewmero de itewqewewms:  ");
                 mensagemForClient.valor=tx;
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
                 if (res < 0) {
