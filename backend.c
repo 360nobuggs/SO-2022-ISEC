@@ -117,7 +117,23 @@ int itemdiv(){
     }
     numeroitem -= 1;
     printf("\n numeroitem:%i \n ", numeroitem);
+    fclose(iteml);
     return numeroitem;
+}
+
+struct LigacaoServidor funcaoitems(struct LigacaoServidor itemsstr){
+
+    FILE *istr;
+    int j3 = 0;
+    char linha[125];
+    istr = fopen("itemteste.txt","r");
+    while (!feof(istr)){
+        fgets(linha, 125, istr);
+        strcpy(itemsstr.Todoitem[j3], linha);
+        j3++;
+    }
+    fclose(istr);
+    return itemsstr;
 }
 
 void UserManager(int choice)//funções relacionadas com alteração de utilizadores
@@ -324,11 +340,9 @@ void* clientServerComm() {
             }else if(strcmp(aux, "items")==0)
             {
                 int tx = itemdiv();
+                mensagemForClient = funcaoitems(mensagemForClient);
                 strcpy(mensagemForClient.palavra, "Numero de items:  ");
-                strcpy(mensagemForClient.Todoitem[0], "item hbsdhdshbhsdb bdsubuddu ");
-                strcpy(mensagemForClient.Todoitem[1], "Nweqewqeumero de iwqweqwewtems:  ");
-                strcpy(mensagemForClient.Todoitem[2], "Nuwqeweqwwewmero de itewqewewms:  ");
-                mensagemForClient.valor=tx;
+                mensagemForClient.valor = tx;
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
                 if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");

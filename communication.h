@@ -8,7 +8,7 @@
 struct LigacaoServidor{
     int userPID;
     char palavra[TAM_MAX];
-    char Todoitem[30][200];
+    char Todoitem[31][TAM_ITEM];
     int  valor;
 };
 struct LigacaoCliente {//resposta do cliente
