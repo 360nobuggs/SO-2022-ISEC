@@ -127,6 +127,23 @@ int itemdiv(){
 }
 
 void Gera_Item()
+void Atualiza_Items()
+{
+    pthread_mutex_lock(&mutex2);
+
+
+
+
+
+
+
+
+
+
+
+
+    pthread_mutex_unlock(&mutex2);
+}
 {
     const int tam = 30;
     FILE *iteml;
@@ -532,7 +549,7 @@ void *Gestao_leiloes()
         if((Items[i].tempo_leilao<=tempo_atual)&&(Items[i].tempo_leilao!=0)) //time is over
         {
             //vai vender item ao comprador mais elevado //se vendido mudar o tempo para 0
-
+            Items[]
         }
     }
   }
