@@ -428,6 +428,55 @@ void* clientServerComm() {
                     }
                 
             }
+            else if(strcmp(mensagemForServer.palavra, "buy")==0) //licitar
+            {
+                //encontrar o item desejado
+                int saldo=0;
+                char *ptr= mensagemForServer.user;
+                if((saldo=getUserBalance(ptr))!=-1)
+                {
+                    for(int i=0;i<items_disponiveis;i++)
+                    {
+                        if(saldo>mensagemForServer.bidding)
+                        {
+                            if(Items[i].id==mensagemForServer.id)
+                            {
+                                if (mensagemForServer.bidding>Items[i].valor_compra)
+                                {
+                                    //vai comprar o item
+                                    Items[i].tempo_leilao=0;
+                                    updateUserBalance(mensagemForServer.user, saldo-Items[i].valor_compra);
+                                    strcpy(Items[i].username_comprador, mensagemForServer.user);
+                                    strcpy(mensagemForClient.palavra, ("Parabens comprou o item %s.",Items[i].nome));
+                                    //ATUALIZA OS ITEMS
+                                }
+                                else if(mensagemForServer.bidding>Items[i].valor_atual)
+                                {
+                                    updateUserBalance(mensagemForServer.user, mensagemForServer.bidding);
+                                    Items[i].valor_atual= mensagemForServer.bidding;
+                                    strcpy(Items[i].username_comprador, mensagemForServer.user);
+                                    strcpy(mensagemForClient.palavra, ("Licitou %d no item %s.",Items[i].valor_atual,Items[i].nome));
+                                }
+
+                            }
+                        }
+                        else{
+                            strcpy(mensagemForClient.palavra, ("Nao possui saldo para licitar neste item. "));
+                        }
+                    
+                }}
+                else{
+                   fprintf(stderr, "\n Erro a ler saldo %d , %s.\n", op,getLastErrorText());
+                }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                if (res < 0) {
+                        perror("\n Erro a escrever para o cliente.");
+                    }
+            }
+            else if(strcmp(mensagemForServer.palavra, "registar")==0)
+            {
+
+            }
             else if(strcmp(aux, "promo")==0)
             {
                 //promotor
@@ -550,9 +599,11 @@ void *Gestao_leiloes()
         if((Items[i].tempo_leilao<=tempo_atual)&&(Items[i].tempo_leilao!=0)) //time is over
         {
             //vai vender item ao comprador mais elevado //se vendido mudar o tempo para 0
-            Items[]
+            Items[i].tempo_leilao=0;
+            strcpy(Items[i].username_vendedor,Items[i].username_comprador);
         }
     }
+    //ATUALIZA ITEMS TXT
   }
 }
 int main(int argc, char* argv[], char* envp[]) {
