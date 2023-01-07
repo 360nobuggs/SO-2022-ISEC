@@ -138,7 +138,7 @@ void Gera_Item()
     while (!feof(iteml)){
         fgets(linha, 125, iteml);
         g2 = 0;
-        printf("\nteste:: %s", linha);
+        //printf("\nteste:: %s", linha);
         numeroitem++;
         for(int j = 0; j < 8; j++){
             while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != '\n')
@@ -225,27 +225,9 @@ void UserManager(int choice)//funções relacionadas com alteração de utilizad
     }
     else if(choice==1)
     {
-        //remove item
+        //remove utilizador
     }
     pthread_mutex_unlock(&mutex);
-}
-
-void ItemManager(int choice, int bid) //funções relacionadas com alteração de items
-{
-    pthread_mutex_lock(&mutex2);
-    if(choice==0)
-    {
-        //bidding de item
-    }
-    else if(choice==1)
-    {
-        //adiciona novo item
-    }
-    else if( choice==2)
-    {
-        //remove item
-    }
-    pthread_mutex_unlock(&mutex2);
 }
 
 void* clientServerComm() {
@@ -329,7 +311,7 @@ void* clientServerComm() {
                 {
                     //user correcto
                     mensagemForClient.valor=1;
-                    strcpy(mensagemForClient.palavra, "Login efetuado, bem vindo .\n\n"); 
+                    strcpy(mensagemForClient.palavra, "Login efetuado, bem vindo .\n"); 
                     fprintf(stderr, "\nUtilizador %s conectado.\n", mensagemForServer.user);                       
                     logged_in=1;
                 }
@@ -339,7 +321,7 @@ void* clientServerComm() {
                     strcpy(mensagemForClient.palavra, "Login incorreto.\n");
                 }else{
                     //outro erro
-                    strcpy(mensagemForClient.palavra, ("Erro encontrado:  %s.\n\n",getLastErrorText()));
+                    strcpy(mensagemForClient.palavra, ("Erro encontrado:  %s.\n",getLastErrorText()));
                 }
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
             }else if(strcmp(mensagemForServer.palavra, "registar")==0)
@@ -428,50 +410,66 @@ void* clientServerComm() {
                         perror("\n Erro a escrever para o cliente.");
                     }
                 
-            }
-            else if(strcmp(mensagemForServer.palavra, "buy")==0) //licitar
+            }else if(strcmp(mensagemForServer.palavra, "buy")==0) //licitar
             {
                 //encontrar o item desejado
-                fprintf(stderr, ("\n %d.\n",items_disponiveis));
+                //fprintf(stderr, ("\n 1.\n"));
                 int saldo=0;
                 char *ptr= mensagemForServer.user;
                 if((saldo=getUserBalance(ptr))!=-1)
                 {
-                     fprintf(stderr, "\n 2.\n");
+                     //fprintf(stderr, "\n 2.\n");
                     for(int i=0;i<items_disponiveis;i++)
                     {
-                         fprintf(stderr, "\n 3.\n");
+                         //fprintf(stderr, "\n 3.\n");
                         if(saldo>mensagemForServer.bidding)
                         {
                             if(Items[i].id==mensagemForServer.id)
                             {
+                                printf(("id: %d buy:%d\n"), Items[i].id,mensagemForServer.id);
                                 if (mensagemForServer.bidding>Items[i].valor_compra)
                                 {
                                     //vai comprar o item
                                     Items[i].tempo_leilao=0;
                                     updateUserBalance(mensagemForServer.user, saldo-Items[i].valor_compra);
                                     strcpy(Items[i].username_comprador, mensagemForServer.user);
-                                    strcpy(mensagemForClient.palavra, ("Parabens comprou o item %s.",Items[i].nome));
+                                    char mns[]="Parabens comprou o item ";
+                                    strcat(mns,Items[i].nome);
+                                    strcat(mns,"\n");
+                                    strcpy(mensagemForClient.palavra, mns);
                                     //ATUALIZA OS ITEMS
+                                    Atualiza_Items();
+                                    break;
                                 }
                                 else if(mensagemForServer.bidding>Items[i].valor_atual)
                                 {
-                                    updateUserBalance(mensagemForServer.user, mensagemForServer.bidding);
+                                    updateUserBalance(mensagemForServer.user,saldo-mensagemForServer.bidding);
                                     Items[i].valor_atual= mensagemForServer.bidding;
                                     strcpy(Items[i].username_comprador, mensagemForServer.user);
-                                    strcpy(mensagemForClient.palavra, ("Licitou %d no item %s.",Items[i].valor_atual,Items[i].nome));
+                                    char mns[]="Licitou no item ";
+                                    strcat(mns,Items[i].nome);
+                                    strcat(mns,"\n");
+                                    strcpy(mensagemForClient.palavra, mns);
+                                    Atualiza_Items();
+                                    break;
                                 }else{
-                                strcpy(mensagemForClient.palavra, ("Quantia não é suficiente para licitar."));}
+                                strcpy(mensagemForClient.palavra, ("Quantia não é suficiente para licitar.\n"));}
+                                break;
 
                             }else{
-                            strcpy(mensagemForClient.palavra, "Item pretendido não encontado.");}
+                            strcpy(mensagemForClient.palavra, "Item pretendido não encontado.\n");}
                         
                         }
                         else{
-                            strcpy(mensagemForClient.palavra, "Nao possui saldo para licitar essa quantia.");
+                            strcpy(mensagemForClient.palavra, "Nao possui saldo para licitar essa quantia.\n");
                         }
                     
-                    } fprintf(stderr, "\n 4.\n");
+                    } //fprintf(stderr, "\n 4.\n");
+                     op= saveUsersFile(path);
+                    if(op==-1)
+                    {
+                        fprintf(stderr, "\n Erro a guardar %d , %s.\n", op,getLastErrorText());
+                    }
                 }
                 else{
                    fprintf(stderr, "\n Erro a ler saldo %d , %s.\n", op,getLastErrorText());
@@ -607,7 +605,7 @@ void *Gestao_leiloes()
         if((Items[i].tempo_leilao<=tempo_atual)&&(Items[i].tempo_leilao!=0)) //time is over
         {
             //vai vender item ao comprador mais elevado //se vendido mudar o tempo para 0
-            
+          
         }
     }
     //ATUALIZA ITEMS TXT
