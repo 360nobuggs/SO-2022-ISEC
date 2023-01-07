@@ -114,6 +114,7 @@ int itemdiv(){
                 strcpy(palavra, " ");
 
             }
+            strcpy(palavra, " ");
             g2++;
             g5++;
             g3 = 0;
@@ -129,17 +130,16 @@ int itemdiv(){
 void Gera_Item()
 {
     const int tam = 30;
-    FILE *iteml;
-    char linha[125], palavra[tam], id[tam], nomeitem[tam], categ[tam], valor_atual[tam], valor_compra[tam];
-    char tempo_leilao[tam], username_vendedoravra[tam], username_comprador[tam];
+    FILE *gyy;
+    char linha[125], palavra[tam];
     int g2 = 0, g3 = 0, numeroitem = 0;
     int g5 = 0;
-    iteml = fopen("itemteste.txt","r");
-    while (!feof(iteml)){
-        fgets(linha, 125, iteml);
-        g2 = 0;
+    gyy = fopen("itemteste.txt","r");
+    while (!feof(gyy)){
+        fgets(linha, 125, gyy);
+        printf("linha = %s", linha);
+        g2 = g3 =0;
         //printf("\nteste:: %s", linha);
-        numeroitem++;
         for(int j = 0; j < 8; j++){
             while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != '\n')
             {
@@ -149,7 +149,7 @@ void Gera_Item()
             }
             palavra[g3] = '\0';
             if( j == 0){
-               Items[numeroitem].id= atoi(palavra);  
+               Items[numeroitem].id= atoi(palavra);
                //fprintf(stderr, "\nID: %d .\n",Items[numeroitem].id);
             }
             if( j == 1){
@@ -181,19 +181,18 @@ void Gera_Item()
     numeroitem++;
     }
     numeroitem -= 1;
-    fclose(iteml);
+    fclose(gyy);
     items_disponiveis=numeroitem;
 }
 
 void Atualiza_Items()
 {
     pthread_mutex_lock(&mutex2);
-
+    printf("\n\tAtualiza_Items a correu");
     FILE *gui;
     const char* mode="w";
     gui = fopen("itemteste.txt", mode);
-    for(int iii = 0; iii < items_disponiveis; iii++){
-        Items[iii].id;
+    for(int iii = 0; iii < 4; iii++){
         fprintf(gui, "%i %s %s %i %i %i %s %s", Items[iii].id, Items[iii].nome, Items[iii].categoria, Items[iii].valor_atual, Items[iii].valor_compra, Items[iii].tempo_leilao, Items[iii].username_vendedor, Items[iii].username_comprador);
         fprintf(gui, "\n");
     }
@@ -201,6 +200,7 @@ void Atualiza_Items()
 
     pthread_mutex_unlock(&mutex2);
 }
+
 struct LigacaoServidor funcaoitems(struct LigacaoServidor itemsstr){
 
     FILE *istr;
@@ -560,6 +560,7 @@ void Com_Servidor()
         }
     } while (strcmp(cmd, "exit"));
 }
+
 void *timer() //incrementa tempo
 {
     FILE *fp;
@@ -582,6 +583,7 @@ void *timer() //incrementa tempo
     fclose(fp);
     
 }
+
 int GetTime() //obter tempo atual
 {
     FILE *fp;
@@ -611,11 +613,13 @@ void *Gestao_leiloes()
     //ATUALIZA ITEMS TXT
   }
 }
+
 int main(int argc, char* argv[], char* envp[]) {
     int opt;
     char cmd[250];
     char *token;
     Gera_Item();
+    Atualiza_Items();
     struct LigacaoServidor mensagemForCliente;
     char nome_fifo[50];
     struct LigacaoServidor mensagem_server;//pergunta
