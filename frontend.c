@@ -200,7 +200,6 @@ do{
         strcpy(mensagem_client.palavra, "buy");
         printf("\nEscreva o ID do item que pertende licitar:");
         scanf("%d", &mensagem_client.id);
-        printf("%d",mensagem_client.id);
         printf("\nEscreva a quantia que pretende usar:");
         scanf("%d", &mensagem_client.bidding) ;
         if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {

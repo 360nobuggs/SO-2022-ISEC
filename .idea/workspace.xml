@@ -17,8 +17,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c3aca4d-6ee7-4bd7-9538-42d182d0a91d" name="Changes" comment="gyu">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend" beforeDir="false" afterPath="$PROJECT_DIR$/backend" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend.c" beforeDir="false" afterPath="$PROJECT_DIR$/backend.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend.c" beforeDir="false" afterPath="$PROJECT_DIR$/frontend.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/itemteste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/itemteste.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/time.txt" beforeDir="false" afterPath="$PROJECT_DIR$/time.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilizadores.txt" beforeDir="false" afterPath="$PROJECT_DIR$/utilizadores.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +105,7 @@
       <workItem from="1668785816102" duration="3587000" />
       <workItem from="1668790475978" duration="1627000" />
       <workItem from="1672863091554" duration="2085000" />
-      <workItem from="1673028076500" duration="3397000" />
+      <workItem from="1673028076500" duration="2617000" />
     </task>
     <task id="LOCAL-00001" summary="gyu">
       <created>1673041861954</created>
