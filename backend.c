@@ -633,16 +633,33 @@ void *Gestao_leiloes()
   while(1)
   {
     Gera_Item();
+    int op=0;
+    int saldo=0;
     int tempo_atual= GetTime();
+    sleep(1);
     for(int i=0;i<items_disponiveis;i++)
     {
         if((Items[i].tempo_leilao<=tempo_atual)&&(Items[i].tempo_leilao!=0)) //time is over
         {
             //vai vender item ao comprador mais elevado //se vendido mudar o tempo para 0
-          
+            char*path= "utilizadores.txt";
+            //fprintf(stderr,( "\n Item %s vendido ao utilizador %s.\n",Items[i].nome,Items[i].username_comprador));
+            Items[i].tempo_leilao=0;
+            char *ptr= Items[i].username_vendedor;
+            saldo=getUserBalance(ptr);
+            op= updateUserBalance(Items[i].username_vendedor, saldo+ Items[i].valor_atual);
+                    if(op==-1)
+                    {
+                        fprintf(stderr, "\n Erro a atualizar saldo %d , %s.\n", op,getLastErrorText());
+                    }
+            op= saveUsersFile(path);
+            if(strcmp(Items[i].username_vendedor,Items[i].username_comprador)!=0)
+            {
+                strcpy(Items[i].username_vendedor,Items[i].username_comprador);
+            }
         }
     }
-    //ATUALIZA ITEMS TXT
+    Atualiza_Items();
   }
 }
 
@@ -690,7 +707,7 @@ int main(int argc, char* argv[], char* envp[]) {
     pthread_t commThread; //thread de comunicação
     pthread_create(&commThread, NULL, clientServerComm, NULL);
     pthread_t leilao;
-    //pthread_create(&leilao, NULL, Gestao_leiloes, NULL);
+    pthread_create(&leilao, NULL, Gestao_leiloes, NULL);
     pthread_t tempo;
     pthread_create(&tempo, NULL, timer, NULL);
     Com_Servidor();
