@@ -182,7 +182,7 @@ void Gera_Item()
     }
     numeroitem -= 1;
     fclose(iteml);
-    items_disponiveis=numeroitem;
+    items_disponiveis = numeroitem;
 }
 
 void Atualiza_Items()
@@ -193,8 +193,7 @@ void Atualiza_Items()
     const char* mode="w";
     gui = fopen("itemteste.txt", mode);
     for(int iii = 0; iii < items_disponiveis; iii++){
-        Items[iii].id;
-        fprintf(gui, "%i %s %s %i %i %i %s %s", Items[iii].id, Items[iii].nome, Items[iii].categoria, Items[iii].valor_atual, Items[iii].valor_compra, Items[iii].tempo_leilao, Items[iii].username_vendedor, Items[iii].username_comprador);
+        fprintf(gui, "%i %s %s %i %i %i %s %s", (iii + 1), Items[iii].nome, Items[iii].categoria, Items[iii].valor_atual, Items[iii].valor_compra, Items[iii].tempo_leilao, Items[iii].username_vendedor, Items[iii].username_comprador);
         fprintf(gui, "\n");
     }
     fclose(gui);
@@ -607,7 +606,6 @@ void *Gestao_leiloes()
         if((Items[i].tempo_leilao<=tempo_atual)&&(Items[i].tempo_leilao!=0)) //time is over
         {
             //vai vender item ao comprador mais elevado //se vendido mudar o tempo para 0
-            Items[]
         }
     }
     //ATUALIZA ITEMS TXT
