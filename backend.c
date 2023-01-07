@@ -416,7 +416,7 @@ void* clientServerComm() {
                     fprintf(stderr, "\n Erro a ler saldo %d , %s.\n", op,getLastErrorText());
                 }
                 
-            }else if(strcmp(aux, "items")==0)
+            }else if(strcmp(mensagemForServer.palavra, "items")==0)
             {
                 int tx = itemdiv();
                 mensagemForClient = funcaoitems(mensagemForClient);
@@ -431,10 +431,12 @@ void* clientServerComm() {
             else if(strcmp(mensagemForServer.palavra, "buy")==0) //licitar
             {
                 //encontrar o item desejado
+                fprintf(stderr, "\n 1.\n");
                 int saldo=0;
                 char *ptr= mensagemForServer.user;
                 if((saldo=getUserBalance(ptr))!=-1)
                 {
+                     fprintf(stderr, "\n 2.\n");
                     for(int i=0;i<items_disponiveis;i++)
                     {
                         if(saldo>mensagemForServer.bidding)
@@ -456,15 +458,19 @@ void* clientServerComm() {
                                     Items[i].valor_atual= mensagemForServer.bidding;
                                     strcpy(Items[i].username_comprador, mensagemForServer.user);
                                     strcpy(mensagemForClient.palavra, ("Licitou %d no item %s.",Items[i].valor_atual,Items[i].nome));
-                                }
+                                }else{
+                                strcpy(mensagemForClient.palavra, ("Quantia não é suficiente para licitar."));}
 
-                            }
+                            }else{
+                            strcpy(mensagemForClient.palavra, "Item pretendido não encontado.");}
+                        
                         }
                         else{
-                            strcpy(mensagemForClient.palavra, ("Nao possui saldo para licitar neste item. "));
+                            strcpy(mensagemForClient.palavra, "Nao possui saldo para licitar essa quantia.");
                         }
                     
-                }}
+                    }
+                }
                 else{
                    fprintf(stderr, "\n Erro a ler saldo %d , %s.\n", op,getLastErrorText());
                 }
