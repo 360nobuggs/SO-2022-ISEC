@@ -228,7 +228,7 @@ do{
         shutdown();
         exit(EXIT_SUCCESS);
 
-    }else if(strcmp(opcao,"sell")){
+    }else if(strcmp(opcao,"sell" == 0)){
         strcpy(mensagem_client.palavra, "sell");
         printf("\nQuer por um item a venda?");
         printf("\nsell <nome-item> <categoria> <preco-base> <preco-compre-ja> <duracao>");

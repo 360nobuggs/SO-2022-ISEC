@@ -139,7 +139,6 @@ void Gera_Item()
         fgets(linha, 125, iteml);
         g2 = 0;
         printf("\nteste:: %s", linha);
-        numeroitem++;
         for(int j = 0; j < 8; j++){
             while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != '\n')
             {
@@ -178,6 +177,7 @@ void Gera_Item()
             g2++;
             g3 = 0;
         }
+    numeroitem++;
     }
     numeroitem -= 1;
     fclose(iteml);
@@ -187,16 +187,18 @@ void Atualiza_Items()
 {
     pthread_mutex_lock(&mutex2);
 
+    FILE *gui;
+    const char* mode="w";
+    gui = fopen("itemteste.txt", mode);
+    Items[0].id = 0;
+    for(int iii = 0; iii < 4; iii++){
+        Items[iii].id;
+        fprintf(gui, "%i %s %s %i %i %i %s %s", Items[iii].id, Items[iii].nome, Items[iii].categoria, Items[iii].valor_atual, Items[iii].valor_compra, Items[iii].tempo_leilao, Items[iii].username_vendedor, Items[iii].username_comprador);
+        fprintf(gui, "\n");
+    }
+    
 
-
-
-
-
-
-
-
-
-
+    fclose(gui);
 
     pthread_mutex_unlock(&mutex2);
 }
@@ -550,7 +552,6 @@ void *Gestao_leiloes()
         if((Items[i].tempo_leilao<=tempo_atual)&&(Items[i].tempo_leilao!=0)) //time is over
         {
             //vai vender item ao comprador mais elevado //se vendido mudar o tempo para 0
-            Items[]
         }
     }
   }
@@ -560,6 +561,7 @@ int main(int argc, char* argv[], char* envp[]) {
     char cmd[250];
     char *token;
     Gera_Item();
+    Atualiza_Items();
     struct LigacaoServidor mensagemForCliente;
     char nome_fifo[50];
     struct LigacaoServidor mensagem_server;//pergunta
