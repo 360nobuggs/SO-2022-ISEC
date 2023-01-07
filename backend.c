@@ -607,7 +607,7 @@ void *Gestao_leiloes()
         if((Items[i].tempo_leilao<=tempo_atual)&&(Items[i].tempo_leilao!=0)) //time is over
         {
             //vai vender item ao comprador mais elevado //se vendido mudar o tempo para 0
-            Items[]
+            
         }
     }
     //ATUALIZA ITEMS TXT
