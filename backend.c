@@ -199,7 +199,6 @@ void Gera_Item()
 void Atualiza_Items()
 {
     pthread_mutex_lock(&mutex2);
-    printf("\n\tAtualiza_Items a correu");
     FILE *gui;
     const char* mode="w";
     gui = fopen("itemteste.txt", mode);
@@ -295,13 +294,13 @@ void* clientServerComm() {
             if(userList[i].userPID==mensagemForServer.userPID)
             {
                 flag=1;
-                //userList[i].status=GetTime();
+                userList[i].status=GetTime();
             }
         }
         if(flag==0)
         {
             userList[connectedUsers]=mensagemForServer;
-            //userList[connectedUsers].status=GetTime();
+            userList[connectedUsers].status=GetTime();
             connectedUsers++;
             //fica a mensagem guardada como a primeira do utilizador
              fprintf(stderr, "\n Novo utilizador com PID %d conectado. Numero de utilizadores online: %d.\n", mensagemForServer.userPID,connectedUsers);
@@ -440,7 +439,12 @@ void* clientServerComm() {
                         {
                             if(Items[i].id==mensagemForServer.id)
                             {
-                                printf(("id: %d buy:%d\n"), Items[i].id,mensagemForServer.id);
+                                 if (Items[i].tempo_leilao==0)//ja foi vendido
+                                {
+                                    strcpy(mensagemForClient.palavra, "O Item pretendido já foi vendido.\n");
+                                    break;
+                                }
+                                //printf(("id: %d buy:%d\n"), Items[i].id,mensagemForServer.id);
                                 if (mensagemForServer.bidding>Items[i].valor_compra)
                                 {
                                     //vai comprar o item
@@ -597,6 +601,7 @@ void *timer() //incrementa tempo
     fclose(fp);
     
 }
+
 
 int GetTime() //obter tempo atual
 {

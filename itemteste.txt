@@ -1,4 +1,4 @@
 1 item1 catg1 21 31 101 user1 usercom1
-2 item2 catg2 22 32 102 user2 usercom2
-3 item3 catg3 23 33 103 user3 usercom3
-4 item4 catg4 24 34 105 user4 usercom4
+2 item2 catg2 22 32 0 user2 ana
+3 item3 catg3 27 33 103 user3 ana
+4 item4 catg4 24 34 0 user4 ana
