@@ -239,11 +239,12 @@ do{
         shutdown();
         exit(EXIT_SUCCESS);
 
-    }else if(strcmp(opcao,"sell" )== 0){
+    }else if(strcmp(opcao,"sell")== 0){
         strcpy(mensagem_client.palavra, "sell");
         printf("\nQuer por um item a venda?");
-        printf("\nsell <nome-item> <categoria> <preco-base> <preco-compre-ja> <duracao>");
-        //scanf("%s", mensagem_client.sell);
+        printf("\n<nome-item> <categoria> <preco-base> <preco-compre-ja> <duracao>\n");
+        scanf("%s %s %i %i %i", &mensagem_client.nomeitem, &mensagem_client.catgitem, &mensagem_client.pbi[0], &mensagem_client.pbi[1], &mensagem_client.pbi[2]);
+        
         if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                 printf("erro no envio da msg\n");
         }
