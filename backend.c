@@ -46,6 +46,7 @@ void alarmHandler(int sig) {
         }
     }
 }
+
 int GetTime() //obter tempo atual
 {
     FILE *fp;
@@ -57,6 +58,7 @@ int GetTime() //obter tempo atual
     }
     return var;
 }
+
 int itemdiv(){
     const int tam = 30;
     FILE *iteml;
@@ -595,6 +597,7 @@ void *timer() //incrementa tempo
     fclose(fp);
     
 }
+
 int GetTime() //obter tempo atual
 {
     FILE *fp;
