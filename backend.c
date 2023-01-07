@@ -181,6 +181,7 @@ void Gera_Item()
     }
     numeroitem -= 1;
     fclose(iteml);
+    items_disponiveis=numeroitem;
 }
 
 void Atualiza_Items()
@@ -190,14 +191,11 @@ void Atualiza_Items()
     FILE *gui;
     const char* mode="w";
     gui = fopen("itemteste.txt", mode);
-    Items[0].id = 0;
-    for(int iii = 0; iii < 4; iii++){
+    for(int iii = 0; iii < items_disponiveis; iii++){
         Items[iii].id;
         fprintf(gui, "%i %s %s %i %i %i %s %s", Items[iii].id, Items[iii].nome, Items[iii].categoria, Items[iii].valor_atual, Items[iii].valor_compra, Items[iii].tempo_leilao, Items[iii].username_vendedor, Items[iii].username_comprador);
         fprintf(gui, "\n");
     }
-    
-
     fclose(gui);
 
     pthread_mutex_unlock(&mutex2);
@@ -561,7 +559,6 @@ int main(int argc, char* argv[], char* envp[]) {
     char cmd[250];
     char *token;
     Gera_Item();
-    Atualiza_Items();
     struct LigacaoServidor mensagemForCliente;
     char nome_fifo[50];
     struct LigacaoServidor mensagem_server;//pergunta
