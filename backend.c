@@ -339,7 +339,7 @@ void* clientServerComm() {
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
             }else if(strcmp(mensagemForServer.palavra, "registar")==0)
             {
-
+                
             }
             else if(strcmp(mensagemForServer.palavra, "saldo")==0)
             {
@@ -600,19 +600,6 @@ void *timer() //incrementa tempo
     }
     fclose(fp);
     
-}
-
-
-int GetTime() //obter tempo atual
-{
-    FILE *fp;
-    int var=0;
-    fp= fopen("time.txt","r+");
-    if(fp!=NULL)
-    {
-        fscanf(fp,"%d",&var);
-    }
-    return var;
 }
 
 void *Gestao_leiloes()

@@ -143,13 +143,20 @@ int main(int argc, char* argv[], char* envp[]) {
             
             do{
                 printf("\nEscreva o username:");
-                scanf("%s", mensagem_client.user);
+                scanf("%s", &mensagem_client.user);
 
-                printf("\nEscreva a palavra-pass do usar: %s:", mensagem_client.user);
-                scanf("%s", mensagem_client.password) ;
+                printf("Escreva a palavra-pass do usar %s:", mensagem_client.user);
+                scanf("%s", &mensagem_client.password);
 
-                printf("\nconfirme a palavra-pass:");
-                gets(pass2);
+                printf("Confirme a palavra-pass:");
+                scanf("%s", &pass2);
+
+                printf("Montante: ");
+                scanf("%i", &mensagem_client.pbi[0]);
+
+                if(strcmp(mensagem_client.password, pass2) != 1){
+                    printf("erro na palavra-pass");
+                }
 
             }while(strcmp(mensagem_client.password, pass2) != 1);
 
