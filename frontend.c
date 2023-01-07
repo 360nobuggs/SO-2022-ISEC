@@ -195,6 +195,17 @@ do{
                 printf("erro no envio da msg\n");
             }
     }
+     if(strcmp(opcao, "buy") == 0) 
+    {
+        strcpy(mensagem_client.palavra, "buy");
+        printf("\nEscreva o ID do item que pertende licitar:");
+        scanf("%d", mensagem_client.id);
+        printf("\nEscreva a quantia que pretende usar:");
+        scanf("%d", mensagem_client.bidding) ;
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
     else if(strcmp(opcao,"listar")==0)
     {
         strcpy(mensagem_client.palavra,"listar");
@@ -228,7 +239,7 @@ do{
         shutdown();
         exit(EXIT_SUCCESS);
 
-    }else if(strcmp(opcao,"sell")){
+    }else if(strcmp(opcao,"sell" == 0)){
         strcpy(mensagem_client.palavra, "sell");
         printf("\nQuer por um item a venda?");
         printf("\nsell <nome-item> <categoria> <preco-base> <preco-compre-ja> <duracao>");
