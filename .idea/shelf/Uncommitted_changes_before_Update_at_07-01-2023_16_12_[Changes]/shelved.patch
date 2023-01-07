@@ -1,0 +1,66 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"CMakePresetLoader\">{\n  &quot;useNewFormat&quot;: true\n}</component>\n  <component name=\"CMakeReloadState\">\n    <option name=\"reloaded\" value=\"true\" />\n  </component>\n  <component name=\"CMakeRunConfigurationManager\">\n    <generated />\n  </component>\n  <component name=\"CMakeSettings\">\n    <configurations />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"9c3aca4d-6ee7-4bd7-9538-42d182d0a91d\" name=\"Changes\" comment=\"gyu\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/CMakeLists.txt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/CMakeLists.txt\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/Frontend\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/Frontend\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/backend\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/backend\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/backend.c\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/backend.c\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/frontend.c\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/frontend.c\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/itemteste.txt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/itemteste.txt\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/time.txt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/time.txt\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/utilizadores.txt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/utilizadores.txt\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ClangdSettings\">\n    <option name=\"formatViaClangd\" value=\"false\" />\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GithubPullRequestsUISettings\">\n    <option name=\"selectedUrlAndAccountId\">\n      <UrlAndAccount>\n        <option name=\"accountId\" value=\"7fb6d44c-059e-48a8-bf21-b219c2e14fe0\" />\n        <option name=\"url\" value=\"https://github.com/360nobuggs/SO-2022-ISEC.git\" />\n      </UrlAndAccount>\n    </option>\n  </component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectApplicationVersion\">\n    <option name=\"ide\" value=\"CLion\" />\n    <option name=\"majorVersion\" value=\"2022\" />\n    <option name=\"minorVersion\" value=\"3.1\" />\n  </component>\n  <component name=\"ProjectId\" id=\"2HhUi1Ses8oOXqkKeXGBSJqx7rL\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,\n    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\n    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,\n    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,\n    &quot;last_opened_file_path&quot;: &quot;/home/redroot/CLionProjects/SO-2022-ISEC/CMakeLists.txt&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RunManager\">\n    <configuration default=\"true\" type=\"CMakeRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" PASS_PARENT_ENVS_2=\"true\">\n      <method v=\"2\">\n        <option name=\"com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"CMakeLists.txt\" type=\"CppFileRunConfiguration\" factoryName=\"CppFileRunConfiguration\" nameIsGenerated=\"true\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" PASS_PARENT_ENVS_2=\"true\" PROJECT_NAME=\"SO-2022-ISEC\" TARGET_NAME=\"CMakeLists.txt\" CONFIG_NAME=\"CMakeLists.txt\">\n      <option name=\"sourceFile\" value=\"$PROJECT_DIR$/CMakeLists.txt\" />\n      <method v=\"2\">\n        <option name=\"com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"9c3aca4d-6ee7-4bd7-9538-42d182d0a91d\" name=\"Changes\" comment=\"\" />\n      <created>1668610932341</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1668610932341</updated>\n      <workItem from=\"1668610933994\" duration=\"19727000\" />\n      <workItem from=\"1668736933714\" duration=\"1677000\" />\n      <workItem from=\"1668783174579\" duration=\"800000\" />\n      <workItem from=\"1668785816102\" duration=\"3587000\" />\n      <workItem from=\"1668790475978\" duration=\"1627000\" />\n      <workItem from=\"1672863091554\" duration=\"2085000\" />\n      <workItem from=\"1673028076500\" duration=\"2617000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"gyu\">\n      <created>1673041861954</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1673041861954</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"gyu\">\n      <created>1673042004681</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1673042004681</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"gyu\">\n      <created>1673051755951</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1673051755951</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"4\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"gyu\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"gyu\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 8cbdf9bf830f4a779c719590723bc31e9de087af)
++++ b/.idea/workspace.xml	(date 1673107714142)
+@@ -16,17 +16,7 @@
+     <configurations />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="9c3aca4d-6ee7-4bd7-9538-42d182d0a91d" name="Changes" comment="gyu">
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/Frontend" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/backend" beforeDir="false" afterPath="$PROJECT_DIR$/backend" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/backend.c" beforeDir="false" afterPath="$PROJECT_DIR$/backend.c" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/frontend.c" beforeDir="false" afterPath="$PROJECT_DIR$/frontend.c" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/itemteste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/itemteste.txt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/time.txt" beforeDir="false" afterPath="$PROJECT_DIR$/time.txt" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/utilizadores.txt" beforeDir="false" afterPath="$PROJECT_DIR$/utilizadores.txt" afterDir="false" />
+-    </list>
++    <list default="true" id="9c3aca4d-6ee7-4bd7-9538-42d182d0a91d" name="Changes" comment="" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -128,14 +118,33 @@
+       <option name="project" value="LOCAL" />
+       <updated>1673051755951</updated>
+     </task>
+-    <option name="localTasksCounter" value="4" />
++    <task id="LOCAL-00004" summary="Revert &quot;erro a guardar&quot;&#10;&#10;This reverts commit d596221d">
++      <created>1673107245768</created>
++      <option name="number" value="00004" />
++      <option name="presentableId" value="LOCAL-00004" />
++      <option name="project" value="LOCAL" />
++      <updated>1673107245768</updated>
++    </task>
++    <option name="localTasksCounter" value="5" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="Vcs.Log.History.Properties">
++    <option name="COLUMN_ID_ORDER">
++      <list>
++        <option value="Default.Root" />
++        <option value="Default.Author" />
++        <option value="Default.Date" />
++        <option value="Default.Subject" />
++        <option value="Space.CommitStatus" />
++      </list>
++    </option>
++  </component>
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="gyu" />
+-    <option name="LAST_COMMIT_MESSAGE" value="gyu" />
++    <MESSAGE value="Revert &quot;erro a guardar&quot;&#10;&#10;This reverts commit d596221d" />
++    <option name="LAST_COMMIT_MESSAGE" value="Revert &quot;erro a guardar&quot;&#10;&#10;This reverts commit d596221d" />
+   </component>
+ </project>
+\ No newline at end of file
