@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ana ana 2946
+=======
+ana ana 2940
+>>>>>>> e2dcba79f548a351f7d052dc02fbb18338e7aba5
 joao joao 228
 filipe fifipe 678
 gui gui 197

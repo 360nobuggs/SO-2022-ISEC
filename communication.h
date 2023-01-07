@@ -17,7 +17,7 @@ struct LigacaoCliente {//resposta do cliente
     char password[TAM_MAX];
     char sell[TAM_ITEM];
     int userPID;
-    int leilaoPID;
+    int id;
     int bidding;
     int gpFD[2];
     int pgFD[2];

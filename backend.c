@@ -58,7 +58,7 @@ int itemdiv(){
     while (!feof(iteml)){
         fgets(linha, 125, iteml);
         g2 = 0;
-        printf("\nteste:: %s", linha);
+        //printf("\nteste:: %s", linha);
         numeroitem++;
         for(int j = 0; j < 8; j++){
             while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != '\n')
@@ -70,47 +70,47 @@ int itemdiv(){
             palavra[g3] = '\0';
             if( j == 0){
                 strcpy(id , palavra);
-                printf("\n id = %s", id);
+                //printf("\n id = %s", id);
                 strcpy(palavra, " ");
 
             }
             if( j == 1){
                 strcpy(nomeitem, palavra);
-                printf("\n nome do item = %s", nomeitem);
+                //printf("\n nome do item = %s", nomeitem);
                 strcpy(palavra, " ");
 
             }
             if( j == 2){
                 strcpy(categ, palavra);
-                printf("\n categoria = %s", categ);
+                //printf("\n categoria = %s", categ);
             }
             if( j == 3){
                 strcpy(valor_atual, palavra);
-                printf("\n valor_atual = %s", valor_atual);
+                //printf("\n valor_atual = %s", valor_atual);
                 strcpy(palavra, " ");
 
             }
             if( j == 4){
                 strcpy(valor_compra, palavra);
-                printf("\n valor_compra = %s", valor_compra);
+                //printf("\n valor_compra = %s", valor_compra);
                 strcpy(palavra, " ");
 
             }
             if( j == 5){
                 strcpy(tempo_leilao, palavra);
-                printf("\n tempo_leilao = %s", tempo_leilao);
+                //printf("\n tempo_leilao = %s", tempo_leilao);
                 strcpy(palavra, " ");
 
             }
             if( j == 6){
                 strcpy(username_vendedoravra, palavra);
-                printf("\n username_vendedoravra = %s", username_vendedoravra);
+                //printf("\n username_vendedoravra = %s", username_vendedoravra);
                 strcpy(palavra, " ");
 
             }
             if( j == 7){
                 strcpy(username_comprador, palavra);
-                printf("\n username_comprador = %s", username_comprador);
+                //printf("\n username_comprador = %s", username_comprador);
                 strcpy(palavra, " ");
 
             }
@@ -121,7 +121,7 @@ int itemdiv(){
     }
     numeroitem -= 1;
     items_disponiveis=numeroitem;
-    printf("\n numeroitem:%i \n ", numeroitem);
+    //printf("\n numeroitem:%i \n ", numeroitem);
     fclose(iteml);
     return numeroitem;
 }
@@ -139,6 +139,7 @@ void Gera_Item()
         fgets(linha, 125, iteml);
         g2 = 0;
         printf("\nteste:: %s", linha);
+        numeroitem++;
         for(int j = 0; j < 8; j++){
             while (linha[g2] != ' ' && linha[g2] != '\0' && linha[g2] != '\n')
             {
@@ -149,11 +150,11 @@ void Gera_Item()
             palavra[g3] = '\0';
             if( j == 0){
                Items[numeroitem].id= atoi(palavra);  
-               fprintf(stderr, "\nID: %d .\n",Items[numeroitem].id);
+               //fprintf(stderr, "\nID: %d .\n",Items[numeroitem].id);
             }
             if( j == 1){
                 strcpy(Items[numeroitem].nome, palavra);  
-                fprintf(stderr, "\nNome: %s .\n",Items[numeroitem].nome);
+                //fprintf(stderr, "\nNome: %s .\n",Items[numeroitem].nome);
 
             }
             if( j == 2){
@@ -416,7 +417,7 @@ void* clientServerComm() {
                     fprintf(stderr, "\n Erro a ler saldo %d , %s.\n", op,getLastErrorText());
                 }
                 
-            }else if(strcmp(aux, "items")==0)
+            }else if(strcmp(mensagemForServer.palavra, "items")==0)
             {
                 int tx = itemdiv();
                 mensagemForClient = funcaoitems(mensagemForClient);
@@ -427,6 +428,62 @@ void* clientServerComm() {
                         perror("\n Erro a escrever para o cliente.");
                     }
                 
+            }
+            else if(strcmp(mensagemForServer.palavra, "buy")==0) //licitar
+            {
+                //encontrar o item desejado
+                fprintf(stderr, ("\n %d.\n",items_disponiveis));
+                int saldo=0;
+                char *ptr= mensagemForServer.user;
+                if((saldo=getUserBalance(ptr))!=-1)
+                {
+                     fprintf(stderr, "\n 2.\n");
+                    for(int i=0;i<items_disponiveis;i++)
+                    {
+                         fprintf(stderr, "\n 3.\n");
+                        if(saldo>mensagemForServer.bidding)
+                        {
+                            if(Items[i].id==mensagemForServer.id)
+                            {
+                                if (mensagemForServer.bidding>Items[i].valor_compra)
+                                {
+                                    //vai comprar o item
+                                    Items[i].tempo_leilao=0;
+                                    updateUserBalance(mensagemForServer.user, saldo-Items[i].valor_compra);
+                                    strcpy(Items[i].username_comprador, mensagemForServer.user);
+                                    strcpy(mensagemForClient.palavra, ("Parabens comprou o item %s.",Items[i].nome));
+                                    //ATUALIZA OS ITEMS
+                                }
+                                else if(mensagemForServer.bidding>Items[i].valor_atual)
+                                {
+                                    updateUserBalance(mensagemForServer.user, mensagemForServer.bidding);
+                                    Items[i].valor_atual= mensagemForServer.bidding;
+                                    strcpy(Items[i].username_comprador, mensagemForServer.user);
+                                    strcpy(mensagemForClient.palavra, ("Licitou %d no item %s.",Items[i].valor_atual,Items[i].nome));
+                                }else{
+                                strcpy(mensagemForClient.palavra, ("Quantia não é suficiente para licitar."));}
+
+                            }else{
+                            strcpy(mensagemForClient.palavra, "Item pretendido não encontado.");}
+                        
+                        }
+                        else{
+                            strcpy(mensagemForClient.palavra, "Nao possui saldo para licitar essa quantia.");
+                        }
+                    
+                    } fprintf(stderr, "\n 4.\n");
+                }
+                else{
+                   fprintf(stderr, "\n Erro a ler saldo %d , %s.\n", op,getLastErrorText());
+                }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                if (res < 0) {
+                        perror("\n Erro a escrever para o cliente.");
+                    }
+            }
+            else if(strcmp(mensagemForServer.palavra, "registar")==0)
+            {
+
             }
             else if(strcmp(aux, "promo")==0)
             {
@@ -550,8 +607,10 @@ void *Gestao_leiloes()
         if((Items[i].tempo_leilao<=tempo_atual)&&(Items[i].tempo_leilao!=0)) //time is over
         {
             //vai vender item ao comprador mais elevado //se vendido mudar o tempo para 0
+            Items[]
         }
     }
+    //ATUALIZA ITEMS TXT
   }
 }
 int main(int argc, char* argv[], char* envp[]) {
