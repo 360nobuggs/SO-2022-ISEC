@@ -339,7 +339,7 @@ void* clientServerComm() {
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
             }else if(strcmp(mensagemForServer.palavra, "registar")==0)
             {
-
+                
             }
             else if(strcmp(mensagemForServer.palavra, "saldo")==0)
             {
