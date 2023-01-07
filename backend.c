@@ -147,7 +147,6 @@ void Gera_Item()
     gyy = fopen("itemteste.txt","r");
     while (!feof(gyy)){
         fgets(linha, 125, gyy);
-        printf("linha = %s", linha);
         g2 = g3 =0;
         //printf("\nteste:: %s", linha);
         for(int j = 0; j < 8; j++){
@@ -202,7 +201,7 @@ void Atualiza_Items()
     FILE *gui;
     const char* mode="w";
     gui = fopen("itemteste.txt", mode);
-    for(int iii = 0; iii < 4; iii++){
+    for(int iii = 0; iii < items_disponiveis; iii++){
         fprintf(gui, "%i %s %s %i %i %i %s %s", Items[iii].id, Items[iii].nome, Items[iii].categoria, Items[iii].valor_atual, Items[iii].valor_compra, Items[iii].tempo_leilao, Items[iii].username_vendedor, Items[iii].username_comprador);
         fprintf(gui, "\n");
     }
