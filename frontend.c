@@ -19,10 +19,12 @@ void handler(int sig,siginfo_t* si, void*unctext)
     unlink(nome_fifo);
     exit(1);
 }
+
 void Shutdown(int sig)
 {
     fprintf(stderr,"\n O servidor desconectou.\n");
 }
+
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
@@ -136,44 +138,25 @@ int main(int argc, char* argv[], char* envp[]) {
         //fim do login-----------------------------------------------------------------------------------------------
         }   else if (strcmp(cmd, "REGISTAR") == 0) {
             strcpy(mensagem_client.palavra, "registar");
-            char pass2[50];
-            int voltar;
+            char pass2[25];
+            int voltar = 0;
             
             do{
-                voltar = 0;
-                printf("\nEscreva o username que quer:");
+                printf("\nEscreva o username:");
                 scanf("%s", mensagem_client.user);
-                printf("Escreva a palavra-pass do usar: %s:", mensagem_client.user);
+
+                printf("\nEscreva a palavra-pass do usar: %s:", mensagem_client.user);
                 scanf("%s", mensagem_client.password) ;
-                printf("confirme a palavra-pass:");
+
+                printf("\nconfirme a palavra-pass:");
                 gets(pass2);
 
-                if (strcmp(mensagem_client.palavra, pass2) == 0){
-                    for (int i = 0; i < strlen(mensagem_client.user); i++){
-                        if (mensagem_client.user[i] == ' '){
-                            voltar = 1;
-                            printf("o user tem que ser uma palavra apenas");
-                        }
-                    }
-// em cima verifica se a mesmo palavra-passe que ele que se não for repete o processo de pedir as info se for;
-// verifica se e a apenas uma palavra no user;
+            }while(strcmp(mensagem_client.password, pass2) != 1);
 
-                    for (int i = 0; i < strlen(pass2); i++){
-                        if (pass2[i] == ' '){
-                            voltar = 1;
-                            printf("o user tem que ser uma palavra apenas");
-                        }
-                    }
-// verifica se e apenas uma palavra na palavra-pass
-                }else{
-                    voltar = 1;
-                    printf("Enganou se na palavra-pass");
-                }
-            }while(voltar);
             if ((write(s_fifo, &mensagem_client, sizeof(mensagem_client))) == -1) {
-                printf("erro no envio da msg");
-            }
-//manda msg para i servidor com os nome do novo user e palavra-pass;
+                printf("\nerro no envio da msg para o servidor no registar");
+            }else{printf("sucesso no registo");}
+            
         }else{ printf("esse comado nao existe\n");}
     } while (logged_in==0);
 
