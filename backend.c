@@ -46,7 +46,17 @@ void alarmHandler(int sig) {
         }
     }
 }
-
+int GetTime() //obter tempo atual
+{
+    FILE *fp;
+    int var=0;
+    fp= fopen("time.txt","r+");
+    if(fp!=NULL)
+    {
+        fscanf(fp,"%d",&var);
+    }
+    return var;
+}
 int itemdiv(){
     const int tam = 30;
     FILE *iteml;
@@ -284,16 +294,19 @@ void* clientServerComm() {
             if(userList[i].userPID==mensagemForServer.userPID)
             {
                 flag=1;
+                //userList[i].status=GetTime();
             }
         }
         if(flag==0)
         {
             userList[connectedUsers]=mensagemForServer;
+            //userList[connectedUsers].status=GetTime();
             connectedUsers++;
             //fica a mensagem guardada como a primeira do utilizador
              fprintf(stderr, "\n Novo utilizador com PID %d conectado. Numero de utilizadores online: %d.\n", mensagemForServer.userPID,connectedUsers);
-
         }
+        //HEARTBEAT
+    
         //pipe para responder ao cliente
         sprintf(nome_fifo_cliente, CLIENT_FIFO, mensagemForServer.userPID);
         if ((c_fifo = open(nome_fifo_cliente, O_WRONLY)) < 0) {
@@ -583,7 +596,6 @@ void *timer() //incrementa tempo
     fclose(fp);
     
 }
-
 int GetTime() //obter tempo atual
 {
     FILE *fp;

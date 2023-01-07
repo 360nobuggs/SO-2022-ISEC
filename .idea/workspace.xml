@@ -16,10 +16,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9c3aca4d-6ee7-4bd7-9538-42d182d0a91d" name="Changes" comment="gyu">
-      <change beforePath="$PROJECT_DIR$/backend.c" beforeDir="false" afterPath="$PROJECT_DIR$/backend.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/time.txt" beforeDir="false" afterPath="$PROJECT_DIR$/time.txt" afterDir="false" />
-    </list>
+    <list default="true" id="9c3aca4d-6ee7-4bd7-9538-42d182d0a91d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,7 +95,7 @@
       <workItem from="1668785816102" duration="3587000" />
       <workItem from="1668790475978" duration="1627000" />
       <workItem from="1672863091554" duration="2085000" />
-      <workItem from="1673028076500" duration="3397000" />
+      <workItem from="1673028076500" duration="2617000" />
     </task>
     <task id="LOCAL-00001" summary="gyu">
       <created>1673041861954</created>
@@ -121,14 +118,33 @@
       <option name="project" value="LOCAL" />
       <updated>1673051755951</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Revert &quot;erro a guardar&quot;&#10;&#10;This reverts commit d596221d">
+      <created>1673107245768</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1673107245768</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="gyu" />
-    <option name="LAST_COMMIT_MESSAGE" value="gyu" />
+    <MESSAGE value="Revert &quot;erro a guardar&quot;&#10;&#10;This reverts commit d596221d" />
+    <option name="LAST_COMMIT_MESSAGE" value="Revert &quot;erro a guardar&quot;&#10;&#10;This reverts commit d596221d" />
   </component>
 </project>

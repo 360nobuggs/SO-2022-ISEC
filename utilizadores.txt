@@ -1,4 +1,8 @@
-ana ana 2960
+<<<<<<< HEAD 0
+ana ana 2931
+======= ana 0
+ana 2940 0
+>>>>>>> e2dcba79f548a351f7d052dc02fbb18338e7aba5 0
 joao joao 228
 filipe fifipe 678
-gui gui 197
+gui gui 195
