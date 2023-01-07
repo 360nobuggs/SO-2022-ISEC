@@ -422,7 +422,30 @@ void* clientServerComm() {
                 if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
                     }
-                
+            }else if(strcmp(mensagemForServer.palavra, "sell")==0) //licitar
+            {
+               if(items_disponiveis<30) 
+               {
+                items_disponiveis++;
+                //struct Item aux={items_disponiveis,mensagemForServer.nomeitem,mensagemForServer.catgitem,mensagemForServer.pbi[0],mensagemForServer.pbi[1],GetTime() +mensagemForServer.pbi[2],mensagemForServer.user,mensagemForServer.user};
+                strcpy(Items[items_disponiveis-1].categoria,mensagemForServer.catgitem);
+                strcpy(Items[items_disponiveis-1].nome,mensagemForServer.nomeitem);
+                strcpy(Items[items_disponiveis-1].username_vendedor,mensagemForServer.user);
+                strcpy(Items[items_disponiveis-1].username_comprador,mensagemForServer.user);
+                Items[items_disponiveis-1].id= items_disponiveis; //ID MANTIDO PELO SEVIDOR
+                Items[items_disponiveis-1].valor_atual= mensagemForServer.pbi[0];
+                Items[items_disponiveis-1].valor_compra= mensagemForServer.pbi[1];
+                Items[items_disponiveis-1].tempo_leilao= GetTime() +mensagemForServer.pbi[2];
+                Atualiza_Items();
+                strcpy(mensagemForClient.palavra, "Item colocado á venda.\n");
+               }
+               else{
+                strcpy(mensagemForClient.palavra, "Limite de items excedido.\n");
+                }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                 if (res < 0) {
+                    perror("\n Erro a escrever para o cliente.");
+                  }
             }else if(strcmp(mensagemForServer.palavra, "buy")==0) //licitar
             {
                 //encontrar o item desejado
@@ -603,17 +626,7 @@ void *timer() //incrementa tempo
 }
 
 
-int GetTime() //obter tempo atual
-{
-    FILE *fp;
-    int var=0;
-    fp= fopen("time.txt","r+");
-    if(fp!=NULL)
-    {
-        fscanf(fp,"%d",&var);
-    }
-    return var;
-}
+
 
 void *Gestao_leiloes()
 {
