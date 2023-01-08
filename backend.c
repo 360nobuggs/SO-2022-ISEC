@@ -358,44 +358,8 @@ void* clientServerComm() {
 
             }else if(strcmp(mensagemForServer.palavra, "registar")==0){
 
-                printf("\n--->guy");
-                FILE *regis;
-                regis = fopen("utilizadores.txt","r+");
-                char user[21][20], linha[55];
-                int usee = 0, letrauser = 0;
-                int encontrei = 0;
-                char *pt;
-            
-                printf("\n\t\t--->estou a registar");
-                if(regis  == NULL){
-                    printf("erro em abri o aquivo utilizadores.txt para ler");
-                }
-                printf("\n\t\t--->vou ferificar se ha alguem igual");
-                while (!feof(regis)){
-                    fgets(linha, 125, regis);
-                    while (linha != " "){
-                        user[usee][letrauser] = linha[letrauser];
-                        letrauser++;
-                    }
-                    
-                    if (strcmp(user[usee], mensagemForServer.user) == 1){
-                        encontrei++;
-                    }
-                    usee++;
-                }
-                if(encontrei < 1){
-
-                    printf("novo user");
-                    fprintf("%s %s %i", mensagemForServer.user, mensagemForServer.password, mensagemForServer.pbi[0]);
-                    strcpy(mensagemForClient.palavra, "Registo efetuado, de login.\n"); 
-                    fclose(regis);
-
-                }else{
-
-                    strcpy(mensagemForClient.palavra, "ja existe um user com esse nome.\n");
-
-                }
-                fclose(regis);
+               
+                strcpy(mensagemForClient.palavra, "ja existe um user com esse nome.\n");
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
 
             }else if(strcmp(mensagemForServer.palavra, "tempo")==0)

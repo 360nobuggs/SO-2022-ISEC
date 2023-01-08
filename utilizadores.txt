@@ -1,4 +1,4 @@
-ana ana 3350
-joao joao 272
+ana ana 3308
+joao joao 646
 filipe fifipe 678
-gui gui 5017
+gui gui 4983
