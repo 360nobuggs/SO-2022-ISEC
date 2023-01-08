@@ -340,7 +340,21 @@ void* clientServerComm() {
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
             }else if(strcmp(mensagemForServer.palavra, "registar")==0)
             {
-                
+                //verfificar se exite 
+                int code=isUserValid(mensagemForServer.user, mensagemForServer.password);
+                if(code==1)
+                {
+                    strcpy(mensagemForClient.palavra, "Utilizador já exite.\n"); 
+                }
+                else{
+                    //INSERIR MANUALMENTE NO FICHEIRO DE UTILIZADORES NOVO USER
+
+
+                    strcpy(mensagemForClient.palavra, "Registo efetuado, bem vindo .\n"); 
+                    fprintf(stderr, "\nUtilizador %s conectado.\n", mensagemForServer.user);  
+                    logged_in=1;
+                }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
             }
             else if(strcmp(mensagemForServer.palavra, "saldo")==0)
             {
@@ -575,6 +589,7 @@ void* clientServerComm() {
             }else if(strcmp(mensagemForServer.palavra,"exit")==0)
             {
                 fprintf(stderr,"\nPrograma terminado por comando do cliente.\n");
+                alarmHandler(SIGALRM);
                 shutdown();
                 exit(EXIT_SUCCESS);
             }else{
@@ -587,38 +602,6 @@ void* clientServerComm() {
         }}
     }while(1);
     shutdown();
-}
-
-void Com_Servidor()
-{
-    char cmd[250];
-    do {
-        fgets(cmd, sizeof(cmd), stdin);
-        strtok(cmd, "\n");
-        for (int i = 0; i < strlen(cmd); i++) {
-            cmd[i] = toupper(cmd[i]);
-        }
-        //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
-
-        if (strcmp(cmd, "USERS") == 0) {
-
-
-        } else if (strcmp(cmd, "LIST") == 0) {
-
-        } else if (strcmp(cmd, "KICK") == 0) {
-
-        }else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
-
-        } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
-
-        } else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
-
-        } else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
-
-        } else {
-            printf("\nComando nao detetado!\n");
-        }
-    } while (strcmp(cmd, "exit"));
 }
 
 void *timer() //incrementa tempo
@@ -704,7 +687,70 @@ void *Gestao_leiloes()
     Atualiza_Items();
   }
 }
+void Com_Servidor()
+{
+    char cmd[250];
+    do {
+        fprintf(stderr, "\n Comandos Admin:\n USERS\n LIST\n KICK\n PROM\n REPROM\n CANCEL\n CLOSE\n");
+        fgets(cmd, sizeof(cmd), stdin);
+        strtok(cmd, "\n");
+        for (int i = 0; i < strlen(cmd); i++) {
+            cmd[i] = toupper(cmd[i]);
+        }
+        //IMPLEMENTAR VERIFICACAO DE ARGUMENTOS
 
+        if (strcmp(cmd, "USERS") == 0) {
+            for(int i=0; i< connectedUsers;i++)
+            {
+                printf("%s \n",userList[i].user);
+            }
+        } else if (strcmp(cmd, "LIST") == 0) {
+            Gera_Item();
+            for(int i=0; i<items_disponiveis;i++)
+            {
+                printf("%s  ",Items[i].nome);
+                printf("%s  ",Items[i].categoria);
+                printf("%d  ",Items[i].valor_atual);
+                printf("%d  ",Items[i].valor_compra);
+                printf("%d  ",Items[i].tempo_leilao);
+                printf("%s  ",Items[i].username_vendedor);
+                printf("%s \n",Items[i].username_comprador);
+            }
+        } else if (strcmp(cmd, "KICK") == 0) {
+            char user[10];
+            int flag=0;
+            fprintf(stderr, "\n Introduza o utilizador pretendido\n");
+            scanf("%s", &user);
+              for(int i=0; i< connectedUsers;i++)
+            {
+                if(strcmp(user,userList[i].user)==0)
+                {
+
+                    flag=1;
+                    kill(userList[i].userPID, SIGUSR1);
+                    connectedUsers--;
+                    fprintf(stderr, ("\n Utilizador %s desconectado\n",user));
+                    break;
+                }
+            }
+            if (flag==0)
+            {
+                fprintf(stderr, ("\n Utilizador %s não encontrado.\n",user));
+            }
+
+        }else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
+
+        } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
+
+        } else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
+
+        } else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
+            sigHandler(SIGINT);
+        } else {
+            printf("\nComando nao detetado!\n");
+        }
+    } while (strcmp(cmd, "exit"));
+}
 int main(int argc, char* argv[], char* envp[]) {
     int opt;
     char cmd[250];
