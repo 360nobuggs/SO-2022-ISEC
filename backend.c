@@ -10,15 +10,16 @@ int connectedUsers = 0;
 int LeilaoStarted = 0;
 int LeilaoFinished = 0;
 struct LigacaoCliente userList[20];
+struct Cliente hearbeat[20];
 struct Item Items[31];
 int items_disponiveis=0;
+int time_aux=0;
 //Variáveis de Ambiente
 int MAXUSERS = DEFAULT_MAXUSERS;
 char* GAMEDIR = DEFAULT_LEILAODIR;
 pthread_mutex_t mutex;
 pthread_mutex_t mutex2;
 int tempoLeilao, tempoEspera;
-int heartbeat[20][2];
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
@@ -138,7 +139,13 @@ int itemdiv(){
     fclose(iteml);
     return numeroitem;
 }
+void *Heartbeat()
+{
+  while(1)
+  {
 
+  }
+}
 void promo1(int sig){
     int file, file2;
     file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
@@ -309,17 +316,29 @@ void* clientServerComm() {
             if(userList[i].userPID==mensagemForServer.userPID)
             {
                 flag=1;
-                //heartbeat[i-1][0]=GetTime();
+                userList[i].bidding= time_aux;
+                /*char aux[30]="";
+                char mensagem[30]="";
+                strcat(mensagem,"\n Tempo:  ");   
+                sprintf(aux, "%d",time_aux);
+                strcat(mensagem,aux);  
+                fprintf(stderr, mensagem);
+                fprintf(stderr, ("\n Tempo %d \n",time_aux));
+                hearbeat[i].pid=mensagemForServer.userPID;
+                hearbeat[i].tempo= time_aux;
+                fprintf(stderr, ("\n Tempo %d \n",hearbeat->tempo));
+                strcpy(hearbeat[i].username,mensagemForServer.userPID);*/
             }
         }
         if(flag==0)
         {
             userList[connectedUsers]=mensagemForServer;
+            userList[connectedUsers].bidding= time_aux;
             connectedUsers++;
             //heartbeat[connectedUsers][0]=GetTime();
             //heartbeat[connectedUsers][1]=mensagemForServer.userPID;
             //fica a mensagem guardada como a primeira do utilizador
-             fprintf(stderr, "\n Novo utilizador com PID %d conectado. Numero de utilizadores online: %d.\n", mensagemForServer.userPID,connectedUsers);
+            fprintf(stderr, "\n Novo utilizador com PID %d conectado. Numero de utilizadores online: %d.\n", mensagemForServer.userPID,connectedUsers);
         }
         //HEARTBEAT
     
@@ -799,7 +818,7 @@ void *timer() //incrementa tempo
     
 }
 
-/*
+
 
 void *Users_hb()
 {
@@ -811,10 +830,10 @@ void *Users_hb()
              for(int i=0;i<connectedUsers;i++)
             {
             
-                  if((heartbeat[connectedUsers][0]+60)< GetTime())
+                  if(((userList[i].bidding+150)< time_aux))
                     {
                         //remove utilizador
-                        kill(heartbeat[connectedUsers][1], SIGUSR1);
+                        kill(userList[i].userPID, SIGUSR1);
                         char mns[30]="\n Utilizador ";
                         strcat(mns,userList[i].user);
                         strcat(mns," expulso por inatividade.\n");
@@ -824,7 +843,7 @@ void *Users_hb()
             }
         }
        }
-}*/
+}
 void *Gestao_leiloes()
 {
   while(1)
@@ -833,6 +852,7 @@ void *Gestao_leiloes()
     int op=0;
     int saldo=0;
     int tempo_atual= GetTime();
+    time_aux=tempo_atual;
     sleep(1);
     for(int i=0;i<items_disponiveis;i++)
     {
@@ -938,8 +958,6 @@ int main(int argc, char* argv[], char* envp[]) {
     struct LigacaoCliente mensagem_client;//resposta
     pthread_mutex_init(&mutex,NULL);
     pthread_mutex_init(&mutex2,NULL);
-    //criar um filho que roda em background e que está a escrever todas as promoções em uma ficheiro
-    //FILE *p = fopen("utilizadores.txt","anymode");
     char*path= "utilizadores.txt";
     int op=0;
     op=loadUsersFile(path);
@@ -973,14 +991,14 @@ int main(int argc, char* argv[], char* envp[]) {
     pthread_create(&leilao, NULL, Gestao_leiloes, NULL);
     pthread_t tempo;
     pthread_create(&tempo, NULL, timer, NULL);
-    //pthread_t heartbeat;
-    //pthread_create(&heartbeat, NULL, Users_hb, NULL);
+    pthread_t heartbeat;
+    pthread_create(&heartbeat, NULL, Users_hb, NULL);
     Com_Servidor();
 
     pthread_cancel(commThread);
     pthread_cancel(leilao);
     pthread_cancel(tempo);
-    //pthread_cancel(heartbeat);
+    pthread_cancel(heartbeat);
     pthread_mutex_destroy(&mutex);
     pthread_mutex_destroy(&mutex2);
 

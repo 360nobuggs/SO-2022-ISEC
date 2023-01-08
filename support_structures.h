@@ -9,8 +9,8 @@
 #define MAX_PROM 10
 struct Cliente{
     char username[TAM_MAX];
-    char password[TAM_MAX];
-    int saldo;
+    int pid;
+    int tempo;
 };
 struct Item{
     int id;

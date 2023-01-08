@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 =======
-ana ana 3308
-joao joao 646
+ana ana 3331
+joao joao 705
 filipe fifipe 678
-gui gui 4983
+gui gui 5032
 >>>>>>> 966633a08d71897c4e0b37addef7d39b38e49fbc
