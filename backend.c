@@ -598,7 +598,7 @@ void* clientServerComm() {
                 if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
                     }
-        }}
+        }
     }while(1);
     shutdown();
 }
@@ -738,8 +738,6 @@ void Com_Servidor()
             }
 
         }else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
-
-        } else if(){
 
         } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
         
