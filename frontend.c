@@ -23,6 +23,8 @@ void handler(int sig,siginfo_t* si, void*unctext)
 void Shutdown(int sig)
 {
     fprintf(stderr,"\n O servidor desconectou.\n");
+    shutdown();
+    exit(1);
 }
 
 void shutdown() {
@@ -172,7 +174,7 @@ int main(int argc, char* argv[], char* envp[]) {
 
 do{
 
-    fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista numero utilizadores.\n ->items :Numero de items disponiveis.\n ->promo :Lança promotor oficial.\n ->exit :Termina programa\n");
+    fprintf(stderr,"Lista de comandos:\n ->saldo :Ver saldo na conta.\n ->listar :Lista numero utilizadores.\n ->items :Numero de items disponiveis.\n ->buy: Comprar item por id.\n ->sell :Vender item.\n ->carregar :Carregar saldo\n ->promo :Lança promotor oficial.\n ->exit :Termina programa\n");
     fprintf(stderr,"\n Indroduza o comando pretendido:");
     char opcao[10];
     int flag=1;
@@ -182,6 +184,15 @@ do{
     {
          printf("\nsaldo\n");
         strcpy(mensagem_client.palavra, "saldo");
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
+    else if(strcmp(opcao, "carregar") == 0) 
+    {
+        strcpy(mensagem_client.palavra, "carregar");
+        printf("\nEscreva o saldo que pertende adicionar:");
+        scanf("%d", &mensagem_client.bidding);
         if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
                 printf("erro no envio da msg\n");
             }

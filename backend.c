@@ -18,7 +18,7 @@ char* GAMEDIR = DEFAULT_LEILAODIR;
 pthread_mutex_t mutex;
 pthread_mutex_t mutex2;
 int tempoLeilao, tempoEspera;
-
+int heartbeat[20][2];
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
@@ -294,14 +294,15 @@ void* clientServerComm() {
             if(userList[i].userPID==mensagemForServer.userPID)
             {
                 flag=1;
-                userList[i].status=GetTime();
+                //heartbeat[i-1][0]=GetTime();
             }
         }
         if(flag==0)
         {
             userList[connectedUsers]=mensagemForServer;
-            userList[connectedUsers].status=GetTime();
             connectedUsers++;
+            //heartbeat[connectedUsers][0]=GetTime();
+            //heartbeat[connectedUsers][1]=mensagemForServer.userPID;
             //fica a mensagem guardada como a primeira do utilizador
              fprintf(stderr, "\n Novo utilizador com PID %d conectado. Numero de utilizadores online: %d.\n", mensagemForServer.userPID,connectedUsers);
         }
@@ -418,6 +419,24 @@ void* clientServerComm() {
                 mensagemForClient = funcaoitems(mensagemForClient);
                 strcpy(mensagemForClient.palavra, "Numero de items:  ");
                 mensagemForClient.valor = tx;
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+                if (res < 0) {
+                        perror("\n Erro a escrever para o cliente.");
+                    }
+                    
+            }else if(strcmp(mensagemForServer.palavra, "carregar")==0) //licitar
+            {
+                char *ptr= mensagemForServer.user;
+                int saldo=0;
+                 if((saldo=getUserBalance(ptr))!=-1)
+                {
+                if(mensagemForServer.bidding>0)
+                {
+                    updateUserBalance(mensagemForServer.user, saldo+ mensagemForServer.bidding);
+                    strcpy(mensagemForClient.palavra, "Saldo atualizado.\n");
+                }else{
+                    strcpy(mensagemForClient.palavra, "Valor incorreto para carregar.\n");
+                     }}
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
                 if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
@@ -625,9 +644,32 @@ void *timer() //incrementa tempo
     
 }
 
+/*
 
-
-
+void *Users_hb()
+{
+    sleep(1);
+    while(1)
+    {
+        if(connectedUsers>0)
+        {
+             for(int i=0;i<connectedUsers;i++)
+            {
+            
+                  if((heartbeat[connectedUsers][0]+60)< GetTime())
+                    {
+                        //remove utilizador
+                        kill(heartbeat[connectedUsers][1], SIGUSR1);
+                        char mns[30]="\n Utilizador ";
+                        strcat(mns,userList[i].user);
+                        strcat(mns," expulso por inatividade.\n");
+                        fprintf(stderr, mns);
+                        connectedUsers--;
+                    }   
+            }
+        }
+       }
+}*/
 void *Gestao_leiloes()
 {
   while(1)
@@ -710,11 +752,14 @@ int main(int argc, char* argv[], char* envp[]) {
     pthread_create(&leilao, NULL, Gestao_leiloes, NULL);
     pthread_t tempo;
     pthread_create(&tempo, NULL, timer, NULL);
+    //pthread_t heartbeat;
+    //pthread_create(&heartbeat, NULL, Users_hb, NULL);
     Com_Servidor();
 
     pthread_cancel(commThread);
     pthread_cancel(leilao);
     pthread_cancel(tempo);
+    //pthread_cancel(heartbeat);
     pthread_mutex_destroy(&mutex);
     pthread_mutex_destroy(&mutex2);
 
