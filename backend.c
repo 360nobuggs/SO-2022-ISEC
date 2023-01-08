@@ -19,6 +19,7 @@ pthread_mutex_t mutex;
 pthread_mutex_t mutex2;
 int tempoLeilao, tempoEspera;
 int heartbeat[20][2];
+
 void shutdown() {
     printf("Exiting program...\n");
     close(s_fifo);
@@ -914,10 +915,25 @@ void Com_Servidor()
 
         }else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
+        int numeropromo;
+        char nomepromo[10][50];
+        printf("\n numero de promotores que quer: %i", numeropromo);
+        scanf("%i", &numeropromo);
+        for(int iii = 0; iii < (numeropromo - 1); iii++){
+            printf("\nnome do promotor num%i", iii);
+            scanf("%s", &nomepromo[iii]);
+            printf ("\n\t---->num =?= %i // promo =?= %s",iii + 1 ,nomepromo[iii]);
+        }
+
         } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
-      //  struct sigactin sa;
-      //  sa.sa_f = &promo1;
-      //  sigactin(SIGUSR1, &sa, NULL);
+
+         /*  struct sigaction sa;
+            sigemptyset(&sa.sa_mask);
+            sa.sa_sigaction= promo1;
+            sa.sa_flags= SA_SIGINFO;
+            sigaction(SIGINT,&sa,NULL);
+            signal(SIGUSR1,Shutdown);
+        */
         
         } else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
 
