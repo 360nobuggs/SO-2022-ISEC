@@ -167,6 +167,20 @@ int main(int argc, char* argv[], char* envp[]) {
                 printf("\nerro no envio da msg para o servidor no registar");
             }else{printf("\nsucesso no registo");}
             logged_in=1;
+
+
+            //recebe mensagem do servidor
+            read_res=read(c_fifo,&mensagem_server,sizeof(mensagem_server));
+            if(read_res==sizeof(mensagem_server))
+            {
+                fprintf(stderr,"\n mensagem do servidor recebida\n ");
+                fprintf(stderr, mensagem_server.palavra);
+                fprintf(stderr,"\n");
+            }
+
+
+
+
         }else{ printf("esse comado nao existe\n");}
     } while (logged_in==0);
 

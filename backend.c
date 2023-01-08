@@ -359,49 +359,47 @@ void* clientServerComm() {
 
             }else if(strcmp(mensagemForServer.palavra, "registar")==0){
 
-                printf("\n\t\t--->guy");
-                //FILE *regis;
-                //regis = fopen("utilizadores.txt","r");
+                printf("\n--->guy");
+                FILE *regis;
+                regis = fopen("utilizadores.txt","r+");
                 char user[21][20], linha[55];
                 int usee = 0, letrauser = 0;
                 int encontrei = 0;
                 char *pt;
+            
                 printf("\n\t\t--->estou a registar");
-               regis = fopen("utilizadores.txt","r");
                 if(regis  == NULL){
                     printf("erro em abri o aquivo utilizadores.txt para ler");
                 }
-                   printf("\n\t\t--->vou ferificar se ha alguem igual");
-                    while (!feof(regis)){z
-                        fgets(linha, 125, regis);
-                        while (linha != " "){
-                            user[usee][letrauser] = linha[letrauser];
-                            letrauser++;
-                        }
-                        
-                        if (strcmp(user[usee], mensagemForServer.user) == 1){
-                            encontrei++;
-                        }
-                        usee++;
+                printf("\n\t\t--->vou ferificar se ha alguem igual");
+                while (!feof(regis)){
+                    fgets(linha, 125, regis);
+                    while (linha != " "){
+                        user[usee][letrauser] = linha[letrauser];
+                        letrauser++;
                     }
-                    fclose(regis);*/
                     
-                    if(encontrei < 1){
+                    if (strcmp(user[usee], mensagemForServer.user) == 1){
+                        encontrei++;
+                    }
+                    usee++;
+                }
+                if(encontrei < 1){
 
-                        regis = fopen("utilizadores.txt","a");
-                        if( regis == NULL ){
-                            printf("erro em abri o aquivo utilizadores.txt para inclir um user");
-                        }
-                        printf("novo user");
-                        fprintf("%s %s %i", mensagemForServer.user, mensagemForServer.password, mensagemForServer.pbi[0]);
-                        strcpy(mensagemForClient.palavra, "Registo efetuado, de login.\n"); 
-                        fclose(regis);
+                    printf("novo user");
+                    fprintf("%s %s %i", mensagemForServer.user, mensagemForServer.password, mensagemForServer.pbi[0]);
+                    strcpy(mensagemForClient.palavra, "Registo efetuado, de login.\n"); 
+                    fclose(regis);
 
-                    }else{
+                }else{
 
-                        strcpy(mensagemForClient.palavra, "ja existe um user com esse nome.\n");
+                    strcpy(mensagemForClient.palavra, "ja existe um user com esse nome.\n");
 
-                    }else if(strcmp(mensagemForServer.palavra, "tempo")==0)
+                }
+                fclose(regis);
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+
+            }else if(strcmp(mensagemForServer.palavra, "tempo")==0)
             {
                 mensagemForClient.valor=GetTime();
                 char mns[30]="Tempo atual: ";
@@ -547,10 +545,7 @@ void* clientServerComm() {
                 if(flag==0)
                 { strcpy(mensagemForClient.palavra, "Items não encontrados.\n"); }
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-            }
-                    strcpy(mensagemForClient.palavra, "i like big dicks.\n");
-                    res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-
+            
 
             }else if(strcmp(mensagemForServer.palavra, "saldo")==0)
             {
@@ -759,7 +754,7 @@ void* clientServerComm() {
                     }
                     pthread_create(&promoss, NULL, promo1, NULL);
                 
-                    }
+                    
             }else if(strcmp(mensagemForServer.palavra,"exit")==0)
             {
                 kill(mensagemForServer.userPID, SIGUSR1);

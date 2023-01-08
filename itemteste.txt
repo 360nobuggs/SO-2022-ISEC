@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 1 item1 catg1 30 31 0 joao joao
 2 item2 catg2 22 32 0 joao joao
 3 item3 catg3 32 33 0 joao joao
@@ -8,3 +9,9 @@
 4 item4 ppp 100 20 1569 ana gui
 5 item5 g 23 23 1979 ana ana
 0 42dcb5695de6d9e027930fb2dd7222c5Ž0  0 0 0  
+=======
+1 item1 catg1 30 31 1000 joao joao
+2 item2 catg2 22 112 400 gui ana
+3 item3 catg3 32 399 500 joao joao
+4 item4 catg3 100 200 600 ana joao
+>>>>>>> b654cf40bea66aa76c8055eec6cd6052f8821d7e
