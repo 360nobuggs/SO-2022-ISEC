@@ -400,7 +400,153 @@ void* clientServerComm() {
 
                         strcpy(mensagemForClient.palavra, "ja existe um user com esse nome.\n");
 
+                    }else if(strcmp(mensagemForServer.palavra, "tempo")==0)
+            {
+                mensagemForClient.valor=GetTime();
+                char mns[30]="Tempo atual: ";
+                strcpy(mensagemForClient.palavra, mns);
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+            }else if(strcmp(mensagemForServer.palavra, "licat")==0)
+            {
+                Gera_Item();
+                char mns[TAM_MAX]="";
+                char aux[5];
+                int flag=0;
+                for (int i=0; i<items_disponiveis;i++)
+                {
+                    if(strcmp(Items[i].categoria,mensagemForServer.catgitem)==0)
+                    {
+                        strcat(mns,Items[i].nome);
+                        strcat(mns," ");
+                        strcat(mns,Items[i].categoria);
+                        strcat(mns," ");
+                        sprintf(aux, "%d",Items[i].valor_atual);
+                        strcat(mns,aux);
+                        strcat(mns," ");   
+                        sprintf(aux, "%d",Items[i].valor_compra);
+                        strcat(mns,aux);
+                        strcat(mns," ");
+                        sprintf(aux, "%d",Items[i].tempo_leilao);
+                        strcat(mns,aux);
+                        strcat(mns," ");
+                        strcat(mns,Items[i].username_vendedor);
+                        strcat(mns," ");         
+                        strcat(mns,Items[i].username_comprador);
+                        strcat(mns," ");
+                        strcat(mns,"\n");
+                        flag=1;
                     }
+                }
+                strcpy(mensagemForClient.palavra, mns);
+                if(flag==0)
+                { strcpy(mensagemForClient.palavra, "Categoria não encontrada.\n"); }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+            }else if(strcmp(mensagemForServer.palavra, "lival")==0)
+            {
+                Gera_Item();
+                char mns[TAM_MAX]="";
+                char aux[5];
+                int flag=0;
+                for (int i=0; i<items_disponiveis;i++)
+                {
+                    if(Items[i].valor_atual<mensagemForServer.bidding)
+                    {
+                        strcat(mns,Items[i].nome);
+                        strcat(mns," ");
+                        strcat(mns,Items[i].categoria);
+                        strcat(mns," ");
+                        sprintf(aux, "%d",Items[i].valor_atual);
+                        strcat(mns,aux);
+                        strcat(mns," ");   
+                        sprintf(aux, "%d",Items[i].valor_compra);
+                        strcat(mns,aux);
+                        strcat(mns," ");
+                        sprintf(aux, "%d",Items[i].tempo_leilao);
+                        strcat(mns,aux);
+                        strcat(mns," ");
+                        strcat(mns,Items[i].username_vendedor);
+                        strcat(mns," ");         
+                        strcat(mns,Items[i].username_comprador);
+                        strcat(mns," ");
+                        strcat(mns,"\n");
+                        flag=1;
+                    }
+                }
+                strcpy(mensagemForClient.palavra, mns);
+                if(flag==0)
+                { strcpy(mensagemForClient.palavra, "Categoria não encontrada.\n"); }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+            }else if(strcmp(mensagemForServer.palavra, "lisel")==0)
+            {
+                Gera_Item();
+                char mns[TAM_MAX]="";
+                char aux[5];
+                int flag=0;
+                for (int i=0; i<items_disponiveis;i++)
+                {
+                    if(strcmp(Items[i].username_vendedor,mensagemForServer.catgitem)==0)
+                    {
+                        strcat(mns,Items[i].nome);
+                        strcat(mns," ");
+                        strcat(mns,Items[i].categoria);
+                        strcat(mns," ");
+                        sprintf(aux, "%d",Items[i].valor_atual);
+                        strcat(mns,aux);
+                        strcat(mns," ");   
+                        sprintf(aux, "%d",Items[i].valor_compra);
+                        strcat(mns,aux);
+                        strcat(mns," ");
+                        sprintf(aux, "%d",Items[i].tempo_leilao);
+                        strcat(mns,aux);
+                        strcat(mns," ");
+                        strcat(mns,Items[i].username_vendedor);
+                        strcat(mns," ");         
+                        strcat(mns,Items[i].username_comprador);
+                        strcat(mns," ");
+                        strcat(mns,"\n");
+                        flag=1;
+                    }
+                }
+                strcpy(mensagemForClient.palavra, mns);
+                if(flag==0)
+                { strcpy(mensagemForClient.palavra, "Items de vendedor não encontrado.\n"); }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+            }else if(strcmp(mensagemForServer.palavra, "litime")==0)
+            {
+                Gera_Item();
+                char mns[TAM_MAX]="";
+                char aux[5];
+                int flag=0;
+                for (int i=0; i<items_disponiveis;i++)
+                {
+                    if(Items[i].tempo_leilao<mensagemForServer.bidding&&Items[i].tempo_leilao!=0)
+                    {
+                        strcat(mns,Items[i].nome);
+                        strcat(mns," ");
+                        strcat(mns,Items[i].categoria);
+                        strcat(mns," ");
+                        sprintf(aux, "%d",Items[i].valor_atual);
+                        strcat(mns,aux);
+                        strcat(mns," ");   
+                        sprintf(aux, "%d",Items[i].valor_compra);
+                        strcat(mns,aux);
+                        strcat(mns," ");
+                        sprintf(aux, "%d",Items[i].tempo_leilao);
+                        strcat(mns,aux);
+                        strcat(mns," ");
+                        strcat(mns,Items[i].username_vendedor);
+                        strcat(mns," ");         
+                        strcat(mns,Items[i].username_comprador);
+                        strcat(mns," ");
+                        strcat(mns,"\n");
+                        flag=1;
+                    }
+                }
+                strcpy(mensagemForClient.palavra, mns);
+                if(flag==0)
+                { strcpy(mensagemForClient.palavra, "Items não encontrados.\n"); }
+                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+            }
                     strcpy(mensagemForClient.palavra, "i like big dicks.\n");
                     res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
 
@@ -612,12 +758,13 @@ void* clientServerComm() {
                     }
                     pthread_create(&promoss, NULL, promo1, NULL);
                 
-            }else if(strcmp(mensagemForServer.palavra,"exit")==0){
-
-                fprintf(stderr,"\nPrograma terminado por comando do cliente.\n");
-                alarmHandler(SIGALRM);
-                shutdown();
-                exit(EXIT_SUCCESS);
+                    }
+            }else if(strcmp(mensagemForServer.palavra,"exit")==0)
+            {
+                kill(mensagemForServer.userPID, SIGUSR1);
+                connectedUsers--;
+                fprintf(stderr,("\nUtilizador %s desconectado por opção..\n",mensagemForServer.user));
+                
             }else{
             fprintf(stderr, "\nComando nao reconhecido do cliente %d .\n", mensagemForServer.userPID);
             strcpy(mensagemForClient.palavra, "Comando não reconhecido.\n\n");
