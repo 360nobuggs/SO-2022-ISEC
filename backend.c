@@ -364,16 +364,18 @@ void* clientServerComm() {
                 char user[21][20], linha[55];
                 int usee = 0, letrauser = 0;
                 int encontrei = 0;
-                char *pt;
             
-                printf("\n\t\t--->estou a registar");
+         //       printf("\n\t\t--->estou a registar");
+
+         /*       regis = fopen("utilizadores.txt", "r");
                 if(regis  == NULL){
                     printf("erro em abri o aquivo utilizadores.txt para ler");
                 }
+                
                 printf("\n\t\t--->vou ferificar se ha alguem igual");
                 while (!feof(regis)){
                     fgets(linha, 125, regis);
-                    while (linha != " "){
+                    while (linha[letrauser] != " "){
                         user[usee][letrauser] = linha[letrauser];
                         letrauser++;
                     }
@@ -383,20 +385,28 @@ void* clientServerComm() {
                     }
                     usee++;
                 }
-                if(encontrei < 1){
+                fclose(regis);*/
 
-                    printf("novo user");
-                    fprintf("%s %s %i", mensagemForServer.user, mensagemForServer.password, mensagemForServer.pbi[0]);
+
+fprintf(stderr, "novo user");
+fprintf(stderr, "\n\t vai te foder%s %s", mensagemForServer.user , mensagemForServer.password);
+               /*if(encontrei < 1){
+                    
+                    
                     strcpy(mensagemForClient.palavra, "Registo efetuado, de login.\n"); 
-                    fclose(regis);
+                    
 
                 }else{
 
                     strcpy(mensagemForClient.palavra, "ja existe um user com esse nome.\n");
 
-                }
-                fclose(regis);
+                } 
+*/ 
+                
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+
+
+
 
             }else if(strcmp(mensagemForServer.palavra, "tempo")==0)
             {
@@ -751,7 +761,7 @@ void* clientServerComm() {
                     if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
                     }
-                    pthread_create(&promoss, NULL, promo1, NULL);
+                    pthread_create(&promoss, NULL, &promo1, NULL);
                 
                     
             }else if(strcmp(mensagemForServer.palavra,"exit")==0)

@@ -1,4 +1,0 @@
-1 item1 catg1 30 31 1000 joao joao
-2 item2 catg2 22 112 400 gui ana
-3 item3 catg3 32 399 500 joao joao
-4 item4 catg3 100 200 600 ana joao
