@@ -139,6 +139,7 @@ int main(int argc, char* argv[], char* envp[]) {
 
         //fim do login-----------------------------------------------------------------------------------------------
         }   else if (strcmp(cmd, "REGISTAR") == 0) {
+
             strcpy(mensagem_client.palavra, "registar");
             char pass2[25];
             int voltar = 0;
@@ -156,16 +157,16 @@ int main(int argc, char* argv[], char* envp[]) {
                 printf("Montante: ");
                 scanf("%i", &mensagem_client.pbi[0]);
 
-                if(strcmp(mensagem_client.password, pass2) != 1){
+                if((strcmp(mensagem_client.password, pass2)) == 0){
                     printf("erro na palavra-pass");
                 }
 
-            }while(strcmp(mensagem_client.password, pass2) != 1);
+            }while(strcmp(mensagem_client.password, pass2) != 0);
 
             if ((write(s_fifo, &mensagem_client, sizeof(mensagem_client))) == -1) {
                 printf("\nerro no envio da msg para o servidor no registar");
-            }else{printf("sucesso no registo");}
-            
+            }else{printf("\nsucesso no registo");}
+            logged_in=1;
         }else{ printf("esse comado nao existe\n");}
     } while (logged_in==0);
 

@@ -139,7 +139,7 @@ int itemdiv(){
     return numeroitem;
 }
 
-void promo1(){
+void promo1(int sig){
     int file, file2;
     file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
     if(file == -1){
@@ -333,6 +333,7 @@ void* clientServerComm() {
             fprintf(stderr, "\nComando %s recebido do utilizador %d\n", mensagemForServer.palavra,mensagemForServer.userPID);
             char *aux =mensagemForServer.palavra;
             fprintf(stderr, "\n user: %s \n", mensagemForServer.user);
+
             if(strcmp(mensagemForServer.palavra, "login")==0)
             {
                 int code=isUserValid(mensagemForServer.user, mensagemForServer.password);
@@ -353,24 +354,53 @@ void* clientServerComm() {
                     strcpy(mensagemForClient.palavra, ("Erro encontrado:  %s.\n",getLastErrorText()));
                 }
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-            }else if(strcmp(mensagemForServer.palavra, "registar")==0)
-            {
-                //verfificar se exite 
-                int code=isUserValid(mensagemForServer.user, mensagemForServer.password);
-                if(code==1)
-                {
-                    strcpy(mensagemForClient.palavra, "Utilizador já exite.\n"); 
-                }
-                else{
-                    //INSERIR MANUALMENTE NO FICHEIRO DE UTILIZADORES NOVO USER
 
 
-                    strcpy(mensagemForClient.palavra, "Registo efetuado, bem vindo .\n"); 
-                    fprintf(stderr, "\nUtilizador %s conectado.\n", mensagemForServer.user);  
-                    logged_in=1;
+            }else if(strcmp(mensagemForServer.palavra, "registar")==0){
+
+                printf("\n\t\t--->guy");
+                //FILE *regis;
+                //regis = fopen("utilizadores.txt","r");
+                char user[21][20], linha[55];
+                int usee = 0, letrauser = 0;
+                int encontrei = 0;
+                char *pt;
+                printf("\n\t\t--->estou a registar");
+               regis = fopen("utilizadores.txt","r");
+                if(regis  == NULL){
+                    printf("erro em abri o aquivo utilizadores.txt para ler");
                 }
-                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-            }else if(strcmp(mensagemForServer.palavra, "tempo")==0)
+                   printf("\n\t\t--->vou ferificar se ha alguem igual");
+                    while (!feof(regis)){z
+                        fgets(linha, 125, regis);
+                        while (linha != " "){
+                            user[usee][letrauser] = linha[letrauser];
+                            letrauser++;
+                        }
+                        
+                        if (strcmp(user[usee], mensagemForServer.user) == 1){
+                            encontrei++;
+                        }
+                        usee++;
+                    }
+                    fclose(regis);*/
+                    
+                    if(encontrei < 1){
+
+                        regis = fopen("utilizadores.txt","a");
+                        if( regis == NULL ){
+                            printf("erro em abri o aquivo utilizadores.txt para inclir um user");
+                        }
+                        printf("novo user");
+                        fprintf("%s %s %i", mensagemForServer.user, mensagemForServer.password, mensagemForServer.pbi[0]);
+                        strcpy(mensagemForClient.palavra, "Registo efetuado, de login.\n"); 
+                        fclose(regis);
+
+                    }else{
+
+                        strcpy(mensagemForClient.palavra, "ja existe um user com esse nome.\n");
+
+                    }else if(strcmp(mensagemForServer.palavra, "tempo")==0)
             {
                 mensagemForClient.valor=GetTime();
                 char mns[30]="Tempo atual: ";
@@ -517,7 +547,11 @@ void* clientServerComm() {
                 { strcpy(mensagemForClient.palavra, "Items não encontrados.\n"); }
                 res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
             }
-            else if(strcmp(mensagemForServer.palavra, "saldo")==0)
+                    strcpy(mensagemForClient.palavra, "i like big dicks.\n");
+                    res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+
+
+            }else if(strcmp(mensagemForServer.palavra, "saldo")==0)
             {
                 char *ptr= mensagemForServer.user;
                 if((saldo=getUserBalance(ptr))!=-1)
@@ -713,13 +747,7 @@ void* clientServerComm() {
                 if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
                     }
-            }
-            else if(strcmp(mensagemForServer.palavra, "registar")==0)
-            {
-
-            }
-            else if(strcmp(aux, "promo")==0)
-            {
+            }else if(strcmp(aux, "promo")==0){
                 pthread_t promoss;
                 //promotor
                 printf("teste promotor");
@@ -745,8 +773,9 @@ void* clientServerComm() {
                         perror("\n Erro a escrever para o cliente.");
                     }
         }
-    }while(1);
+    }}while(1);
     shutdown();
+    
 }
 
 void *timer() //incrementa tempo
@@ -886,8 +915,10 @@ void Com_Servidor()
         }else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
         } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
+      //  struct sigactin sa;
+      //  sa.sa_f = &promo1;
+      //  sigactin(SIGUSR1, &sa, NULL);
         
-
         } else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
 
         } else if (strcmp(cmd, "CLOSE") == 0) { //termina execucao
