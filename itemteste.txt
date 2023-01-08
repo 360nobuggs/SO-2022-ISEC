@@ -1,5 +1,5 @@
-1 item1 catg1 30 31 0 gui gui
+1 item1 catg1 30 31 0 joao joao
 2 item2 catg2 22 32 0 joao joao
 3 item3 catg3 32 33 0 joao joao
-4 item4 ppp 100 20 1569 ana ana
+4 item4 ppp 100 20 1569 ana gui
 5 item5 g 23 23 1979 ana ana

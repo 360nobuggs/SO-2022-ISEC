@@ -197,6 +197,49 @@ do{
                 printf("erro no envio da msg\n");
             }
     }
+    else if(strcmp(opcao, "tempo") == 0) 
+    {
+        strcpy(mensagem_client.palavra, "tempo");
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
+    else if(strcmp(opcao, "licat") == 0) 
+    {
+        strcpy(mensagem_client.palavra, "licat");
+        printf("\nEscreva a categoria que pertende:");
+        scanf("%s", &mensagem_client.catgitem);
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
+    else if(strcmp(opcao, "lisel") == 0) 
+    {
+        strcpy(mensagem_client.palavra, "lisel");
+        printf("\nEscreva a o vendedor:");
+        scanf("%s", &mensagem_client.catgitem);
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
+    else if(strcmp(opcao, "lival") == 0) 
+    {
+        strcpy(mensagem_client.palavra, "lival");
+        printf("\nEscreva o valor que pertende:");
+        scanf("%d", &mensagem_client.bidding);
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
+    else if(strcmp(opcao, "litime") == 0) 
+    {
+        strcpy(mensagem_client.palavra, "litime");
+        printf("\nEscreva o valor temporal que pertende:");
+        scanf("%d", &mensagem_client.bidding);
+        if (write(s_fifo, &mensagem_client, sizeof(mensagem_client)) == -1) {
+                printf("erro no envio da msg\n");
+            }
+    }
     else if(strcmp(opcao, "buy") == 0) 
     {
         strcpy(mensagem_client.palavra, "buy");
@@ -261,7 +304,7 @@ do{
         {
             fprintf(stderr,"\n mensagem do servidor recebida\n ");
             fprintf(stderr, mensagem_server.palavra);
-            if(strcmp(opcao,"saldo")==0||strcmp(opcao,"listar")==0)
+            if(strcmp(opcao,"saldo")==0||strcmp(opcao,"listar")==0||strcmp(opcao,"tempo")==0)
             {
                 fprintf(stderr, "%d \n",mensagem_server.valor);
             }else if (strcmp(opcao,"items")==0){
