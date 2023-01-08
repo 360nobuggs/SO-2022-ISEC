@@ -139,6 +139,21 @@ int itemdiv(){
     return numeroitem;
 }
 
+void promo1(){
+    int file, file2;
+    file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
+    if(file == -1){
+        printf("\nerro na cricao da pasta");
+    }
+    printf("\nescrever as prome para o arquivo: prome.txt");
+    file2 = dup2(file, 1);
+    close(file);
+    int error231 = execl("promotor_oficial", "promotor_oficial", NULL);
+    if(error231 == -1){
+    printf("\ncodigo nao enconntador para execl correr");
+    }
+}
+
 void Gera_Item()
 {
     const int tam = 30;
@@ -705,6 +720,7 @@ void* clientServerComm() {
             }
             else if(strcmp(aux, "promo")==0)
             {
+                pthread_t promoss;
                 //promotor
                 printf("teste promotor");
                 strcpy(mensagemForClient.palavra, "Promotor oficial iniciado.\n\n");
@@ -712,24 +728,7 @@ void* clientServerComm() {
                     if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
                     }
-                int id = fork();
-                if(id == 0){
-                    int file, file2;
-                    int pidfilho = getpid();
-                    printf("%i", pidfilho);
-                    file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
-                    if(file == -1){
-                        printf("erro na cricao da pasta");
-                       
-                    }
-                    printf("\nescrever as prome para o arquivo: prome.txt");
-                    file2 = dup2(file, 1);
-                    close(file);
-                    int error231 = execl("promotor_oficial", "promotor_oficial", NULL);
-                    if(error231 == -1){
-                        printf("codigo nao enconntador para execl correr");
-                       
-                    }
+                    pthread_create(&promoss, NULL, promo1, NULL);
                 
                     }
             }else if(strcmp(mensagemForServer.palavra,"exit")==0)
@@ -745,7 +744,7 @@ void* clientServerComm() {
                 if (res < 0) {
                         perror("\n Erro a escrever para o cliente.");
                     }
-        }}
+        }
     }while(1);
     shutdown();
 }
@@ -887,6 +886,7 @@ void Com_Servidor()
         }else if (strcmp(cmd, "PROM") == 0) { //lista utilizadores promotores atuais
 
         } else if (strcmp(cmd, "REPROM") == 0) { //atualiza promotores
+        
 
         } else if (strcmp(cmd, "CANCEL") == 0) { //cancela promotor
 
