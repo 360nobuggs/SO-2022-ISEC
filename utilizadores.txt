@@ -1,9 +1,9 @@
-<<<<<<< HEAD
-ana ana 3161
+<<<<<<< HEAD 0
+ana ana 3160
 joao joao 272
-=======
-ana ana 3038
+======= ana 0
+ana 3038 0
 joao joao 326
->>>>>>> 42dcb5695de6d9e027930fb2dd7222c5743ee745
+>>>>>>> 42dcb5695de6d9e027930fb2dd7222c5743ee745 0
 filipe fifipe 678
 gui gui 4995

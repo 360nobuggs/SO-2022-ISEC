@@ -17,13 +17,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c3aca4d-6ee7-4bd7-9538-42d182d0a91d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend" beforeDir="false" afterPath="$PROJECT_DIR$/backend" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend.c" beforeDir="false" afterPath="$PROJECT_DIR$/backend.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/itemteste.txt" beforeDir="false" afterPath="$PROJECT_DIR$/itemteste.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/time.txt" beforeDir="false" afterPath="$PROJECT_DIR$/time.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilizadores.txt" beforeDir="false" afterPath="$PROJECT_DIR$/utilizadores.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +71,11 @@
   }
 }</component>
   <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CMakeLists.txt" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" nameIsGenerated="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="SO-2022-ISEC" TARGET_NAME="CMakeLists.txt" CONFIG_NAME="CMakeLists.txt">
       <option name="sourceFile" value="$PROJECT_DIR$/CMakeLists.txt" />
       <method v="2">
@@ -99,6 +98,7 @@
       <workItem from="1668790475978" duration="1627000" />
       <workItem from="1672863091554" duration="2085000" />
       <workItem from="1673028076500" duration="2617000" />
+      <workItem from="1673199409578" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="gyu">
       <created>1673041861954</created>
