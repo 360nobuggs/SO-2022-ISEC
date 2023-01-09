@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
-1 item1 catg1 30 311 0 gui gui
-2 item2 catg2 22 112 2000 ana ana
+1 item1 catg1 30 311 100 gui gui
+2 item2 catg2 22 112 200 ana gui
 3 item3 catg3 50 399 900 joao joao
-4 item4 catg3 30 200 0 ana ana
-5 salsicha chourico 30 60 0 ana ana
-6 bolacha chocolate 30 23 0 joao joao
->>>>>>> 966633a08d71897c4e0b37addef7d39b38e49fbc
+4 item4 catg3 30 200 200 ana ana
+5 salsicha chourico 30 60 200 ana ana
+6 bolacha chocolate 30 23 200 joao joao

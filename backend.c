@@ -10,7 +10,6 @@ int connectedUsers = 0;
 int LeilaoStarted = 0;
 int LeilaoFinished = 0;
 struct LigacaoCliente userList[20];
-struct Cliente hearbeat[20];
 struct Item Items[31];
 int items_disponiveis=0;
 int time_aux=0;
@@ -146,7 +145,7 @@ void *Heartbeat()
 
   }
 }
-void promo1(int sig){
+void *promo1(int sig){
     int file, file2;
     file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
     if(file == -1){
@@ -377,45 +376,10 @@ void* clientServerComm() {
 
             }else if(strcmp(mensagemForServer.palavra, "registar")==0){
 
-                printf("\n--->guy");
-                FILE *regis;
-                regis = fopen("utilizadores.txt","r+");
-                char user[21][20], linha[55];
-                int usee = 0, letrauser = 0;
-                int encontrei = 0;
-                char *pt;
-            
-                printf("\n\t\t--->estou a registar");
-                if(regis  == NULL){
-                    printf("erro em abri o aquivo utilizadores.txt para ler");
-                }
-                printf("\n\t\t--->vou ferificar se ha alguem igual");
-                while (!feof(regis)){
-                    fgets(linha, 125, regis);
-                    while (linha != " "){
-                        user[usee][letrauser] = linha[letrauser];
-                        letrauser++;
-                    }
-                    
-                    if (strcmp(user[usee], mensagemForServer.user) == 1){
-                        encontrei++;
-                    }
-                    usee++;
-                }
-                if(encontrei < 1){
-
-                    printf("novo user");
-                    fprintf("%s %s %i", mensagemForServer.user, mensagemForServer.password, mensagemForServer.pbi[0]);
-                    strcpy(mensagemForClient.palavra, "Registo efetuado, de login.\n"); 
-                    fclose(regis);
-
-                }else{
-
-                    strcpy(mensagemForClient.palavra, "ja existe um user com esse nome.\n");
-
-                }
-                fclose(regis);
-                res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
+             
+        
+            fclose(regis);
+            res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
 
 
 
