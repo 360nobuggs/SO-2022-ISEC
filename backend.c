@@ -138,13 +138,7 @@ int itemdiv(){
     fclose(iteml);
     return numeroitem;
 }
-void *Heartbeat()
-{
-  while(1)
-  {
 
-  }
-}
 void *promo1(int sig){
     int file, file2;
     file = open("prome.txt", O_WRONLY | O_CREAT, 0777);
@@ -378,11 +372,8 @@ void* clientServerComm() {
 
              
         
-            fclose(regis);
+             strcpy(mensagemForClient.palavra, "\nRegisto impossivel.\n");
             res = write(c_fifo, &mensagemForClient, sizeof(mensagemForClient));
-
-
-
 
             }else if(strcmp(mensagemForServer.palavra, "tempo")==0)
             {
@@ -742,8 +733,14 @@ void* clientServerComm() {
                     
             }else if(strcmp(mensagemForServer.palavra,"exit")==0)
             {
+                 for(int i=0;i<connectedUsers;i++)
+                {
+                    if(userList[i].userPID==mensagemForServer.userPID)
+                    {
+                        userList[i].bidding=0;   
+                    }
+                }
                 kill(mensagemForServer.userPID, SIGUSR1);
-                connectedUsers--;
                 fprintf(stderr,("\nUtilizador %s desconectado por opção..\n",mensagemForServer.user));
                 
             }else{
@@ -786,15 +783,15 @@ void *timer() //incrementa tempo
 
 void *Users_hb()
 {
-    sleep(1);
     while(1)
     {
+        sleep(1);
         if(connectedUsers>0)
         {
              for(int i=0;i<connectedUsers;i++)
             {
             
-                  if(((userList[i].bidding+150)< time_aux))
+                  if(((userList[i].bidding+150)< time_aux) && userList[i].bidding!=0 && userList[i].bidding!=NULL)
                     {
                         //remove utilizador
                         kill(userList[i].userPID, SIGUSR1);
@@ -802,7 +799,8 @@ void *Users_hb()
                         strcat(mns,userList[i].user);
                         strcat(mns," expulso por inatividade.\n");
                         fprintf(stderr, mns);
-                        connectedUsers--;
+                        //atualiza utilizadores
+                        userList[i].bidding=0;
                     }   
             }
         }
@@ -858,7 +856,11 @@ void Com_Servidor()
         if (strcmp(cmd, "USERS") == 0) {
             for(int i=0; i< connectedUsers;i++)
             {
-                printf("%s \n",userList[i].user);
+                if(userList[i].bidding!=0)
+                {
+                     printf("%s \n",userList[i].user);
+                }
+                
             }
         } else if (strcmp(cmd, "LIST") == 0) {
             Gera_Item();
@@ -884,7 +886,7 @@ void Com_Servidor()
 
                     flag=1;
                     kill(userList[i].userPID, SIGUSR1);
-                    connectedUsers--;
+                    userList[i].bidding=0;
                     fprintf(stderr, ("\n Utilizador %s desconectado\n",user));
                     break;
                 }
